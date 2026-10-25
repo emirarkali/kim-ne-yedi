@@ -105,5 +105,24 @@
         "note": "Tat her zamanki gibiydi."
       }
     ]
+  },
+  {
+    "date": "2026-10-26",
+    "day": "Pazartesi",
+    "meals": [
+      {
+        "id": "2026-10-26-5090",
+        "title": "Çiğ Köfte + Ayran",
+        "items": [
+          "Çiğ köfte",
+          "Ayran"
+        ],
+        "location": "Komagene",
+        "category": "Dürüm & Çiğ Köfte",
+        "emoji": "🌯",
+        "price": "180 TL",
+        "note": "Güzeldi, dün yedim."
+      }
+    ]
   }
 ]
