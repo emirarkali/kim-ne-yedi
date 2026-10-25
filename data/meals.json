@@ -205,18 +205,6 @@
         "emoji": "🍗",
         "price": "Beleş TL",
         "note": "6/10"
-      },
-      {
-        "id": "2026-10-25-3193",
-        "title": "Yemek",
-        "items": [
-          "Yemek"
-        ],
-        "location": "Yurt",
-        "category": "Diğer",
-        "emoji": "🍽️",
-        "price": "1500 TL",
-        "note": "Tadı müthişti."
       }
     ]
   }
