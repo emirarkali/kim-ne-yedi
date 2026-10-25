@@ -90,6 +90,18 @@
         "emoji": "🍟",
         "price": "36 TL",
         "note": "Tadı güzeldi ama hızlı bitiyor"
+      },
+      {
+        "id": "2026-10-25-4934",
+        "title": "Cips",
+        "items": [
+          "Cips"
+        ],
+        "location": "Yurt",
+        "category": "Atıştırmalık",
+        "emoji": "🍟",
+        "price": "40 TL",
+        "note": "Tadı efsaneydi"
       }
     ]
   }
