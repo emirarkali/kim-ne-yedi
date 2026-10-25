@@ -47,18 +47,13 @@
         "emoji": "🍳",
         "category": "Kahvaltı",
         "note": "3 yumurta yemek yeterliydi"
-      }
-    ]
-  },
-  {
-    "date": "2026-10-26",
-    "day": "Pazartesi",
-    "meals": [
+      },
       {
-        "id": "2026-10-26-1129",
+        "id": "2026-10-25-1930",
         "title": "Tarhana Çorbası + Tavuk Sote + Bulgur Pilavı",
         "items": [
-          "Tarhana Çorbası + Tavuk Sote + Bulgur Pilavı"
+          "Tarhana Çorbası",
+          "Tavuk Sote + Bulgur Pilavı"
         ],
         "location": "Yurt",
         "price": "Bedava TL",
