@@ -1,15 +1,3 @@
-/**
- * Kim Ne Yedi? - Tek Dokunuşla Şablonlu Düzenleme & Telegram Botu
- * 
- * Özellikler:
- * - ✏️ /duzenle : Argümansız listeyi açar, numarayı seçtirir.
- * - 📋 Seçilen öğünün parametrelerini tek tıkla kopyalanabilir hazır şablon olarak verir!
- *    Kullanıcı mesaj kutusuna yapıştırıp istediği satırı değiştirip gönderir.
- * - 🗑️ /sil     : Listeyi açar, numara ile sildirir.
- * - ➕ /ekle     : Adım adım sorarak ekler.
- * - 🔒 Sadece @emirarkali ve @fiFonee
- * - 🕒 Türkiye Yerel Saati (Europe/Istanbul UTC+3)
- */
 
 const REPO_OWNER = "emirarkali";
 const REPO_NAME = "kim-ne-yedi";
@@ -1374,34 +1362,14 @@ async function parseMealWithGeminiFast(userMessage, apiKey) {
 Kullanıcının Türkçe yemek cümlesini analiz et.
 Bugünün tarihi: ${todayDateStr} (${todayDayName}).
 
-Emoji Kuralları (ana öğüne göre en uygun emojiyi seç):
-- Burger / Hamburger / Whopper: 🍔
-- Pizza: 🍕
-- Tost / Sandviç / Kumru: 🥪
-- Dürüm / Çiğ Köfte / Tantuni / Wrap / Zater: 🌯
-- Döner / Kebap / İskender: 🥙
-- Köfte: 🧆
-- Çorba (Mercimek, Ezogelin, vs): 🍲
-- Patates kızartması / Cips / Atıştırmalık: 🍟
-- Tavuk / Nugget / Şinitzel / Wings: 🍗
-- Makarna / Spagetti / Mantı / Noodle: 🍝
-- Pilav: 🍚
-- Pide / Lahmacun: 🫓
-- Börek / Poğaça / Simit / Boyoz: 🥐
-- Kahvaltı / Menemen / Yumurta / Omlet: 🍳
-- Salata / Bowl: 🥗
-- Tatlı / Waffle / Pasta / Cheesecake / Kek: 🍰
-- Dondurma: 🍦
-- İçecek (Kola, Fanta, Gazoz, Ice Tea, Şalgam): 🥤
-- Kahve: ☕
-- Çay: 🫖
-- Ayran / Süt: 🥛
-- Su / Soda: 💧
-- Bira: 🍺
-- Diğer: 🍽️
-
-Not Kuralı:
-- Kullanıcının yemekle ilgili lezzet, eleştiri, durum veya detay yorumu varsa (örn: "Tadı güzeldi ama hızlı bitiyor") "note" alanına yazılmalıdır. Yoksa "" olmalıdır.
+Kurallar:
+- "location": Mekan adı (örn: "Yurt", "McDonald's", "Bilinmiyor").
+- "title": Yiyecek ve içecek özeti (örn: "Cips" veya "Tavuk Dürüm + Ayran").
+- "items": Yiyecek ve içecekler dizisi (örn: ["Cips"]).
+- "category": Uygun kategori (örn: "Fast Food", "Dürüm & Çiğ Köfte", "Atıştırmalık", "Tatlı", "Ev Yemeği").
+- "emoji": Yemeğe en uygun tek bir emoji (örn: 🍔, 🍕, 🌯, 🍟, 🍽️).
+- "price": Belirtilen fiyat (örn: "36 TL" veya "200 TL"). Fiyat yoksa null yap.
+- "note": Varsa lezzet, beğeni veya durum yorumu (örn: "Tadı güzeldi ama hızlı bitiyor"), yoksa "".
 
 Çıktı SADECE şu JSON formatında olmalıdır:
 {
