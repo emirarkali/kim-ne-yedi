@@ -103,25 +103,19 @@
         "emoji": "🍳",
         "category": "Yemek",
         "note": "Tat her zamanki gibiydi."
-      }
-    ]
-  },
-  {
-    "date": "2026-10-26",
-    "day": "Pazartesi",
-    "meals": [
+      },
       {
-        "id": "2026-10-26-5090",
+        "id": "2026-10-25-6053",
         "title": "Çiğ Köfte + Ayran",
         "items": [
-          "Çiğ köfte",
+          "Çiğ Köfte",
           "Ayran"
         ],
         "location": "Komagene",
-        "category": "Dürüm & Çiğ Köfte",
-        "emoji": "🌯",
         "price": "180 TL",
-        "note": "Güzeldi, dün yedim."
+        "emoji": "🌯",
+        "category": "Dürüm & Çiğ Köfte",
+        "note": "Güzeldi."
       }
     ]
   }
