@@ -98,6 +98,7 @@ Kurallar:
 6. "price": Varsa fiyat metni (örn: "240 TL"), yoksa null.
 7. "date": Eğer kullanıcı "dün" demediyse bugünün tarihi ({today_date}). "dün" dediyse dünün tarihi.
 8. "day": Türkçe gün adı.
+9. "note": Kullanıcının yemek hakkındaki yorumu, eleştirisi veya ek notları (örn: "Tadı güzeldi ama hızlı bitiyor"), yoksa "".
 
 SADECE geçerli bir JSON çıktısı ver:
 {{

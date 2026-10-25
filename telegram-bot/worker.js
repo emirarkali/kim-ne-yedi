@@ -1,5 +1,5 @@
 /**
- * Can Ne Yedi? - Tek Dokunuşla Şablonlu Düzenleme & Telegram Botu
+ * Kim Ne Yedi? - Tek Dokunuşla Şablonlu Düzenleme & Telegram Botu
  * 
  * Özellikler:
  * - ✏️ /duzenle : Argümansız listeyi açar, numarayı seçtirir.
@@ -165,7 +165,7 @@ export default {
 
     try {
       const update = await request.json();
-      
+
       if (update.update_id && processedUpdateIds.has(update.update_id)) {
         return new Response("OK", { status: 200 });
       }
@@ -220,11 +220,11 @@ async function handleIncomingUpdate(update, env) {
 
   try {
     // 🔒 Yetki Kontrolü
-    const fromUsername = update.message.from && update.message.from.username 
-      ? update.message.from.username.toLowerCase().replace("@", "") 
+    const fromUsername = update.message.from && update.message.from.username
+      ? update.message.from.username.toLowerCase().replace("@", "")
       : "";
 
-    const isAuthorized = ALLOWED_USERNAMES.includes(fromUsername) || 
+    const isAuthorized = ALLOWED_USERNAMES.includes(fromUsername) ||
       (env.ALLOWED_CHAT_ID && String(chatId) === String(env.ALLOWED_CHAT_ID));
 
     if (!isAuthorized) {
@@ -248,7 +248,7 @@ async function handleIncomingUpdate(update, env) {
     // ============================================================
     // A) /duzenle - ADIM 2: KULLANICI DÜZENLENMİŞ METNİ GÖNDERDİĞİNDE
     // ============================================================
-    const isTemplateSubmission = 
+    const isTemplateSubmission =
       (session && session.action === "duzenle_submit") ||
       replyToText.toLowerCase().includes("düzenleme") ||
       replyToText.toLowerCase().includes("duzenleme") ||
@@ -258,7 +258,7 @@ async function handleIncomingUpdate(update, env) {
 
     if (isTemplateSubmission) {
       const lines = userText.split(/[\n|]+/).map(l => l.trim()).filter(l => l.length > 0);
-      
+
       let parsedNum = null;
       let food = "";
       let drink = "";
@@ -296,12 +296,12 @@ async function handleIncomingUpdate(update, env) {
       }
 
       // Numarayı belirle
-      const mealNum = parsedNum || 
-        (session && session.mealNum) || 
+      const mealNum = parsedNum ||
+        (session && session.mealNum) ||
         parseInt(extractTag(replyToText, "NO"), 10);
 
-      const originalDate = customDate || 
-        (session && session.originalDate) || 
+      const originalDate = customDate ||
+        (session && session.originalDate) ||
         extractTag(replyToText, "ORIG_DATE");
 
       // Temizlikler
@@ -316,8 +316,8 @@ async function handleIncomingUpdate(update, env) {
 
       if (!mealNum || isNaN(mealNum)) {
         await sendTelegramMessage(
-          env.TELEGRAM_BOT_TOKEN, 
-          chatId, 
+          env.TELEGRAM_BOT_TOKEN,
+          chatId,
           "⚠️ Düzenlenecek öğün numarası belirlenemedi.\n\n" +
           "Lütfen şablonun en üst satırına numarasını ekleyip tekrar gönderin, örn:\n" +
           "`No: 3`\n`Yemek: ...`\n\n" +
@@ -404,9 +404,9 @@ async function handleIncomingUpdate(update, env) {
       mealsList.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
 
       await updateGitHubFile(
-        env.GITHUB_TOKEN, 
-        githubFile.sha, 
-        JSON.stringify(mealsList, null, 2), 
+        env.GITHUB_TOKEN,
+        githubFile.sha,
+        JSON.stringify(mealsList, null, 2),
         `fix(${activeProfile.id}): düzenlendi #${mealNum} (${fullTitle} - ${price})`,
         activeProfile.filePath
       );
@@ -416,13 +416,13 @@ async function handleIncomingUpdate(update, env) {
         try {
           const syncFile = await getGitHubFile(env.GITHUB_TOKEN, "data/meals.json");
           await updateGitHubFile(env.GITHUB_TOKEN, syncFile.sha, JSON.stringify(mealsList, null, 2), `sync: meals.json`, "data/meals.json");
-        } catch (e) {}
+        } catch (e) { }
       }
 
       const foodLine = food ? `${guessEmoji(food)} *Yemek:* ${food}` : "";
       const drinkLine = drink ? `🥤 *İçecek:* ${drink}` : "🥤 *İçecek:* (İçilmedi)";
       const noteLine = note ? `💬 *Not:* ${note}\n` : "";
-      const okText = 
+      const okText =
         `✅ *#${mealNum} Numaralı Öğün Güncellendi!* (${activeProfile.emoji} ${activeProfile.name})\n\n` +
         `📅 *Tarih:* ${dateInfo.day} (${dateInfo.date})\n` +
         `${foodLine ? foodLine + "\n" : ""}` +
@@ -482,7 +482,7 @@ async function handleIncomingUpdate(update, env) {
       // Tek dokunuşla kopyalanabilir hazır şablon
       const existingPrice = item.meal.price || "";
       const existingNote = item.meal.note || "";
-      const templateText = 
+      const templateText =
         `No: ${targetNum}\n` +
         `Yemek: ${existingFood}\n` +
         `İçecek: ${existingDrink}\n` +
@@ -493,7 +493,7 @@ async function handleIncomingUpdate(update, env) {
 
       const inlineQueryText = "\n" + templateText;
 
-      const promptMsg = 
+      const promptMsg =
         `✏️ *#${targetNum} Numaralı Öğün Seçildi!* (${activeProfile.emoji} ${activeProfile.name})\n\n` +
         `Aşağıdaki gri kutucuğa **tek dokunarak kopyalayabilir** veya alttaki **"✏️ Mesaj Kutusuna Doldur"** butonuna basabilirsin:\n\n` +
         `\`\`\`\n${templateText}\n\`\`\`\n\n` +
@@ -555,9 +555,9 @@ async function handleIncomingUpdate(update, env) {
       }
 
       await updateGitHubFile(
-        env.GITHUB_TOKEN, 
-        githubFile.sha, 
-        JSON.stringify(mealsList, null, 2), 
+        env.GITHUB_TOKEN,
+        githubFile.sha,
+        JSON.stringify(mealsList, null, 2),
         `chore(${activeProfile.id}): silindi #${targetNum}`,
         activeProfile.filePath
       );
@@ -567,7 +567,7 @@ async function handleIncomingUpdate(update, env) {
         try {
           const syncFile = await getGitHubFile(env.GITHUB_TOKEN, "data/meals.json");
           await updateGitHubFile(env.GITHUB_TOKEN, syncFile.sha, JSON.stringify(mealsList, null, 2), `sync: meals.json`, "data/meals.json");
-        } catch (e) {}
+        } catch (e) { }
       }
 
       await editTelegramMessage(env.TELEGRAM_BOT_TOKEN, chatId, statusMsgId, `🗑️ *Öğün Silindi!*\n\n*${itemToDelete.meal.title}* ${activeProfile.name}'ın günlüğünden kaldırıldı.`);
@@ -590,7 +590,7 @@ async function handleIncomingUpdate(update, env) {
         const dateInfo = parseCustomDate(userText);
         userSessions.set(chatId, { action: "ekle", step: 2, dateInfo });
 
-        const q2 = 
+        const q2 =
           `➕ [EKLE-ADIM 2]\n` +
           `[DATE:${dateInfo.date}|${dateInfo.day}]\n\n` +
           `📅 Seçilen Gün: *${dateInfo.day} (${dateInfo.date})*\n\n` +
@@ -606,7 +606,7 @@ async function handleIncomingUpdate(update, env) {
         const food = isNoFood(userText) ? "" : capitalizeTr(userText);
         userSessions.set(chatId, { action: "ekle", step: 3, dateInfo, food });
 
-        const q3 = 
+        const q3 =
           `➕ [EKLE-ADIM 3]\n` +
           `[DATE:${dateInfo.date}|${dateInfo.day}] [FOOD:${food}]\n\n` +
           `3️⃣ *Yanında ne içtin? (İçecek)*\n` +
@@ -629,7 +629,7 @@ async function handleIncomingUpdate(update, env) {
 
         userSessions.set(chatId, { action: "ekle", step: 4, dateInfo, food, drink });
 
-        const q4 = 
+        const q4 =
           `➕ [EKLE-ADIM 4]\n` +
           `[DATE:${dateInfo.date}|${dateInfo.day}] [FOOD:${food}] [DRINK:${drink}]\n\n` +
           `4️⃣ *Nerede yedin / Konum neresi?*\n` +
@@ -645,7 +645,7 @@ async function handleIncomingUpdate(update, env) {
         const loc = normalizeLocation(userText);
         userSessions.set(chatId, { action: "ekle", step: 5, dateInfo, food, drink, loc });
 
-        const q5 = 
+        const q5 =
           `➕ [EKLE-ADIM 5]\n` +
           `[DATE:${dateInfo.date}|${dateInfo.day}] [FOOD:${food}] [DRINK:${drink}] [LOC:${loc}]\n\n` +
           `5️⃣ *Fiyatı ne kadar tuttu?*\n` +
@@ -668,7 +668,7 @@ async function handleIncomingUpdate(update, env) {
 
         userSessions.set(chatId, { action: "ekle", step: 6, dateInfo, food, drink, loc, price });
 
-        const q6 = 
+        const q6 =
           `➕ [EKLE-ADIM 6]\n` +
           `[DATE:${dateInfo.date}|${dateInfo.day}] [FOOD:${food}] [DRINK:${drink}] [LOC:${loc}] [PRICE:${price}]\n\n` +
           `6️⃣ *Öğün için bir not / açıklama eklemek ister misin? (Opsiyonel)*\n` +
@@ -715,7 +715,7 @@ async function handleIncomingUpdate(update, env) {
         const foodLine = food ? `${guessEmoji(food)} *Yemek:* ${food}` : "";
         const drinkLine = drink ? `🥤 *İçecek:* ${drink}` : "🥤 *İçecek:* (İçilmedi)";
         const noteLine = note ? `💬 *Not:* ${note}\n` : "";
-        const okText = 
+        const okText =
           `✅ *Siteye Eklendi!* (${activeProfile.emoji} ${activeProfile.name})\n\n` +
           `📅 *Tarih:* ${dateInfo.day} (${dateInfo.date})\n` +
           `${foodLine ? foodLine + "\n" : ""}` +
@@ -765,7 +765,7 @@ async function handleIncomingUpdate(update, env) {
 
     // /start ve /yardim
     if (YARDIM_ALIASES.includes(cmdWord)) {
-      const helpMsg = 
+      const helpMsg =
         `🍽️ *Kim Ne Yedi? Yönetim Asistanı*\n` +
         `👤 *Aktif Profil:* ${activeProfile.emoji} *${activeProfile.name}*\n\n` +
         `📌 *Komutlar (ister / ile ister doğrudan yaz):*\n` +
@@ -786,15 +786,15 @@ async function handleIncomingUpdate(update, env) {
     if (PROFIL_ALIASES.includes(cmdWord)) {
       const targetParam = cmdParts[1] ? cmdParts[1].toLowerCase().replace("@", "") : null;
       if (targetParam) {
-        const foundProf = Object.values(USER_PROFILES).find(p => 
-          p.id.toLowerCase() === targetParam || 
+        const foundProf = Object.values(USER_PROFILES).find(p =>
+          p.id.toLowerCase() === targetParam ||
           p.name.toLowerCase() === targetParam ||
           p.telegramUsernames.some(u => u.toLowerCase() === targetParam)
         );
 
         if (foundProf) {
           userActiveProfiles.set(chatId, foundProf.id);
-          const switchSuccess = 
+          const switchSuccess =
             `✅ *Aktif Profil Değiştirildi:* ${foundProf.emoji} *${foundProf.name}*\n\n` +
             `Artık ekleyeceğin, listeleyeceğin veya düzenleyeceğin tüm öğünler *${foundProf.name}* adına kaydedilecek.\n` +
             `📁 Dosya: \`${foundProf.filePath}\`\n\n` +
@@ -803,8 +803,8 @@ async function handleIncomingUpdate(update, env) {
           return;
         } else {
           await sendTelegramMessage(
-            env.TELEGRAM_BOT_TOKEN, 
-            chatId, 
+            env.TELEGRAM_BOT_TOKEN,
+            chatId,
             `⚠️ '*${targetParam}*' adında bir profil bulunamadı.\n\n` +
             `Kullanılabilir profiller:\n` +
             `• \`profil can\` (🍔 Can)\n` +
@@ -824,7 +824,7 @@ async function handleIncomingUpdate(update, env) {
         ]
       ];
 
-      const currentMsg = 
+      const currentMsg =
         `👤 *Mevcut Aktif Profil:* ${activeProfile.emoji} *${activeProfile.name}*\n` +
         `📁 Hedef Dosya: \`${activeProfile.filePath}\`\n\n` +
         `🔄 *Profil Değiştirmek İçin Butona Bas veya Yaz:*\n` +
@@ -841,7 +841,7 @@ async function handleIncomingUpdate(update, env) {
     if (EKLE_ALIASES.includes(cmdWord) && cmdParts.length <= 2) {
       userSessions.set(chatId, { action: "ekle", step: 1 });
       const { date: todayDate, day: todayDay } = getTurkeyTimeInfo();
-      const step1Msg = 
+      const step1Msg =
         `➕ [EKLE-ADIM 1] (${activeProfile.emoji} ${activeProfile.name})\n\n` +
         `1️⃣ *Hangi gün için ekliyorsun?*\n` +
         `_(Örn: 'bugün', 'dün', '21 Ekim' veya 'Salı')_\n\n` +
@@ -942,7 +942,7 @@ async function handleIncomingUpdate(update, env) {
 
         const existingPrice = item.meal.price || "";
         const existingNote = item.meal.note || "";
-        const templateText = 
+        const templateText =
           `No: ${targetNum}\n` +
           `Yemek: ${existingFood}\n` +
           `İçecek: ${existingDrink}\n` +
@@ -953,7 +953,7 @@ async function handleIncomingUpdate(update, env) {
 
         const inlineQueryText = "\n" + templateText;
 
-        const promptMsg = 
+        const promptMsg =
           `✏️ *#${targetNum} Numaralı Öğün Seçildi!*\n\n` +
           `Aşağıdaki gri kutucuğa **tek dokunarak kopyalayabilir** veya alttaki **"✏️ Mesaj Kutusuna Doldur"** butonuna basabilirsin:\n\n` +
           `\`\`\`\n${templateText}\n\`\`\`\n\n` +
@@ -1047,9 +1047,9 @@ async function handleIncomingUpdate(update, env) {
         }
 
         await updateGitHubFile(
-          env.GITHUB_TOKEN, 
-          githubFile.sha, 
-          JSON.stringify(mealsList, null, 2), 
+          env.GITHUB_TOKEN,
+          githubFile.sha,
+          JSON.stringify(mealsList, null, 2),
           `chore(${activeProfile.id}): silindi #${targetNum}`,
           activeProfile.filePath
         );
@@ -1059,7 +1059,7 @@ async function handleIncomingUpdate(update, env) {
           try {
             const syncFile = await getGitHubFile(env.GITHUB_TOKEN, "data/meals.json");
             await updateGitHubFile(env.GITHUB_TOKEN, syncFile.sha, JSON.stringify(mealsList, null, 2), `sync: meals.json`, "data/meals.json");
-          } catch (e) {}
+          } catch (e) { }
         }
 
         await sendTelegramMessage(env.TELEGRAM_BOT_TOKEN, chatId, `🗑️ *Öğün Silindi!*\n\n*${itemToDelete.meal.title}* ${activeProfile.name}'ın günlüğünden kaldırıldı.`);
@@ -1094,7 +1094,7 @@ async function handleIncomingUpdate(update, env) {
     // 4. Bilinmeyen Komut, Kısa Metin ve Şablon Kontrolü (Yapay Zekaya Gitmesini Engelle)
     // ============================================================
     if (userText.startsWith("/") || cmdParts.length === 1) {
-      const unknownMsg = 
+      const unknownMsg =
         `❓ *Komut anlaşılamadı:* \`${userText}\`\n\n` +
         `👤 *Aktif Profil:* ${activeProfile.emoji} *${activeProfile.name}*\n\n` +
         `💡 *Kullanabileceğin komutlar (başına / koyman zorunlu DEĞİLDİR):*\n` +
@@ -1109,11 +1109,12 @@ async function handleIncomingUpdate(update, env) {
       return;
     }
 
-    // Şablon gibi çok satırlı veya etiketli metinler asla yapay zekaya gitmemeli
-    if (userText.toLowerCase().includes("yemek:") || userText.toLowerCase().includes("fiyat:") || userText.includes("\n")) {
+    // Gerçek bir form/şablon gibi birden fazla etiket (Yemek:, Fiyat:, Konum: vb.) içeren metinler
+    const templateMatches = (userText.match(/(?:^|\n)\s*(?:yemek|i[çc]ecek|fiyat|konum|mekan|tarih|not)\s*:/gi) || []).length;
+    if (templateMatches >= 2) {
       await sendTelegramMessage(
-        env.TELEGRAM_BOT_TOKEN, 
-        chatId, 
+        env.TELEGRAM_BOT_TOKEN,
+        chatId,
         "⚠️ Düzenleme şablonu algılandı fakat öğün numarası belirlenemedi.\n\n" +
         "Lütfen en üst satıra öğün numarasını yazarak gönderin, örn:\n" +
         "`No: 3`\n" +
@@ -1138,7 +1139,7 @@ async function handleIncomingUpdate(update, env) {
     }
 
     if (!parsedData.meal.price) {
-      const noPriceMsg = 
+      const noPriceMsg =
         `⚠️ Menüyü anladım: *${parsedData.meal.title}* (${parsedData.meal.location})\n` +
         `Fakat fiyat belirtmemişsin.\n\n` +
         `Lütfen fiyatıyla birlikte tekrar yaz, örn:\n` +
@@ -1152,9 +1153,9 @@ async function handleIncomingUpdate(update, env) {
     parsedData.meal.location = normalizeLocation(parsedData.meal.location);
 
     await editTelegramMessage(
-      env.TELEGRAM_BOT_TOKEN, 
-      chatId, 
-      liveMsgId, 
+      env.TELEGRAM_BOT_TOKEN,
+      chatId,
+      liveMsgId,
       `📝 [2/2] *${parsedData.meal.title}* (${parsedData.meal.price}) anlaşıldı ➔ ${activeProfile.name}'ın günlüğüne kaydediliyor...`
     );
 
@@ -1166,7 +1167,7 @@ async function handleIncomingUpdate(update, env) {
     const foodLine = `${guessEmoji(aiFood)} *Yemek:* ${aiFood}`;
     const drinkLine = aiDrink ? `🥤 *İçecek:* ${aiDrink}` : "🥤 *İçecek:* (İçilmedi)";
     const noteLine = parsedData.meal.note ? `💬 *Not:* ${parsedData.meal.note}\n` : "";
-    const finalSuccessMsg = 
+    const finalSuccessMsg =
       `✅ *Harika, ${activeProfile.name}'ın günlüğüne eklendi!* (${activeProfile.emoji})\n\n` +
       `📅 *Tarih:* ${parsedData.day} (${parsedData.date})\n` +
       `${foodLine}\n` +
@@ -1259,7 +1260,7 @@ function guessEmoji(title) {
   if (l.includes("döner") || l.includes("doner") || l.includes("kebap") || l.includes("iskender")) return "🥙";
   if (l.includes("köfte") || l.includes("kofte")) return "🧆";
   if (l.includes("çorba") || l.includes("corba") || l.includes("mercimek") || l.includes("ezogelin") || l.includes("yayla") || l.includes("paça") || l.includes("paca")) return "🍲";
-  if (l.includes("patates") || l.includes("fries")) return "🍟";
+  if (l.includes("patates") || l.includes("fries") || l.includes("cips") || l.includes("chips")) return "🍟";
   if (l.includes("tavuk") || l.includes("nugget") || l.includes("şinitzel") || l.includes("sinitzel") || l.includes("kanat") || l.includes("wings") || l.includes("strips")) return "🍗";
   if (l.includes("makarna") || l.includes("pasta") || l.includes("spagetti") || l.includes("spaghetti") || l.includes("noodle") || l.includes("mantı") || l.includes("manti")) return "🍝";
   if (l.includes("pilav") || l.includes("pirinç")) return "🍚";
@@ -1350,9 +1351,9 @@ async function saveNewMealToGitHub(token, meal, customDate = null, customDay = n
 
   mealsList.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
   await updateGitHubFile(
-    token, 
-    githubFile.sha, 
-    JSON.stringify(mealsList, null, 2), 
+    token,
+    githubFile.sha,
+    JSON.stringify(mealsList, null, 2),
     `feat(${profile.id}): ${targetDay} öğünü eklendi (${newMeal.title} - ${newMeal.price})`,
     filePath
   );
@@ -1362,7 +1363,7 @@ async function saveNewMealToGitHub(token, meal, customDate = null, customDay = n
     try {
       const syncFile = await getGitHubFile(token, "data/meals.json");
       await updateGitHubFile(token, syncFile.sha, JSON.stringify(mealsList, null, 2), `sync: meals.json`, "data/meals.json");
-    } catch (e) {}
+    } catch (e) { }
   }
 }
 
@@ -1381,7 +1382,7 @@ Emoji Kuralları (ana öğüne göre en uygun emojiyi seç):
 - Döner / Kebap / İskender: 🥙
 - Köfte: 🧆
 - Çorba (Mercimek, Ezogelin, vs): 🍲
-- Patates kızartması: 🍟
+- Patates kızartması / Cips / Atıştırmalık: 🍟
 - Tavuk / Nugget / Şinitzel / Wings: 🍗
 - Makarna / Spagetti / Mantı / Noodle: 🍝
 - Pilav: 🍚
@@ -1398,6 +1399,9 @@ Emoji Kuralları (ana öğüne göre en uygun emojiyi seç):
 - Su / Soda: 💧
 - Bira: 🍺
 - Diğer: 🍽️
+
+Not Kuralı:
+- Kullanıcının yemekle ilgili lezzet, eleştiri, durum veya detay yorumu varsa (örn: "Tadı güzeldi ama hızlı bitiyor") "note" alanına yazılmalıdır. Yoksa "" olmalıdır.
 
 Çıktı SADECE şu JSON formatında olmalıdır:
 {
@@ -1435,7 +1439,7 @@ Emoji Kuralları (ana öğüne göre en uygun emojiyi seç):
         const json = await res.json();
         return JSON.parse(json.candidates[0].content.parts[0].text);
       }
-    } catch (e) {}
+    } catch (e) { }
   }
   throw new Error("Gemini servisi meşgul.");
 }
@@ -1609,7 +1613,7 @@ async function handleCallbackQuery(callbackQuery, env) {
         })
       });
 
-      const updatedText = 
+      const updatedText =
         `✅ *Aktif Profil Ayarlandı:* ${prof.emoji} *${prof.name}*\n\n` +
         `Artık bu sohbetten yapacağın tüm eklemeler, listelemeler ve düzenlemeler *${prof.name}* adına kaydedilecek.\n` +
         `📁 Dosya: \`${prof.filePath}\`\n\n` +
