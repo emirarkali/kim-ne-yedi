@@ -55,17 +55,15 @@
     "day": "Pazartesi",
     "meals": [
       {
-        "id": "2026-10-26-1350",
+        "id": "2026-10-26-1129",
         "title": "Tarhana Çorbası + Tavuk Sote + Bulgur Pilavı",
         "items": [
-          "Tarhana Çorbası",
-          "Tavuk Sote",
-          "Bulgur Pilavı"
+          "Tarhana Çorbası + Tavuk Sote + Bulgur Pilavı"
         ],
         "location": "Yurt",
-        "category": "Ev Yemeği",
-        "emoji": "🍲",
         "price": "Bedava TL",
+        "emoji": "🍲",
+        "category": "Çorba",
         "note": "Fena değildi"
       }
     ]
