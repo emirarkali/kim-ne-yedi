@@ -36,17 +36,16 @@
     "day": "Pazar",
     "meals": [
       {
-        "id": "2026-10-25-3421",
+        "id": "2026-10-25-8222",
         "title": "Yurt Kahvaltısı + Çay",
         "items": [
           "Yurt Kahvaltısı",
-          "Çay",
-          "Yumurta"
+          "Çay"
         ],
         "location": "Yurt",
-        "category": "Ev Yemeği",
-        "emoji": "🍳",
         "price": "0 TL",
+        "emoji": "🍳",
+        "category": "Kahvaltı",
         "note": "3 yumurta yemek yeterliydi"
       }
     ]
