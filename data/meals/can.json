@@ -217,6 +217,16 @@
         "emoji": "🍽️",
         "price": "1500 TL",
         "note": "Tadı müthişti."
+      },
+      {
+        "id": "2026-10-25-9065",
+        "title": "Uygunsuz İçerik",
+        "items": [],
+        "location": "Kerhane",
+        "category": "Diğer",
+        "emoji": "🍽️",
+        "price": "0 TL",
+        "note": "Uygunsuz ifade içeriyor."
       }
     ]
   }
