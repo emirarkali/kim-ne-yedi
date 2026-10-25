@@ -30,5 +30,25 @@
         "note": "Çay sınırsız olması çok iyiydi"
       }
     ]
+  },
+  {
+    "date": "2026-10-25",
+    "day": "Pazar",
+    "meals": [
+      {
+        "id": "2026-10-25-3421",
+        "title": "Yurt Kahvaltısı + Çay",
+        "items": [
+          "Yurt Kahvaltısı",
+          "Çay",
+          "Yumurta"
+        ],
+        "location": "Yurt",
+        "category": "Ev Yemeği",
+        "emoji": "🍳",
+        "price": "0 TL",
+        "note": "3 yumurta yemek yeterliydi"
+      }
+    ]
   }
 ]
