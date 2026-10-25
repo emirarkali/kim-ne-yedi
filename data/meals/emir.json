@@ -92,17 +92,16 @@
         "note": "Tadı güzeldi ama hızlı bitiyor"
       },
       {
-        "id": "2026-10-25-2825",
+        "id": "2026-10-25-1259",
         "title": "Haşlanmış Yumurta + Sosis + Çay",
         "items": [
-          "Haşlanmış Yumurta",
-          "Sosis",
+          "Haşlanmış Yumurta + Sosis",
           "Çay"
         ],
         "location": "Yurt",
-        "category": "Ev Yemeği",
-        "emoji": "🍳",
         "price": "Bedava TL",
+        "emoji": "🍳",
+        "category": "Yemek",
         "note": "Tat her zamanki gibiydi."
       }
     ]
