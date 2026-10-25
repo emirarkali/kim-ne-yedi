@@ -236,16 +236,13 @@ async function handleIncomingUpdate(update, env) {
     // ============================================================
     // A0) DOĞAL DİLDE EKSİK BİLGİ TAMAMLAMA (Gemini Takip Sorusu)
     // ============================================================
-    const isPendingNL = (session && session.action === "pending_nl") || replyToText.includes("NL_PENDING:");
+    const isPendingNL = (session && session.action === "pending_nl") ||
+      (replyToText && (replyToText.includes("Vazgeçmek için /iptal") || replyToText.includes("Peki") || replyToText.includes("nerede yedin") || replyToText.includes("fiyatı")));
+
     if (isPendingNL && !userText.startsWith("/")) {
       let pendingData = session ? session.pendingData : null;
-      if (!pendingData) {
-        const rawB64 = extractTag(replyToText, "NL_PENDING");
-        if (rawB64) {
-          try {
-            pendingData = JSON.parse(decodeURIComponent(escape(atob(rawB64))));
-          } catch (e) { }
-        }
+      if (!pendingData && replyToText) {
+        pendingData = { previousQuestion: replyToText };
       }
 
       if (pendingData) {
@@ -291,15 +288,11 @@ async function handleIncomingUpdate(update, env) {
         } else {
           // Hâlâ eksik alan var
           userSessions.set(chatId, { action: "pending_nl", pendingData: parsedData });
-          let encoded = "";
-          try {
-            encoded = btoa(unescape(encodeURIComponent(JSON.stringify(parsedData))));
-          } catch (e) { }
 
           if (liveMsgId) {
             await deleteTelegramMessage(env.TELEGRAM_BOT_TOKEN, chatId, liveMsgId);
           }
-          const followUpMsg = `${parsedData.question}\n\n[NL_PENDING:${encoded}]\n💡 _Vazgeçmek için /iptal yazabilirsin._`;
+          const followUpMsg = `${parsedData.question}\n\n💡 _Vazgeçmek için /iptal yazabilirsin._`;
           await sendForceReplyMessage(env.TELEGRAM_BOT_TOKEN, chatId, followUpMsg, "Cevabın...");
           return;
         }
@@ -1201,15 +1194,11 @@ async function handleIncomingUpdate(update, env) {
 
     if (!parsedData.isComplete) {
       userSessions.set(chatId, { action: "pending_nl", pendingData: parsedData });
-      let encoded = "";
-      try {
-        encoded = btoa(unescape(encodeURIComponent(JSON.stringify(parsedData))));
-      } catch (e) { }
 
       if (liveMsgId) {
         await deleteTelegramMessage(env.TELEGRAM_BOT_TOKEN, chatId, liveMsgId);
       }
-      const askMsg = `${parsedData.question}\n\n[NL_PENDING:${encoded}]\n💡 _Vazgeçmek için /iptal yazabilirsin._`;
+      const askMsg = `${parsedData.question}\n\n💡 _Vazgeçmek için /iptal yazabilirsin._`;
       await sendForceReplyMessage(env.TELEGRAM_BOT_TOKEN, chatId, askMsg, "Örn: 36 TL veya Yurt");
       return;
     }
