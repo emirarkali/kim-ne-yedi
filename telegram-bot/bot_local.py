@@ -79,42 +79,57 @@ def send_telegram_msg(chat_id, text, parse_mode="Markdown"):
     except Exception as e:
         print(f"Telegram mesaj gönderme hatası: {e}")
 
-def parse_with_gemini(user_text):
+chat_pending_meals = {}   # chat_id -> pending_data
+
+def parse_with_gemini(user_text, prev_context=None):
     now = datetime.now()
     day_names = ["Pazartesi", "Salı", "Çarşamba", "Perşembe", "Cuma", "Cumartesi", "Pazar"]
     today_date = now.strftime("%Y-%m-%d")
     today_day = day_names[now.weekday()]
 
     prompt = f"""
-Sen bir yemek günlüğü asistanısın. Kullanıcının Türkçe yazdığı metinden yediği öğünü analiz edeceksin.
+Sen bir yemek günlüğü asistanısın. Kullanıcının Türkçe yemek mesajını analiz et.
 Bugünün tarihi: {today_date} ({today_day}).
 
-Kurallar:
-1. "location": Mekan adını normalize et. Örn: "yurtta", "yurttayım" -> "Yurt". "mc", "mcdonalds" -> "McDonald's". "jungle" -> "Jungle Burger". Belirtilmemişse "Bilinmiyor".
-2. "title": Yiyecek ve içeceği özetle, örn: "Hamburger + Fuse Tea Şeftali" veya "Tavuk Dürüm + Ayran".
-3. "items": Yiyecek ve içeceklerin listesi dizi olarak, örn: ["Hamburger", "Fuse Tea Şeftali"].
-4. "category": Uygun bir kategori, örn: "Fast Food", "Dürüm", "Ev Yemeği", "Gurme Burger", "Tatlı".
-5. "emoji": Yemeğe en uygun tek bir emoji, örn: 🍔, 🌯, 🍕, 🍗, ☕.
-6. "price": Varsa fiyat metni (örn: "240 TL"), yoksa null.
-7. "date": Eğer kullanıcı "dün" demediyse bugünün tarihi ({today_date}). "dün" dediyse dünün tarihi.
-8. "day": Türkçe gün adı.
-9. "note": Kullanıcının yemek hakkındaki yorumu, eleştirisi veya ek notları (örn: "Tadı güzeldi ama hızlı bitiyor"), yoksa "".
+Gerekli Temel Öğün Bilgileri:
+1. "title": Yiyecek ve içecek (Ne yedi/içti)
+2. "location": Nerede yediği / mekan (Yurt, McDonald's, Zater, Ev, Kantin vb.)
+3. "price": Fiyatı (örn: "36 TL", "Beleş TL" vb.)
 
-SADECE geçerli bir JSON çıktısı ver:
+Kurallar:
+- Eğer kullanıcı önceki sorulan bir soruya cevap veriyorsa, cevabını eksik olan alana ata. Örn: Mekan sorulduysa ve kullanıcı "Zater" dediyse mekan = "Zater" olur. Fiyat sorulduysa ve "140" dediyse fiyat = "140 TL" olur.
+- Eğer kullanıcı "bilmiyorum", "boşver", "fark etmez", "hatırlamıyorum" veya "yok" dediyse eksik alana "Bilinmiyor" (fiyat için "Belirtilmedi") yazıp tamamla.
+- Eğer yiyecek, fiyat veya mekandan BİRİ VEYA BİRDEN FAZLASI EKSİKSE (ve kullanıcı pas geçmediyse):
+  "isComplete": false yap, eksik alanları "missingFields" listesine koy ve "question" alanına eksik bilgileri kullanıcıya soran sıcak, samimi ve kısa bir soru yaz (örn: "Cipsi not aldım 🍟 Peki nerede yedin ve fiyatı ne kadardı?").
+- Eğer temel bilgiler TAMAMLANDIYSA:
+  "isComplete": true yap, "question": null yap.
+- "note": Varsa lezzet, beğeni veya durum yorumu (örn: "Tadı güzeldi ama hızlı bitiyor"), yoksa "".
+- "emoji": Yemeğe en uygun tek bir emoji (örn: 🍔, 🍕, 🌯, 🍟, 🍽️).
+- "category": Uygun kategori (örn: "Fast Food", "Dürüm & Çiğ Köfte", "Atıştırmalık", "Tatlı", "Ev Yemeği").
+
+Çıktı SADECE geçerli bir JSON olmalıdır:
 {{
+  "isComplete": true,
+  "missingFields": [],
+  "question": null,
   "date": "{today_date}",
   "day": "{today_day}",
   "meal": {{
-    "title": "Hamburger + Fuse Tea Şeftali",
-    "items": ["Hamburger", "Fuse Tea Şeftali"],
-    "location": "McDonald's",
-    "category": "Fast Food",
-    "emoji": "🍔",
-    "price": "350 TL",
+    "title": "Cips",
+    "items": ["Cips"],
+    "location": "Yurt",
+    "price": "36 TL",
+    "category": "Atıştırmalık",
+    "emoji": "🍟",
     "note": ""
   }}
 }}
 """
+    if prev_context:
+        user_content = f"Önceki Bilgiler ve Eksikler:\n{json.dumps(prev_context, ensure_ascii=False)}\n\nKullanıcının Yeni Yanıtı: \"{user_text}\""
+    else:
+        user_content = f"Kullanıcı: \"{user_text}\""
+
     models = [
         {"name": "gemini-flash-lite-latest"},
         {"name": "gemini-3.5-flash", "budget": 0},
@@ -130,7 +145,7 @@ SADECE geçerli bir JSON çıktısı ver:
                 gen_config["thinkingConfig"] = {"thinkingBudget": m["budget"]}
 
             body = {
-                "contents": [{"parts": [{"text": f"{prompt}\n\nKullanıcı: \"{user_text}\""}]}],
+                "contents": [{"parts": [{"text": f"{prompt}\n\n{user_content}"}]}],
                 "generationConfig": gen_config
             }
             resp = requests.post(url, json=body, timeout=15)
@@ -232,19 +247,36 @@ def poll_updates():
                         send_telegram_msg(chat_id, f"👤 Aktif Profil: {active_prof['emoji']} *{active_prof['name']}*\n\nDeğiştirmek için: `profil can`, `profil emir` veya `profil kemal` yazabilirsiniz.")
                     continue
 
-                if user_text in ["/start", "/yardim"]:
-                    send_telegram_msg(chat_id, f"🍽️ *Kim Ne Yedi? Botu*\n👤 Aktif Profil: {active_prof['emoji']} *{active_prof['name']}*\n\nNe yediğini doğal dille yaz, siteye otomatik ekleyeyim!\nÖrn: `Yurtta tavuk dürüm ve kola gömdüm 240 TL`\n\nProfil değiştirmek için: `profil emir`")
+                # İptal kontrolü
+                cancel_text = user_text.lower().replace("i", "ı").replace("/", "").strip()
+                if cancel_text in ["iptal", "vazgec", "vazgeç", "cancel", "stop"]:
+                    chat_pending_meals.pop(chat_id, None)
+                    send_telegram_msg(chat_id, "🚫 İşlem iptal edildi.")
                     continue
 
+                # /start ve /yardim
+                if user_text in ["/start", "/yardim"]:
+                    send_telegram_msg(chat_id, f"🍽️ *Kim Ne Yedi? Botu*\n👤 Aktif Profil: {active_prof['emoji']} *{active_prof['name']}*\n\nNe yediğini doğal dille yaz, siteye otomatik ekleyeyim!\nÖrn: `Yurtta tavuk dürüm ve kola gömdüm 240 TL`\n\nEksik bir bilgi olursa sana sorup tamamlayabilirim!\nProfil değiştirmek için: `profil emir`")
+                    continue
+
+                prev_data = chat_pending_meals.get(chat_id)
                 send_telegram_msg(chat_id, f"⏳ {active_prof['name']} için öğün analiz ediliyor...")
                 try:
-                    parsed = parse_with_gemini(user_text)
+                    parsed = parse_with_gemini(user_text, prev_data)
+                    if not parsed.get("isComplete", True):
+                        chat_pending_meals[chat_id] = parsed
+                        send_telegram_msg(chat_id, f"{parsed['question']}\n\n💡 _Vazgeçmek için /iptal yazabilirsin._")
+                        continue
+
+                    chat_pending_meals.pop(chat_id, None)
                     meal = update_meals_and_push(parsed, active_prof)
+                    price_display = meal.get("price") or "Belirtilmedi"
                     success_text = (
                         f"✅ *Harika, {active_prof['name']}'ın günlüğüne eklendi!* ({active_prof['emoji']})\n\n"
                         f"📅 *Tarih:* {parsed['day']} ({parsed['date']})\n"
                         f"{meal.get('emoji', '🍽️')} *Öğün:* {meal['title']}\n"
                         f"📍 *Konum:* {meal['location']}\n"
+                        f"💰 *Fiyat:* {price_display}\n"
                         f"🏷️ *Kategori:* {meal['category']}\n\n"
                         f"🌐 https://emirarkali.github.io/kim-ne-yedi/?u={active_prof['id']}"
                     )

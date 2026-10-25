@@ -234,6 +234,79 @@ async function handleIncomingUpdate(update, env) {
     const session = userSessions.get(chatId);
 
     // ============================================================
+    // A0) DOĞAL DİLDE EKSİK BİLGİ TAMAMLAMA (Gemini Takip Sorusu)
+    // ============================================================
+    const isPendingNL = (session && session.action === "pending_nl") || replyToText.includes("NL_PENDING:");
+    if (isPendingNL && !userText.startsWith("/")) {
+      let pendingData = session ? session.pendingData : null;
+      if (!pendingData) {
+        const rawB64 = extractTag(replyToText, "NL_PENDING");
+        if (rawB64) {
+          try {
+            pendingData = JSON.parse(decodeURIComponent(escape(atob(rawB64))));
+          } catch (e) { }
+        }
+      }
+
+      if (pendingData) {
+        const liveMsg = await sendTelegramMessage(env.TELEGRAM_BOT_TOKEN, chatId, `⏳ Bilgiler tamamlanıyor...`);
+        const liveMsgId = liveMsg ? liveMsg.message_id : null;
+
+        let parsedData = null;
+        try {
+          parsedData = await parseMealWithGeminiFast(userText, env.GEMINI_API_KEY, pendingData);
+        } catch (aiErr) {
+          await editTelegramMessage(env.TELEGRAM_BOT_TOKEN, chatId, liveMsgId, `⚠️ Yapay zeka şu an meşgul.\nÖğünü tamamlamak için tekrar yazabilir veya **/ekle** kullanabilirsin.`);
+          return;
+        }
+
+        if (parsedData.isComplete) {
+          userSessions.delete(chatId);
+          parsedData.meal.title = capitalizeTr(parsedData.meal.title);
+          parsedData.meal.location = normalizeLocation(parsedData.meal.location);
+          if (parsedData.meal.price) {
+            parsedData.meal.price = formatPrice(parsedData.meal.price);
+          }
+
+          await saveNewMealToGitHub(env.GITHUB_TOKEN, parsedData.meal, parsedData.date, parsedData.day, activeProfile);
+
+          const mealItems = parsedData.meal.items || [parsedData.meal.title];
+          const aiFood = mealItems[0] || parsedData.meal.title;
+          const aiDrink = mealItems.length > 1 ? mealItems.slice(1).join(" + ") : "";
+          const foodLine = `${guessEmoji(aiFood)} *Yemek:* ${aiFood}`;
+          const drinkLine = aiDrink ? `🥤 *İçecek:* ${aiDrink}` : "🥤 *İçecek:* (İçilmedi)";
+          const noteLine = parsedData.meal.note ? `💬 *Not:* ${parsedData.meal.note}\n` : "";
+          const finalSuccessMsg =
+            `✅ *Harika, ${activeProfile.name}'ın günlüğüne eklendi!* (${activeProfile.emoji})\n\n` +
+            `📅 *Tarih:* ${parsedData.day} (${parsedData.date})\n` +
+            `${foodLine}\n` +
+            `${drinkLine}\n` +
+            `📍 *Konum:* ${parsedData.meal.location}\n` +
+            `💰 *Fiyat:* ${parsedData.meal.price || "Belirtilmedi"}\n` +
+            `${noteLine}\n` +
+            `🌐 https://${REPO_OWNER}.github.io/${REPO_NAME}/?u=${activeProfile.id}`;
+
+          await editTelegramMessage(env.TELEGRAM_BOT_TOKEN, chatId, liveMsgId, finalSuccessMsg);
+          return;
+        } else {
+          // Hâlâ eksik alan var
+          userSessions.set(chatId, { action: "pending_nl", pendingData: parsedData });
+          let encoded = "";
+          try {
+            encoded = btoa(unescape(encodeURIComponent(JSON.stringify(parsedData))));
+          } catch (e) { }
+
+          if (liveMsgId) {
+            await deleteTelegramMessage(env.TELEGRAM_BOT_TOKEN, chatId, liveMsgId);
+          }
+          const followUpMsg = `${parsedData.question}\n\n[NL_PENDING:${encoded}]\n💡 _Vazgeçmek için /iptal yazabilirsin._`;
+          await sendForceReplyMessage(env.TELEGRAM_BOT_TOKEN, chatId, followUpMsg, "Cevabın...");
+          return;
+        }
+      }
+    }
+
+    // ============================================================
     // A) /duzenle - ADIM 2: KULLANICI DÜZENLENMİŞ METNİ GÖNDERDİĞİNDE
     // ============================================================
     const isTemplateSubmission =
@@ -1126,19 +1199,26 @@ async function handleIncomingUpdate(update, env) {
       return;
     }
 
-    if (!parsedData.meal.price) {
-      const noPriceMsg =
-        `⚠️ Menüyü anladım: *${parsedData.meal.title}* (${parsedData.meal.location})\n` +
-        `Fakat fiyat belirtmemişsin.\n\n` +
-        `Lütfen fiyatıyla birlikte tekrar yaz, örn:\n` +
-        `👉 \`${userText} 140 TL\`\n` +
-        `veya adım adım eklemek için: **/ekle**`;
-      await editTelegramMessage(env.TELEGRAM_BOT_TOKEN, chatId, liveMsgId, noPriceMsg);
+    if (!parsedData.isComplete) {
+      userSessions.set(chatId, { action: "pending_nl", pendingData: parsedData });
+      let encoded = "";
+      try {
+        encoded = btoa(unescape(encodeURIComponent(JSON.stringify(parsedData))));
+      } catch (e) { }
+
+      if (liveMsgId) {
+        await deleteTelegramMessage(env.TELEGRAM_BOT_TOKEN, chatId, liveMsgId);
+      }
+      const askMsg = `${parsedData.question}\n\n[NL_PENDING:${encoded}]\n💡 _Vazgeçmek için /iptal yazabilirsin._`;
+      await sendForceReplyMessage(env.TELEGRAM_BOT_TOKEN, chatId, askMsg, "Örn: 36 TL veya Yurt");
       return;
     }
 
     parsedData.meal.title = capitalizeTr(parsedData.meal.title);
     parsedData.meal.location = normalizeLocation(parsedData.meal.location);
+    if (parsedData.meal.price) {
+      parsedData.meal.price = formatPrice(parsedData.meal.price);
+    }
 
     await editTelegramMessage(
       env.TELEGRAM_BOT_TOKEN,
@@ -1355,37 +1435,54 @@ async function saveNewMealToGitHub(token, meal, customDate = null, customDay = n
   }
 }
 
-async function parseMealWithGeminiFast(userMessage, apiKey) {
+async function parseMealWithGeminiFast(userMessage, apiKey, previousContext = null) {
   const { date: todayDateStr, day: todayDayName } = getTurkeyTimeInfo();
 
   const systemPrompt = `
-Kullanıcının Türkçe yemek cümlesini analiz et.
+Sen bir yemek günlüğü asistanısın. Kullanıcının Türkçe yemek mesajını analiz et.
 Bugünün tarihi: ${todayDateStr} (${todayDayName}).
 
+Gerekli Temel Öğün Bilgileri:
+1. "title": Yiyecek ve içecek (Ne yedi/içti)
+2. "location": Nerede yediği / mekan (Yurt, McDonald's, Zater, Ev, Kantin vb.)
+3. "price": Fiyatı (örn: "36 TL", "Beleş TL" vb.)
+
 Kurallar:
-- "location": Mekan adı (örn: "Yurt", "McDonald's", "Bilinmiyor").
-- "title": Yiyecek ve içecek özeti (örn: "Cips" veya "Tavuk Dürüm + Ayran").
-- "items": Yiyecek ve içecekler dizisi (örn: ["Cips"]).
-- "category": Uygun kategori (örn: "Fast Food", "Dürüm & Çiğ Köfte", "Atıştırmalık", "Tatlı", "Ev Yemeği").
-- "emoji": Yemeğe en uygun tek bir emoji (örn: 🍔, 🍕, 🌯, 🍟, 🍽️).
-- "price": Belirtilen fiyat (örn: "36 TL" veya "200 TL"). Fiyat yoksa null yap.
+- Eğer kullanıcı önceki sorulan bir soruya cevap veriyorsa, cevabını eksik olan alana ata. Örn: Mekan sorulduysa ve kullanıcı "Zater" dediyse mekan = "Zater" olur. Fiyat sorulduysa ve "140" dediyse fiyat = "140 TL" olur.
+- Eğer kullanıcı "bilmiyorum", "boşver", "fark etmez", "hatırlamıyorum" veya "yok" dediyse eksik alana "Bilinmiyor" (fiyat için "Belirtilmedi") yazıp tamamla.
+- Eğer yiyecek, fiyat veya mekandan BİRİ VEYA BİRDEN FAZLASI EKSİKSE (ve kullanıcı pas geçmediyse):
+  "isComplete": false yap, eksik alanları "missingFields" listesine koy ve "question" alanına eksik bilgileri kullanıcıya soran sıcak, samimi ve kısa bir soru yaz (örn: "Cipsi not aldım 🍟 Peki nerede yedin ve fiyatı ne kadardı?").
+- Eğer temel bilgiler TAMAMLANDIYSA:
+  "isComplete": true yap, "question": null yap.
 - "note": Varsa lezzet, beğeni veya durum yorumu (örn: "Tadı güzeldi ama hızlı bitiyor"), yoksa "".
+- "emoji": Yemeğe en uygun tek bir emoji (örn: 🍔, 🍕, 🌯, 🍟, 🍽️).
+- "category": Uygun kategori (örn: "Fast Food", "Dürüm & Çiğ Köfte", "Atıştırmalık", "Tatlı", "Ev Yemeği").
 
 Çıktı SADECE şu JSON formatında olmalıdır:
 {
-  "date": "YYYY-MM-DD (dün dediyse dünün tarihi)",
+  "isComplete": true,
+  "missingFields": [],
+  "question": null,
+  "date": "YYYY-MM-DD",
   "day": "Türkçe gün adı",
   "meal": {
-    "title": "Çiğ Köfte + Şalgam",
-    "items": ["Çiğ Köfte", "Şalgam"],
+    "title": "Cips",
+    "items": ["Cips"],
     "location": "Yurt",
-    "price": "140 TL",
-    "category": "Dürüm & Çiğ Köfte",
-    "emoji": "🌯",
+    "price": "36 TL",
+    "category": "Atıştırmalık",
+    "emoji": "🍟",
     "note": ""
   }
 }
 `;
+
+  let userContent = "";
+  if (previousContext) {
+    userContent = `Önceki Bilgiler ve Eksikler:\n${JSON.stringify(previousContext)}\n\nKullanıcının Yeni Yanıtı: "${userMessage}"`;
+  } else {
+    userContent = `Kullanıcı: "${userMessage}"`;
+  }
 
   const models = [
     { name: "gemini-flash-lite-latest" },
@@ -1410,7 +1507,7 @@ Kurallar:
         signal: AbortSignal.timeout(8000),
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          contents: [{ parts: [{ text: `${systemPrompt}\n\nKullanıcı: "${userMessage}"` }] }],
+          contents: [{ parts: [{ text: `${systemPrompt}\n\n${userContent}` }] }],
           generationConfig: genConfig
         })
       });
@@ -1506,6 +1603,18 @@ async function editTelegramMessage(botToken, chatId, messageId, text) {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(body)
   });
+}
+
+async function deleteTelegramMessage(botToken, chatId, messageId) {
+  if (!messageId) return;
+  const url = `https://api.telegram.org/bot${botToken}/deleteMessage`;
+  try {
+    await fetch(url, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ chat_id: chatId, message_id: messageId })
+    });
+  } catch (e) { }
 }
 
 async function sendForceReplyMessage(botToken, chatId, text, placeholder = "") {
