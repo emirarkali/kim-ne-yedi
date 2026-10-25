@@ -1419,25 +1419,39 @@ Not Kuralı:
 }
 `;
 
-  const models = ["gemini-3.8-flash-lite", "gemini-3.8-flash"];
+  const models = [
+    { name: "gemini-flash-lite-latest" },
+    { name: "gemini-3.5-flash", budget: 0 },
+    { name: "gemini-flash-latest", budget: 0 },
+    { name: "gemini-3.8-flash", budget: 0 }
+  ];
+
   for (const m of models) {
     try {
-      const url = `https://generativelanguage.googleapis.com/v1beta/models/${m}:generateContent?key=${apiKey}`;
+      const url = `https://generativelanguage.googleapis.com/v1beta/models/${m.name}:generateContent?key=${apiKey}`;
+      const genConfig = {
+        responseMimeType: "application/json",
+        maxOutputTokens: 1000
+      };
+      if (m.budget !== undefined) {
+        genConfig.thinkingConfig = { thinkingBudget: m.budget };
+      }
+
       const res = await fetch(url, {
         method: "POST",
-        signal: AbortSignal.timeout(7000),
+        signal: AbortSignal.timeout(8000),
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           contents: [{ parts: [{ text: `${systemPrompt}\n\nKullanıcı: "${userMessage}"` }] }],
-          generationConfig: {
-            responseMimeType: "application/json",
-            maxOutputTokens: 200
-          }
+          generationConfig: genConfig
         })
       });
       if (res.ok) {
         const json = await res.json();
-        return JSON.parse(json.candidates[0].content.parts[0].text);
+        const rawText = json.candidates?.[0]?.content?.parts?.[0]?.text;
+        if (rawText) {
+          return JSON.parse(rawText);
+        }
       }
     } catch (e) { }
   }

@@ -115,16 +115,33 @@ SADECE geçerli bir JSON çıktısı ver:
   }}
 }}
 """
-    url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent?key={GEMINI_API_KEY}"
-    body = {
-        "contents": [{"parts": [{"text": f"{prompt}\n\nKullanıcı: \"{user_text}\""}]}],
-        "generationConfig": {"responseMimeType": "application/json"}
-    }
-    resp = requests.post(url, json=body, timeout=15)
-    resp.raise_for_status()
-    data = resp.json()
-    raw_json = data["candidates"][0]["content"]["parts"][0]["text"]
-    return json.loads(raw_json)
+    models = [
+        {"name": "gemini-flash-lite-latest"},
+        {"name": "gemini-3.5-flash", "budget": 0},
+        {"name": "gemini-flash-latest", "budget": 0},
+        {"name": "gemini-3.8-flash", "budget": 0}
+    ]
+
+    for m in models:
+        try:
+            url = f"https://generativelanguage.googleapis.com/v1beta/models/{m['name']}:generateContent?key={GEMINI_API_KEY}"
+            gen_config = {"responseMimeType": "application/json", "maxOutputTokens": 1000}
+            if "budget" in m:
+                gen_config["thinkingConfig"] = {"thinkingBudget": m["budget"]}
+
+            body = {
+                "contents": [{"parts": [{"text": f"{prompt}\n\nKullanıcı: \"{user_text}\""}]}],
+                "generationConfig": gen_config
+            }
+            resp = requests.post(url, json=body, timeout=15)
+            if resp.status_code == 200:
+                data = resp.json()
+                raw_json = data["candidates"][0]["content"]["parts"][0]["text"]
+                return json.loads(raw_json)
+        except Exception as e:
+            continue
+
+    raise RuntimeError("Gemini servisi meşgul.")
 
 def update_meals_and_push(parsed, profile):
     file_path = profile["file"]
