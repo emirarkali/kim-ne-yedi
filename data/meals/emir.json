@@ -90,6 +90,20 @@
         "emoji": "🍟",
         "price": "36 TL",
         "note": "Tadı güzeldi ama hızlı bitiyor"
+      },
+      {
+        "id": "2026-10-25-2825",
+        "title": "Haşlanmış Yumurta + Sosis + Çay",
+        "items": [
+          "Haşlanmış Yumurta",
+          "Sosis",
+          "Çay"
+        ],
+        "location": "Yurt",
+        "category": "Ev Yemeği",
+        "emoji": "🍳",
+        "price": "Bedava TL",
+        "note": "Tat her zamanki gibiydi."
       }
     ]
   }
