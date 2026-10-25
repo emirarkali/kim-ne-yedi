@@ -193,6 +193,18 @@
         "emoji": "🍺",
         "price": "200 TL",
         "note": "Bira ictim guzeldi"
+      },
+      {
+        "id": "2026-10-25-1310",
+        "title": "Tavuk Sote+bulgur+haydari+tatli",
+        "items": [
+          "Tavuk Sote+bulgur+haydari+tatli"
+        ],
+        "location": "Yurt",
+        "category": "Tavuk",
+        "emoji": "🍗",
+        "price": "Beleş TL",
+        "note": "6/10"
       }
     ]
   }
