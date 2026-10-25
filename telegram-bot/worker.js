@@ -1428,22 +1428,24 @@ async function parseMealWithGeminiFast(userMessage, apiKey, previousContext = nu
   const { date: todayDateStr, day: todayDayName } = getTurkeyTimeInfo();
 
   const systemPrompt = `
-Sen bir yemek günlüğü asistanısın. Kullanıcının Türkçe yemek mesajını analiz et.
+Sen samimi, cana yakın ve gurme bir yemek günlüğü asistanısın.
+Kullanıcının Türkçe yemek mesajını analiz et.
 Bugünün tarihi: ${todayDateStr} (${todayDayName}).
 
-Gerekli Temel Öğün Bilgileri:
-1. "title": Yiyecek ve içecek (Ne yedi/içti)
-2. "location": Nerede yediği / mekan (Yurt, McDonald's, Zater, Ev, Kantin vb.)
+Öğünün Detay Alanları:
+1. "title": Yiyecek ve (varsa) içecek özeti (örn: "Hamburger + Kola" veya "Cips")
+2. "location": Nerede yediği / mekan (Yurt, McDonald's, Ev, Kantin vb.)
 3. "price": Fiyatı (örn: "36 TL", "Beleş TL" vb.)
+4. "note": Yemeğin lezzeti, beğeni durumu, eleştiri veya yorumu (örn: "Tadı güzeldi ama hızlı bitiyor")
 
 Kurallar:
-- Eğer kullanıcı önceki sorulan bir soruya cevap veriyorsa, cevabını eksik olan alana ata. Örn: Mekan sorulduysa ve kullanıcı "Zater" dediyse mekan = "Zater" olur. Fiyat sorulduysa ve "140" dediyse fiyat = "140 TL" olur.
-- Eğer kullanıcı "bilmiyorum", "boşver", "fark etmez", "hatırlamıyorum" veya "yok" dediyse eksik alana "Bilinmiyor" (fiyat için "Belirtilmedi") yazıp tamamla.
-- Eğer yiyecek, fiyat veya mekandan BİRİ VEYA BİRDEN FAZLASI EKSİKSE (ve kullanıcı pas geçmediyse):
-  "isComplete": false yap, eksik alanları "missingFields" listesine koy ve "question" alanına eksik bilgileri kullanıcıya soran sıcak, samimi ve kısa bir soru yaz (örn: "Cipsi not aldım 🍟 Peki nerede yedin ve fiyatı ne kadardı?").
-- Eğer temel bilgiler TAMAMLANDIYSA:
+- Eğer kullanıcı mesajında mekan, fiyat veya yanında içecek gibi detaylar eksikse VE henüz bir yorum/eleştiri yazmadıysa:
+  "isComplete": false yap.
+  "question" alanında eksik kalan detayları (mekan, fiyat, yanında içecek içip içmediği) sor ve cümlenin sonuna "İstersen tadı nasıldı, yorumunu da yazabilirsin!" şeklinde sıcak bir davet ekle (örn: "Cipsi not aldım! 🍟 Nerede yedin, kaç TL tuttu ve yanında bir şey içtin mi? (İstersen tadı nasıldı, bir yorumun var mı onu da yazabilirsin!)").
+- Eğer kullanıcı bu soruya cevap veriyorsa (veya "yok", "içmedim", "boşver", "sadece bu", "geç" dediyse):
+  Verdiği bilgileri birleştir, eksik kalan yerleri zorlama ve "isComplete": true yapıp kaydı tamamla! Kullanıcıyı soru yağmuruna tutma, tek bir takip sorusuyla tüm detayları topla.
+- Eğer kullanıcı en baştan tüm detayları verdiyse:
   "isComplete": true yap, "question": null yap.
-- "note": Varsa lezzet, beğeni veya durum yorumu (örn: "Tadı güzeldi ama hızlı bitiyor"), yoksa "".
 - "emoji": Yemeğe en uygun tek bir emoji (örn: 🍔, 🍕, 🌯, 🍟, 🍽️).
 - "category": Uygun kategori (örn: "Fast Food", "Dürüm & Çiğ Köfte", "Atıştırmalık", "Tatlı", "Ev Yemeği").
 
