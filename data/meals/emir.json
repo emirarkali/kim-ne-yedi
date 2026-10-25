@@ -65,6 +65,19 @@
         "emoji": "🍺",
         "price": "95 TL",
         "note": ""
+      },
+      {
+        "id": "2026-10-25-2607",
+        "title": "Etli Bahçıvan Kebabı + Çorba",
+        "items": [
+          "Etli Bahçıvan Kebabı",
+          "Çorba"
+        ],
+        "location": "Yurt",
+        "category": "Yemek",
+        "emoji": "🍽️",
+        "price": "0 TL",
+        "note": "Doymadım ama fena değildi"
       }
     ]
   }
