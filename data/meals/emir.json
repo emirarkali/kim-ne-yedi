@@ -148,6 +148,18 @@
         "emoji": "🥪",
         "price": "Bedava TL",
         "note": "Kendim yaptım, tadı çok iyiydi."
+      },
+      {
+        "id": "2026-10-26-9674",
+        "title": "Tavuk",
+        "items": [
+          "Tavuk"
+        ],
+        "location": "Yurt",
+        "category": "Ev Yemeği",
+        "emoji": "🍗",
+        "price": "Bedava TL",
+        "note": "Kuruydu, zor yedim."
       }
     ]
   }
