@@ -62,5 +62,25 @@
         "note": "Fena değildi"
       }
     ]
+  },
+  {
+    "date": "2026-10-26",
+    "day": "Pazartesi",
+    "meals": [
+      {
+        "id": "2026-10-26-1766",
+        "title": "Omlet + Patates Salatası + Çay",
+        "items": [
+          "Omlet",
+          "Patates salatası",
+          "Çay"
+        ],
+        "location": "Yurt",
+        "category": "Ev Yemeği",
+        "emoji": "🍳",
+        "price": "Beleş TL",
+        "note": "Çok kötüydü pek yiyemedim."
+      }
+    ]
   }
 ]
