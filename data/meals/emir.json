@@ -118,5 +118,24 @@
         "note": "Güzeldi."
       }
     ]
+  },
+  {
+    "date": "2026-10-26",
+    "day": "Pazartesi",
+    "meals": [
+      {
+        "id": "2026-10-26-0498",
+        "title": "Mantarlı Yumurta + Çay",
+        "items": [
+          "Mantarlı Yumurta",
+          "Çay"
+        ],
+        "location": "Yurt",
+        "category": "Ev Yemeği",
+        "emoji": "🍳",
+        "price": "Bedava TL",
+        "note": "Tadı iyidi"
+      }
+    ]
   }
 ]
