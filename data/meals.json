@@ -207,5 +207,24 @@
         "note": "6/10"
       }
     ]
+  },
+  {
+    "date": "2026-10-26",
+    "day": "Pazartesi",
+    "meals": [
+      {
+        "id": "2026-10-26-5785",
+        "title": "Gyros Doner Menu + Ayran Buyuk",
+        "items": [
+          "Gyros Doner Menu",
+          "Ayran Buyuk"
+        ],
+        "location": "Donercim Buca",
+        "category": "Döner & Kebap",
+        "emoji": "🥙",
+        "price": "290 TL",
+        "note": "Micotakis"
+      }
+    ]
   }
 ]
