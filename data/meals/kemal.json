@@ -68,17 +68,16 @@
     "day": "Pazartesi",
     "meals": [
       {
-        "id": "2026-10-26-1766",
+        "id": "2026-10-26-2727",
         "title": "Omlet + Patates Salatası + Çay",
         "items": [
-          "Omlet",
-          "Patates salatası",
+          "Omlet + Patates Salatası",
           "Çay"
         ],
         "location": "Yurt",
-        "category": "Ev Yemeği",
-        "emoji": "🍳",
         "price": "Beleş TL",
+        "emoji": "🍟",
+        "category": "Fast Food",
         "note": "Çok kötüydü pek yiyemedim."
       }
     ]
