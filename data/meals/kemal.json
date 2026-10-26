@@ -94,17 +94,16 @@
         "note": "Dolma baya iyiydi."
       },
       {
-        "id": "2026-10-26-7954",
+        "id": "2026-10-26-7852",
         "title": "Çekirdek + Cips + Kola",
         "items": [
-          "Çekirdek",
-          "Cips",
+          "Çekirdek + Cips",
           "Kola"
         ],
         "location": "Bilinmiyor",
-        "category": "Atıştırmalık",
-        "emoji": "🍿",
         "price": "Beleş TL",
+        "emoji": "🍟",
+        "category": "Yemek",
         "note": "Can almıştı, candan Allah razı olsun."
       }
     ]
