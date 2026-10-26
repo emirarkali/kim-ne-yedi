@@ -81,16 +81,16 @@
         "note": "Çok kötüydü pek yiyemedim."
       },
       {
-        "id": "2026-10-26-7886",
-        "title": "Domates Çorbası Ve Dolma",
+        "id": "2026-10-26-5042",
+        "title": "Domates Çorbası+ Dolma + İçmedim.",
         "items": [
-          "Domates Çorbası",
-          "Dolma"
+          "Domates Çorbası+ Dolma",
+          "İçmedim."
         ],
         "location": "Yurt",
-        "category": "Ev Yemeği",
-        "emoji": "🍲",
         "price": "Beleş TL",
+        "emoji": "🍲",
+        "category": "Çorba",
         "note": "Dolma baya iyiydi."
       }
     ]
