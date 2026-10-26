@@ -79,6 +79,19 @@
         "emoji": "🍟",
         "category": "Fast Food",
         "note": "Çok kötüydü pek yiyemedim."
+      },
+      {
+        "id": "2026-10-26-7886",
+        "title": "Domates Çorbası Ve Dolma",
+        "items": [
+          "Domates Çorbası",
+          "Dolma"
+        ],
+        "location": "Yurt",
+        "category": "Ev Yemeği",
+        "emoji": "🍲",
+        "price": "Beleş TL",
+        "note": "Dolma baya iyiydi."
       }
     ]
   }
