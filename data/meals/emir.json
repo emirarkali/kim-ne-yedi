@@ -135,6 +135,19 @@
         "emoji": "🍳",
         "price": "Bedava TL",
         "note": "Tadı iyidi"
+      },
+      {
+        "id": "2026-10-26-2965",
+        "title": "Hindi Fümeli Sandviç + Meyve Suyu",
+        "items": [
+          "Hindi fümeli sandviç",
+          "Meyve suyu"
+        ],
+        "location": "Okul",
+        "category": "Fast Food",
+        "emoji": "🥪",
+        "price": "Bedava TL",
+        "note": "Kendim yaptım, tadı çok iyiydi."
       }
     ]
   }
