@@ -238,6 +238,19 @@
         "emoji": "🍲",
         "price": "0 TL",
         "note": "Güzeldi"
+      },
+      {
+        "id": "2026-10-26-6364",
+        "title": "Cekirdek Cips + Kola",
+        "items": [
+          "Cekirdek Cips",
+          "Kola"
+        ],
+        "location": "Yurt",
+        "price": "300 TL",
+        "emoji": "🍟",
+        "category": "Yemek",
+        "note": "Maç izlerken aktı"
       }
     ]
   },
@@ -282,19 +295,6 @@
         "emoji": "🍦",
         "price": "150 TL",
         "note": "Muthis"
-      },
-      {
-        "id": "2026-10-27-6690",
-        "title": "Cekirdek Cips + Kola",
-        "items": [
-          "Cekirdek Cips",
-          "Kola"
-        ],
-        "location": "Yurt",
-        "price": "300 TL",
-        "emoji": "🍟",
-        "category": "Yemek",
-        "note": "Maç izlerken aktı"
       }
     ]
   }
