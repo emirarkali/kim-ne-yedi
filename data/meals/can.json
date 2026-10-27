@@ -224,6 +224,20 @@
         "emoji": "🥙",
         "price": "290 TL",
         "note": "Micotakis"
+      },
+      {
+        "id": "2026-10-26-6385",
+        "title": "Dolma + Makarna + Çorba",
+        "items": [
+          "Dolma",
+          "Makarna",
+          "Çorba"
+        ],
+        "location": "Yurt",
+        "category": "Ev Yemeği",
+        "emoji": "🍲",
+        "price": "0 TL",
+        "note": "Güzeldi"
       }
     ]
   }
