@@ -178,6 +178,18 @@
         "emoji": "🍟",
         "category": "Fast Food",
         "note": "Tadı çok güzeldi, yanında krokan pasta vardı baya güzeldi."
+      },
+      {
+        "id": "2026-10-27-7724",
+        "title": "Kuru Fasulye + Pilav",
+        "items": [
+          "Kuru Fasulye + Pilav"
+        ],
+        "location": "Yurt",
+        "category": "İçecek",
+        "emoji": "🍚",
+        "price": "0 TL",
+        "note": "Kuru fasulye mükemmel bir yemek"
       }
     ]
   }
