@@ -284,6 +284,18 @@
         "emoji": "🫓",
         "price": "350 TL",
         "note": "Mis"
+      },
+      {
+        "id": "2026-10-27-8965",
+        "title": "Dondurma Hindistan Cevizli Kabuklu",
+        "items": [
+          "Dondurma Hindistan Cevizli Kabuklu"
+        ],
+        "location": "Yurt",
+        "category": "Yemek",
+        "emoji": "🍦",
+        "price": "150 TL",
+        "note": "Muthis"
       }
     ]
   }
