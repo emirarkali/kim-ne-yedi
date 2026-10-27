@@ -51,10 +51,7 @@ function getActiveProfile(chatId, fromUsername = "") {
 }
 
 function getTurkeyTimeInfo(offsetDays = 0) {
-  const now = new Date();
-  if (offsetDays !== 0) {
-    now.setDate(now.getDate() + offsetDays);
-  }
+  const now = new Date(Date.now() + offsetDays * 86400000);
   const trDateStr = now.toLocaleDateString("en-CA", { timeZone: "Europe/Istanbul" });
   const dayNamesTr = ["Pazar", "Pazartesi", "Salı", "Çarşamba", "Perşembe", "Cuma", "Cumartesi"];
   const trDateObj = new Date(now.toLocaleString("en-US", { timeZone: "Europe/Istanbul" }));
@@ -232,12 +229,17 @@ async function handleIncomingUpdate(update, env) {
     }
 
     const session = userSessions.get(chatId);
+    // ForceReply quotes the selection list; it is not an edit template or an AI follow-up.
+    // The marker also restores the selection flow after a Worker restart.
+    const isEditSelection = session?.action === "duzenle_select_num" ||
+      replyToText.includes("[DÜZENLEME MODU]") ||
+      replyToText.includes("Lütfen düzenlemek istediğin öğünün sadece numarasını yaz");
 
     // ============================================================
     // A0) DOĞAL DİLDE EKSİK BİLGİ TAMAMLAMA (Gemini Takip Sorusu)
     // ============================================================
-    const isPendingNL = (session && session.action === "pending_nl") ||
-      (replyToText && (replyToText.includes("Vazgeçmek için /iptal") || replyToText.includes("Peki") || replyToText.includes("nerede yedin") || replyToText.includes("fiyatı")));
+    const isPendingNL = !isEditSelection && ((session && session.action === "pending_nl") ||
+      (replyToText && (replyToText.includes("Vazgeçmek için /iptal") || replyToText.includes("Peki") || replyToText.includes("nerede yedin") || replyToText.includes("fiyatı"))));
 
     if (isPendingNL && !userText.startsWith("/")) {
       let pendingData = session ? session.pendingData : null;
@@ -267,9 +269,8 @@ async function handleIncomingUpdate(update, env) {
 
           await saveNewMealToGitHub(env.GITHUB_TOKEN, parsedData.meal, parsedData.date, parsedData.day, activeProfile);
 
-          const mealItems = parsedData.meal.items || [parsedData.meal.title];
-          const aiFood = mealItems[0] || parsedData.meal.title;
-          const aiDrink = mealItems.length > 1 ? mealItems.slice(1).join(" + ") : "";
+          const aiFood = parsedData.meal.foods.join(" + ");
+          const aiDrink = parsedData.meal.drinks.join(" + ");
           const foodLine = `${guessEmoji(aiFood)} *Yemek:* ${aiFood}`;
           const drinkLine = aiDrink ? `🥤 *İçecek:* ${aiDrink}` : "🥤 *İçecek:* (İçilmedi)";
           const noteLine = parsedData.meal.note ? `💬 *Not:* ${parsedData.meal.note}\n` : "";
@@ -304,8 +305,8 @@ async function handleIncomingUpdate(update, env) {
     // ============================================================
     const isTemplateSubmission =
       (session && session.action === "duzenle_submit") ||
-      replyToText.toLowerCase().includes("düzenleme") ||
-      replyToText.toLowerCase().includes("duzenleme") ||
+      (!isEditSelection && (replyToText.toLowerCase().includes("düzenleme") ||
+        replyToText.toLowerCase().includes("duzenleme"))) ||
       userText.toLowerCase().includes("yemek:") ||
       (userText.toLowerCase().includes("fiyat:") && userText.toLowerCase().includes("tarih:")) ||
       userText.toLowerCase().startsWith("no:");
@@ -437,6 +438,8 @@ async function handleIncomingUpdate(update, env) {
         id: `${dateInfo.date}-${Date.now().toString().slice(-4)}`,
         title: fullTitle,
         items: items,
+        foods: food ? [food] : [],
+        drinks: drink ? [drink] : [],
         location: loc,
         price: price,
         emoji: guessEmoji(primaryItem),
@@ -492,7 +495,7 @@ async function handleIncomingUpdate(update, env) {
     // ============================================================
     // B) /duzenle - ADIM 1: KULLANICI NUMARAYI SEÇTİĞİNDE
     // ============================================================
-    if (session && session.action === "duzenle_select_num") {
+    if (isEditSelection) {
       const numMatch = userText.match(/\d+/);
       const targetNum = numMatch ? parseInt(numMatch[0], 10) : NaN;
       if (isNaN(targetNum) || targetNum < 1) {
@@ -517,7 +520,10 @@ async function handleIncomingUpdate(update, env) {
       const item = flatMeals[targetNum - 1];
       let existingFood = item.meal.title;
       let existingDrink = "içmedim";
-      if (item.meal.items && item.meal.items.length >= 2) {
+      if (Array.isArray(item.meal.foods)) {
+        existingFood = item.meal.foods.join(" + ");
+        existingDrink = item.meal.drinks.join(" + ") || "içmedim";
+      } else if (item.meal.items && item.meal.items.length >= 2) {
         existingFood = item.meal.items[0].trim();
         existingDrink = item.meal.items.slice(1).join(" + ").trim();
       } else if (item.meal.title.includes("+")) {
@@ -759,6 +765,8 @@ async function handleIncomingUpdate(update, env) {
         await saveNewMealToGitHub(env.GITHUB_TOKEN, {
           title: fullTitle,
           items: items,
+          foods: food ? [food] : [],
+          drinks: drink ? [drink] : [],
           location: loc,
           price: price,
           category: guessCategory(primaryItem),
@@ -979,7 +987,10 @@ async function handleIncomingUpdate(update, env) {
         const item = flatMeals[targetNum - 1];
         let existingFood = item.meal.title;
         let existingDrink = "içmedim";
-        if (item.meal.items && item.meal.items.length >= 2) {
+        if (Array.isArray(item.meal.foods)) {
+          existingFood = item.meal.foods.join(" + ");
+          existingDrink = item.meal.drinks.join(" + ") || "içmedim";
+        } else if (item.meal.items && item.meal.items.length >= 2) {
           existingFood = item.meal.items[0].trim();
           existingDrink = item.meal.items.slice(1).join(" + ").trim();
         } else if (item.meal.title.includes("+")) {
@@ -1218,9 +1229,8 @@ async function handleIncomingUpdate(update, env) {
 
     await saveNewMealToGitHub(env.GITHUB_TOKEN, parsedData.meal, parsedData.date, parsedData.day, activeProfile);
 
-    const mealItems = parsedData.meal.items || [parsedData.meal.title];
-    const aiFood = mealItems[0] || parsedData.meal.title;
-    const aiDrink = mealItems.length > 1 ? mealItems.slice(1).join(" + ") : "";
+    const aiFood = parsedData.meal.foods.join(" + ");
+    const aiDrink = parsedData.meal.drinks.join(" + ");
     const foodLine = `${guessEmoji(aiFood)} *Yemek:* ${aiFood}`;
     const drinkLine = aiDrink ? `🥤 *İçecek:* ${aiDrink}` : "🥤 *İçecek:* (İçilmedi)";
     const noteLine = parsedData.meal.note ? `💬 *Not:* ${parsedData.meal.note}\n` : "";
@@ -1388,6 +1398,7 @@ async function saveNewMealToGitHub(token, meal, customDate = null, customDay = n
     id: `${targetDate}-${Date.now().toString().slice(-4)}`,
     title: meal.title,
     items: meal.items || [meal.title],
+    ...(Array.isArray(meal.foods) ? { foods: meal.foods, drinks: meal.drinks || [] } : {}),
     location: meal.location || "Yurt",
     category: meal.category || "Fast Food",
     emoji: meal.emoji || "🍽️",
@@ -1424,6 +1435,43 @@ async function saveNewMealToGitHub(token, meal, customDate = null, customDay = n
   }
 }
 
+// Keep semantic groups independent of the legacy positional items format.
+function normalizeParsedMeal(parsed, userMessage, previousContext = null) {
+  const meal = parsed.meal;
+  if (!meal || !Array.isArray(meal.foods) || !Array.isArray(meal.drinks)) {
+    throw new Error("Yiyecek/içecek alanları eksik.");
+  }
+  const cleanItems = values => values.filter(v => typeof v === "string" && v.trim()).map(capitalizeTr);
+  meal.foods = cleanItems(meal.foods);
+  meal.drinks = cleanItems(meal.drinks).filter(v => !isNoDrink(v));
+  const normalizedText = userMessage.toLocaleLowerCase("tr-TR").normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/ı/g, "i");
+  const noDrink = /\b(?:icmedim|icmedik|icmiyorum)\b|icecek\s+(?:yok|almadim)/.test(normalizedText);
+  const drinkStatus = noDrink ? "none" : previousContext?.drinkStatus;
+  if (drinkStatus === "none") {
+    // Preserve every extracted item even if the model put a dessert in drinks.
+    meal.foods = [...new Set([...meal.foods, ...meal.drinks])];
+    meal.drinks = [];
+  }
+  parsed.drinkStatus = drinkStatus || null;
+  meal.items = [meal.foods.join(" + "), meal.drinks.join(" + ")].filter(Boolean);
+  meal.title = meal.items.join(" + ");
+  if (!meal.title) throw new Error("Öğün boş.");
+
+  // Resolve relative dates locally, then preserve that date through follow-up replies.
+  let dateInfo;
+  if (/\b(?:evvelsi|onceki)\s+gun\b/.test(normalizedText)) dateInfo = getTurkeyTimeInfo(-2);
+  else if (/\bdun\b/.test(normalizedText)) dateInfo = getTurkeyTimeInfo(-1);
+  else if (/\bbugun\b/.test(normalizedText)) dateInfo = getTurkeyTimeInfo();
+  const hasNewDate = /\d{1,4}[-/.]\d{1,2}|\b(?:pazartesi|sali|carsamba|persembe|cuma|cumartesi|pazar|ocak|subat|mart|nisan|mayis|haziran|temmuz|agustos|eylul|ekim|kasim|aralik)\b/.test(normalizedText);
+  if (!dateInfo && !hasNewDate && previousContext?.date) {
+    dateInfo = parseCustomDate(previousContext.date);
+  }
+  dateInfo ||= parseCustomDate(parsed.date);
+  parsed.date = dateInfo.date;
+  parsed.day = dateInfo.day;
+  return parsed;
+}
+
 async function parseMealWithGeminiFast(userMessage, apiKey, previousContext = null) {
   const { date: todayDateStr, day: todayDayName } = getTurkeyTimeInfo();
 
@@ -1432,6 +1480,10 @@ Sen samimi, cana yakın ve gurme bir yemek günlüğü asistanısın.
 Kullanıcının Türkçe yemek mesajını analiz et.
 Bugünün tarihi: ${todayDateStr} (${todayDayName}).
 
+Tarih kuralları:
+- "dün/dun" dünkü, "evvelsi gün/önceki gün" iki gün önceki tarihtir. Bugün diye varsayma.
+- Takip yanıtında tarih belirtilmediyse önceki kaydın tarihini aynen koru.
+
 Öğünün Detay Alanları:
 1. "title": Yiyecek ve (varsa) içecek özeti (örn: "Hamburger + Kola" veya "Cips")
 2. "location": Nerede yediği / mekan (Yurt, McDonald's, Ev, Kantin vb.)
@@ -1439,6 +1491,12 @@ Bugünün tarihi: ${todayDateStr} (${todayDayName}).
 4. "note": Yemeğin lezzeti, beğeni durumu, eleştiri veya yorumu (örn: "Tadı güzeldi ama hızlı bitiyor")
 
 Kurallar:
+- "foods": TÜM yiyecekler ve tatlılar için ayrı öğelerden oluşan dizi.
+- "drinks": Yalnızca gerçekten içilen içeceklerin dizisi. İçecek yoksa [] döndür.
+- Sıralamaya göre içecek tahmin etme! İkinci ve üçüncü yiyecek de foods alanına aittir.
+- Pasta, krokan pasta, tatlı, çorba yiyecektir. "bir şey içmedim" denirse drinks boş olmalıdır.
+- "kuru fasulye ve krokan pasta yedim bir şey içmedim" => foods: ["Kuru Fasulye", "Krokan Pasta"], drinks: [].
+- "items" uyumluluk içindir: yiyecekleri tek metinde + ile birleştir, varsa içecekleri ikinci metinde birleştir.
 - Eğer kullanıcı mesajında mekan, fiyat veya yanında içecek gibi detaylar eksikse VE henüz bir yorum/eleştiri yazmadıysa:
   "isComplete": false yap.
   "question" alanında eksik kalan detayları (mekan, fiyat, yanında içecek içip içmediği) sor ve cümlenin sonuna "İstersen tadı nasıldı, yorumunu da yazabilirsin!" şeklinde sıcak bir davet ekle (örn: "Cipsi not aldım! 🍟 Nerede yedin, kaç TL tuttu ve yanında bir şey içtin mi? (İstersen tadı nasıldı, bir yorumun var mı onu da yazabilirsin!)").
@@ -1459,6 +1517,8 @@ Kurallar:
   "meal": {
     "title": "Cips",
     "items": ["Cips"],
+    "foods": ["Cips"],
+    "drinks": [],
     "location": "Yurt",
     "price": "36 TL",
     "category": "Atıştırmalık",
@@ -1506,7 +1566,7 @@ Kurallar:
         const json = await res.json();
         const rawText = json.candidates?.[0]?.content?.parts?.[0]?.text;
         if (rawText) {
-          return JSON.parse(rawText);
+          return normalizeParsedMeal(JSON.parse(rawText), userMessage, previousContext);
         }
       }
     } catch (e) { }
