@@ -258,6 +258,19 @@
         "emoji": "🍿",
         "price": "300 TL",
         "note": "Maç izlerken aktı"
+      },
+      {
+        "id": "2026-10-27-3883",
+        "title": "Hamburger + Kola",
+        "items": [
+          "Hamburger",
+          "Kola"
+        ],
+        "location": "Ohannes",
+        "category": "Fast Food",
+        "emoji": "🍔",
+        "price": "500 TL",
+        "note": "Smash burger"
       }
     ]
   }
