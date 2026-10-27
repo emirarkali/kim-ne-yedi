@@ -29,12 +29,12 @@ test('weekly tabs sum only meals within their selected calendar week', () => {
     { date: iso(previous), meals: [{ calories: { min: 100, max: 200 } }] }
   ];
   vm.runInContext('allDaysData = fixture; currentStatsPeriod = "current"; computeStats()', context);
-  assert.equal(elements.calorieVal.textContent, '400–600 kcal');
+  assert.equal(elements.calorieVal.textContent, '500 kcal');
   assert.match(elements.calorieCoverage.textContent, /1\/2/);
   vm.runInContext('currentStatsPeriod = "prev"; computeStats()', context);
-  assert.equal(elements.calorieVal.textContent, '100–200 kcal');
+  assert.equal(elements.calorieVal.textContent, '150 kcal');
   vm.runInContext('currentStatsPeriod = "all"; computeStats()', context);
-  assert.equal(elements.calorieVal.textContent, '500–800 kcal');
+  assert.equal(elements.calorieVal.textContent, '650 kcal');
   vm.runInContext('allDaysData = []; computeStats()', context);
   assert.equal(elements.calorieVal.textContent, '—');
 });

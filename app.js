@@ -254,7 +254,7 @@ function calorieRange(c) {
 function updateCalorieStats(days) {
   const totals = calorieTotals(days);
   document.getElementById('calorieLabel').textContent = `${currentStatsPeriod === 'current' ? 'Bu Hafta' : currentStatsPeriod === 'prev' ? 'Geçen Hafta' : 'Toplam'} Tahmini Kalori`;
-  document.getElementById('calorieVal').textContent = totals.estimated ? calorieRange(totals) : '—';
+  document.getElementById('calorieVal').textContent = totals.estimated ? `${Math.round((totals.min + totals.max) / 2).toLocaleString('tr-TR')} kcal` : '—';
   document.getElementById('calorieCoverage').textContent = totals.total
     ? `${totals.estimated}/${totals.total} öğün hesaplandı · Yalnızca kayıtlı öğünler`
     : 'Bu dönemde öğün yok';
