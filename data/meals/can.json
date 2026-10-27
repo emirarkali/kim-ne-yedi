@@ -246,20 +246,6 @@
     "day": "Salı",
     "meals": [
       {
-        "id": "2026-10-27-8704",
-        "title": "Kola + Çekirdek + Cips",
-        "items": [
-          "Kola",
-          "Çekirdek",
-          "Cips"
-        ],
-        "location": "Ev",
-        "category": "Atıştırmalık",
-        "emoji": "🍿",
-        "price": "300 TL",
-        "note": "Maç izlerken aktı"
-      },
-      {
         "id": "2026-10-27-3883",
         "title": "Hamburger + Kola",
         "items": [
@@ -296,6 +282,19 @@
         "emoji": "🍦",
         "price": "150 TL",
         "note": "Muthis"
+      },
+      {
+        "id": "2026-10-27-6690",
+        "title": "Cekirdek Cips + Kola",
+        "items": [
+          "Cekirdek Cips",
+          "Kola"
+        ],
+        "location": "Yurt",
+        "price": "300 TL",
+        "emoji": "🍟",
+        "category": "Yemek",
+        "note": "Maç izlerken aktı"
       }
     ]
   }
