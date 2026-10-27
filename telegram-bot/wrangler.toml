@@ -8,3 +8,7 @@ compatibility_date = "2024-01-01"
 # GEMINI_API_KEY
 # ALLOWED_CHAT_ID (opsiyonel)
 
+
+# Cloudflare cron saatleri UTC'dir: 09.00 UTC = 12.00 Europe/Istanbul.
+[triggers]
+crons = ["0 9 * * *"]

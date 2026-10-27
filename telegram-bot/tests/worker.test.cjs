@@ -2,7 +2,7 @@ const { test } = require('node:test');
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const vm = require('node:vm');
-const source = fs.readFileSync(`${__dirname}/../worker.js`, 'utf8').replace('export default {', 'const worker = {');
+const source = fs.readFileSync(`${__dirname}/../worker.js`, 'utf8').replace('export default {', 'const worker = {').replace(/^export \{[^}]+\};$/gm, '');
 const context = vm.createContext({ console, Map, Set, Date: class extends Date {
   constructor(...args) { super(...(args.length ? args : ['2026-10-28T21:30:00Z'])); }
   static now() { return Date.parse('2026-10-28T21:30:00Z'); }
@@ -114,4 +114,48 @@ test('no-drink placeholders are removed even when the model puts them in foods',
   assert.equal(result.meal.items.join(' + '), 'Dolma');
   assert.equal(result.meal.foods.length, 1);
   assert.equal(result.meal.drinks.length, 0);
+});
+
+test('scheduled Worker evaluates all profiles and writes only the shared review file', async () => {
+  const fixtures = {
+    'data/meals/can.json': [{ date: '2026-10-28', meals: [{ id: 'c1', title: 'Hamburger' }] }],
+    'data/meals/emir.json': [{ date: '2026-10-28', meals: [{ id: 'e1', title: 'Fasulye' }] }],
+    'data/meals/kemal.json': []
+  };
+  for (const available of [true, false]) {
+    const writes = [];
+    context.fetch = async (url, options) => {
+      if (url.includes('generativelanguage')) {
+        if (!available) return { ok: false, status: 503 };
+        return { ok: true, json: async () => ({ candidates: [{ content: { parts: [{ text: JSON.stringify({ ranking: [
+          { id: 'can', reason: 'Kayıt sınırlı; hamburger var.', mealIds: ['c1'] },
+          { id: 'emir', reason: 'Kayıt sınırlı; baklagil var.', mealIds: ['e1'] }
+        ] }) }] } }] }) };
+      }
+      const path = new URL(url).pathname.split('/contents/')[1];
+      if (options.method === 'PUT') {
+        assert.equal(path, 'data/weekly-review.json');
+        writes.push(JSON.parse(Buffer.from(JSON.parse(options.body).content, 'base64').toString()));
+        return { ok: true, json: async () => ({}) };
+      }
+      if (!fixtures[path]) return { status: 404 };
+      return { ok: true, json: async () => ({ sha: 'test', content: Buffer.from(JSON.stringify(fixtures[path])).toString('base64') }) };
+    };
+    let task;
+    await vm.runInContext('worker.scheduled', context)(
+      { scheduledTime: Date.parse('2026-10-28T09:00:00Z') },
+      { GEMINI_API_KEY: 'test', GITHUB_TOKEN: 'test' },
+      { waitUntil(value) { task = value; } }
+    );
+    if (available) {
+      await task;
+      assert.equal(writes.length, 1);
+      assert.equal(writes[0].window.end, '2026-10-28');
+      assert.equal(writes[0].ranking.length, 2);
+      assert.equal(writes[0].unranked[0].id, 'kemal');
+    } else {
+      await assert.rejects(task, /HTTP 503/);
+      assert.equal(writes.length, 0);
+    }
+  }
 });

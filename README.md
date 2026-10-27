@@ -75,8 +75,10 @@ Geliştirici: [@emirarkali](https://github.com/emirarkali)
 
 ## Günlük beslenme karşılaştırması
 
-GitHub Actions görevi her gün 09.00 UTC / Türkiye saatiyle 12.00 için planlanır. GitHub yoğunluğunda başlangıç gecikebilir. Bugün dahil son 7 takvim günündeki tüm profillerin kayıtları Gemini ile karşılaştırılır; sonuç `data/weekly-review.json` dosyasına kaydedilir ve üç profilde aynı gösterilir. İşlenmiş gıda, şekerli içecek, kızartma sıklığı ve kayıtlı çeşitlilik birlikte değerlendirilir. Eksik kayıtlar tüketilmemiş öğün sayılmaz; kayıtsız kişiler sıralanmaz. API hatasında son başarılı sonuç korunur.
+Cloudflare Worker her gün 09.00 UTC / Türkiye saatiyle 12.00'de `scheduled` işleyicisini çalıştırır. Bugün dahil son 7 takvim günündeki üç profilin kayıtları Gemini ile karşılaştırılır; sonuç `data/weekly-review.json` dosyasına GitHub API üzerinden yazılır ve üç profilde aynı gösterilir. İşlenmiş gıda, şekerli içecek, kızartma sıklığı ve kayıtlı çeşitlilik birlikte değerlendirilir. Eksik kayıtlar tüketilmemiş öğün sayılmaz; kayıtsız kişiler sıralanmaz. API hatasında son başarılı sonuç korunur.
 
-`.github/workflows/site.yml` aynı zamanda siteyi GitHub Pages'e yayınlar. Pages kaynağı **GitHub Actions** olmalı ve depoda `GEMINI_API_KEY` Actions secret'ı bulunmalıdır. İlk üretim veya tekrar deneme için Actions → **Site ve günlük beslenme değerlendirmesi** → **Run workflow** kullanılabilir. Anahtar hiçbir site dosyasına yazılmaz.
+Zamanlama `telegram-bot/wrangler.toml` dosyasındaki `[triggers]` bölümündedir. Canlıya almak için `cd telegram-bot && npx wrangler deploy` çalıştırılır. Dashboard'dan kod yapıştırılıyorsa **Settings → Triggers → Cron Triggers** bölümüne `0 9 * * *` ayrıca eklenmelidir. Worker'ın mevcut `GITHUB_TOKEN` ve `GEMINI_API_KEY` secret'ları kullanılır; GitHub Actions görevi gerekmez. Site yayını GitHub Pages'in `main` dalına bağlıdır.
+
+İlk değerlendirmeyi yerelde üretmek için `GEMINI_API_KEY` tanımlıyken `node scripts/weekly-review.mjs` çalıştırılabilir.
 
 Kontrol: `node --test tests/*.test.* telegram-bot/tests/worker.test.cjs`
