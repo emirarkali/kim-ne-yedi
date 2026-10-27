@@ -107,10 +107,9 @@
       },
       {
         "id": "2026-10-26-5042",
-        "title": "Domates Çorbası+ Dolma + İçmedim.",
+        "title": "Domates Çorbası + Dolma",
         "items": [
-          "Domates Çorbası+ Dolma",
-          "İçmedim."
+          "Domates Çorbası + Dolma"
         ],
         "location": "Yurt",
         "price": "Beleş TL",
@@ -121,7 +120,12 @@
           "min": 400,
           "max": 700,
           "portions": "1 kase domates çorbası, 1 porsiyon dolma (4–6 küçük adet); içecek yok, dolmanın türü belirtilmedi"
-        }
+        },
+        "foods": [
+          "Domates Çorbası",
+          "Dolma"
+        ],
+        "drinks": []
       },
       {
         "id": "2026-10-26-7852",
@@ -149,10 +153,9 @@
     "meals": [
       {
         "id": "2026-10-27-2627",
-        "title": "Patates Oturtma+ Erişte Makarna + Yoğurt + Krokanlı Pasta + İçmedim.",
+        "title": "Patates Oturtma + Erişte Makarna + Yoğurt + Krokanlı Pasta",
         "items": [
-          "Patates Oturtma+ Erişte Makarna + Yoğurt + Krokanlı Pasta",
-          "İçmedim."
+          "Patates Oturtma + Erişte Makarna + Yoğurt + Krokanlı Pasta"
         ],
         "location": "Okul",
         "price": "65 TL",
@@ -163,7 +166,14 @@
           "min": 900,
           "max": 1350,
           "portions": "1 tabak patates oturtma, 1 küçük porsiyon erişte, 150 g yoğurt, 1 dilim krokanlı pasta; içecek yok"
-        }
+        },
+        "foods": [
+          "Patates Oturtma",
+          "Erişte Makarna",
+          "Yoğurt",
+          "Krokanlı Pasta"
+        ],
+        "drinks": []
       },
       {
         "id": "2026-10-27-2720",

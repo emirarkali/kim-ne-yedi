@@ -1246,11 +1246,20 @@ function isSame(text) {
   return t === "aynı" || t === "ayni" || t === "aynisı" || t === "aynisi" || t === "same";
 }
 
+function normalizeAbsenceText(text) {
+  return text.trim().toLocaleLowerCase("tr-TR")
+    .replace(/^[\s\p{P}]+|[\s\p{P}]+$/gu, "")
+    .replace(/\s+/g, " ");
+}
+
 function isNoDrink(text) {
   if (!text) return true;
-  const t = text.trim().toLocaleLowerCase("tr-TR");
+  const t = normalizeAbsenceText(text);
   return (
     t === "içmedim" || t === "icmedim" || t === "içmedım" || t === "icmedım" ||
+    t === "bir şey içmedim" || t === "bir sey icmedim" ||
+    t === "hiçbir şey içmedim" || t === "hicbir sey icmedim" ||
+    t === "içecek yok" || t === "icecek yok" ||
     t === "içmedm" || t === "yok" || t === "yoktu" || t === "hayır" || t === "hayir" ||
     t === "su" || t === "hiçbir şey" || t === "hicbir sey" || t === "-" || t === "null" || t === "undefined"
   );
@@ -1258,7 +1267,7 @@ function isNoDrink(text) {
 
 function isNoFood(text) {
   if (!text) return true;
-  const t = text.trim().toLowerCase();
+  const t = normalizeAbsenceText(text);
   return (
     t === "yemedim" || t === "yemedım" || t === "yemedm" || t === "yok" ||
     t === "yoktu" || t === "hayır" || t === "hayir" || t === "hiçbir şey" ||
@@ -1456,7 +1465,7 @@ function normalizeParsedMeal(parsed, userMessage, previousContext = null) {
   }
   const cleanItems = values => values.filter(v => typeof v === "string" && v.trim()).map(capitalizeTr);
   meal.calories = normalizeCalories(meal.calories);
-  meal.foods = cleanItems(meal.foods);
+  meal.foods = cleanItems(meal.foods).filter(v => !isNoFood(v) && !isNoDrink(v));
   meal.drinks = cleanItems(meal.drinks).filter(v => !isNoDrink(v));
   const normalizedText = userMessage.toLocaleLowerCase("tr-TR").normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/ı/g, "i");
   const noDrink = /\b(?:icmedim|icmedik|icmiyorum)\b|icecek\s+(?:yok|almadim)/.test(normalizedText);

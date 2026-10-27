@@ -100,3 +100,18 @@ test('manual save persists calorie estimate and still saves when estimation fail
     } else assert.equal(written[0].meals[0].calories, null);
   }
 });
+
+test('punctuated no-drink replies are recognized without swallowing real drinks', () => {
+  for (const text of ['İçmedim.', 'içmedim!', 'İÇMEDİM…', 'Yok.', 'Bir şey içmedim.', '  içmedim ? ']) {
+    assert.equal(context.isNoDrink(text), true, text);
+  }
+  for (const text of ['Ayran.', 'Kola!', 'İçmedim gazozu']) assert.equal(context.isNoDrink(text), false, text);
+});
+
+test('no-drink placeholders are removed even when the model puts them in foods', () => {
+  const result = parse({ foods: ['dolma', 'İçmedim.'], drinks: ['İçmedim!'] }, 'Dolma yedim bir şey içmedim.');
+  assert.equal(result.meal.title, 'Dolma');
+  assert.equal(result.meal.items.join(' + '), 'Dolma');
+  assert.equal(result.meal.foods.length, 1);
+  assert.equal(result.meal.drinks.length, 0);
+});
