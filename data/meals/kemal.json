@@ -164,6 +164,29 @@
           "max": 1350,
           "portions": "1 tabak patates oturtma, 1 küçük porsiyon erişte, 150 g yoğurt, 1 dilim krokanlı pasta; içecek yok"
         }
+      },
+      {
+        "id": "2026-10-27-2720",
+        "title": "Tarhana Çorbası + Kuru Fasulye + Pilav",
+        "items": [
+          "Tarhana Çorbası + Kuru Fasulye + Pilav"
+        ],
+        "foods": [
+          "Tarhana Çorbası",
+          "Kuru Fasulye",
+          "Pilav"
+        ],
+        "drinks": [],
+        "location": "Yurt",
+        "category": "Ev Yemeği",
+        "emoji": "🍲",
+        "price": "Beleş TL",
+        "note": "Çok iyiydi",
+        "calories": {
+          "min": 550,
+          "max": 800,
+          "portions": "1 kase çorba, 1 porsiyon kuru fasulye ve pilav"
+        }
       }
     ]
   }
