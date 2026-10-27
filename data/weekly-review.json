@@ -1,0 +1,57 @@
+{
+  "generatedAt": "2026-10-27T22:42:52.268Z",
+  "window": {
+    "start": "2026-10-22",
+    "end": "2026-10-28"
+  },
+  "timezone": "Europe/Istanbul",
+  "unranked": [],
+  "methodology": "Yalnızca son 7 günün kaydedilmiş öğünleri karşılaştırılır. Eksik kayıtlar tüketilmemiş öğün sayılmaz. Sıralama bir sağlık tanısı değildir.",
+  "source": "https://www.who.int/news-room/fact-sheets/detail/healthy-diet",
+  "status": "ready",
+  "model": "gemini-flash-lite-latest",
+  "ranking": [
+    {
+      "rank": 1,
+      "id": "can",
+      "name": "Can",
+      "reason": "Can'ın beslenme günlüğünde sık sık hamburger, cips ve kola gibi işlenmiş gıdalar ile tatlı tüketimi yer almakta, sebze ve çeşitlilik ise sınırlı kalmaktadır.",
+      "mealIds": [
+        "2026-10-27-3883",
+        "2026-10-27-6337",
+        "2026-10-26-6364"
+      ],
+      "mealCount": 17,
+      "activeDays": 6,
+      "limitedData": false
+    },
+    {
+      "rank": 2,
+      "id": "emir",
+      "name": "Emir",
+      "reason": "Emir, çorba, etli yemekler ve yumurtanın yanı sıra cips, sosis ve tatlı gibi işlenmiş veya şekerli seçenekleri de dengeli bir sıklıkla tüketmiştir.",
+      "mealIds": [
+        "2026-10-25-6903",
+        "2026-10-27-2508",
+        "2026-10-27-7724"
+      ],
+      "mealCount": 13,
+      "activeDays": 5,
+      "limitedData": false
+    },
+    {
+      "rank": 3,
+      "id": "kemal",
+      "name": "Kemal",
+      "reason": "Kemal'in öğünlerinde çorba, ev yemeği tarzı tencere yemekleri, yumurta ve yoğurt gibi daha çeşitli ve dengeli gıdaların oranı nispeten yüksektir.",
+      "mealIds": [
+        "2026-10-25-8222",
+        "2026-10-26-5042",
+        "2026-10-27-2720"
+      ],
+      "mealCount": 10,
+      "activeDays": 4,
+      "limitedData": false
+    }
+  ]
+}

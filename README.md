@@ -72,3 +72,11 @@ Telefondan Telegram'a doğal dille yazarak siteye otomatik ekleme yapmak için [
 
 Geliştirici: [@emirarkali](https://github.com/emirarkali)
 
+
+## Günlük beslenme karşılaştırması
+
+GitHub Actions görevi her gün 09.00 UTC / Türkiye saatiyle 12.00 için planlanır. GitHub yoğunluğunda başlangıç gecikebilir. Bugün dahil son 7 takvim günündeki tüm profillerin kayıtları Gemini ile karşılaştırılır; sonuç `data/weekly-review.json` dosyasına kaydedilir ve üç profilde aynı gösterilir. İşlenmiş gıda, şekerli içecek, kızartma sıklığı ve kayıtlı çeşitlilik birlikte değerlendirilir. Eksik kayıtlar tüketilmemiş öğün sayılmaz; kayıtsız kişiler sıralanmaz. API hatasında son başarılı sonuç korunur.
+
+`.github/workflows/site.yml` aynı zamanda siteyi GitHub Pages'e yayınlar. Pages kaynağı **GitHub Actions** olmalı ve depoda `GEMINI_API_KEY` Actions secret'ı bulunmalıdır. İlk üretim veya tekrar deneme için Actions → **Site ve günlük beslenme değerlendirmesi** → **Run workflow** kullanılabilir. Anahtar hiçbir site dosyasına yazılmaz.
+
+Kontrol: `node --test tests/*.test.* telegram-bot/tests/worker.test.cjs`

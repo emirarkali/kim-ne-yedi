@@ -32,6 +32,56 @@ let selectedLocation = 'all';
 let searchQuery = '';
 let currentStatsPeriod = 'current'; // 'current', 'prev', 'all'
 
+let weeklyReviewData = null;
+
+function renderWeeklyReview(review, now = new Date()) {
+  const title = document.getElementById('weeklyReviewTitle');
+  const content = document.getElementById('weeklyReviewContent');
+  if (!title || !content) return;
+  if (!review || !Array.isArray(review.ranking)) {
+    title.textContent = 'Günlük beslenme değerlendirmesi';
+    content.textContent = 'İlk değerlendirme bekleniyor. Her gün Türkiye saatiyle 12.00’de son 7 gün incelenir.';
+    return;
+  }
+  if (review.status !== 'ready' || review.ranking.length < 2) {
+    title.textContent = 'Karşılaştırma için yeterli kayıt yok';
+    content.textContent = 'Sıralama için en az iki kişinin son 7 günde öğün kaydı bulunmalı. Günlük kontrol: 12.00 (Türkiye).';
+    return;
+  }
+  const generated = new Date(review.generatedAt);
+  const validTime = Number.isFinite(generated.getTime());
+  const stale = !validTime || now - generated > 26 * 60 * 60 * 1000;
+  title.textContent = `${stale ? 'Son değerlendirmede' : 'Son 7 günde'} en sağlıksız görünen: ${review.ranking[0].name}`;
+  const timestamp = validTime ? generated.toLocaleString('tr-TR', { timeZone: 'Europe/Istanbul', dateStyle: 'short', timeStyle: 'short' }) : 'Bilinmiyor';
+  content.innerHTML = `
+    <p class="text-xs text-slate-500 mb-3">${escapeHtml(review.window?.start)} – ${escapeHtml(review.window?.end)} · Güncelleme: ${escapeHtml(timestamp)} · Her gün 12.00 (Türkiye)</p>
+    ${stale ? '<p class="text-xs text-amber-300 mb-3">Yeni değerlendirme henüz alınamadı; son başarılı sonuç gösteriliyor.</p>' : ''}
+    <ol class="grid gap-3 sm:grid-cols-3">
+      ${review.ranking.map(entry => `
+        <li class="rounded-xl border border-slate-800 bg-slate-950/40 p-3">
+          <a class="font-bold text-slate-100 hover:text-amber-300" href="?u=${encodeURIComponent(entry.id)}">${escapeHtml(entry.rank)}. ${escapeHtml(entry.name)}</a>
+          <p class="text-xs leading-relaxed text-slate-400 mt-2">${escapeHtml(entry.reason)}</p>
+          <p class="text-[11px] text-slate-500 mt-2">${escapeHtml(entry.mealCount)} öğün · ${escapeHtml(entry.activeDays)} gün${entry.limitedData ? ' · Sınırlı kayıt' : ''}</p>
+        </li>
+      `).join('')}
+    </ol>
+    ${review.unranked?.length ? `<p class="text-xs text-slate-500 mt-3">Bu dönemde kaydı olmayanlar sıralanmadı: ${review.unranked.map(entry => escapeHtml(entry.name)).join(', ')}</p>` : ''}
+    <p class="text-[11px] text-slate-500 mt-3">Sıra 1, kayıtlı seçimleri daha dengesiz görünen kişidir. Yalnızca kaydedilen öğünlere dayalı yapay zekâ yorumudur; tüm beslenmeyi temsil etmez. Çeşitlilik, şekerli içecekler ve işlenmiş gıda sıklığı birlikte değerlendirilir. <a class="underline hover:text-slate-300" href="https://www.who.int/news-room/fact-sheets/detail/healthy-diet" target="_blank" rel="noopener noreferrer">Değerlendirme ilkeleri</a></p>`;
+}
+
+async function loadWeeklyReview() {
+  try {
+    const response = await fetch(`data/weekly-review.json?t=${Date.now()}`, { cache: 'no-store' });
+    if (!response.ok) throw new Error('Değerlendirme yüklenemedi');
+    const data = await response.json();
+    if (!Array.isArray(data.ranking)) throw new Error('Değerlendirme biçimi geçersiz');
+    weeklyReviewData = data;
+  } catch (error) {
+    console.warn('Beslenme değerlendirmesi yüklenemedi.');
+  }
+  renderWeeklyReview(weeklyReviewData);
+}
+
 // Location color palette mapping for badges
 const locationColors = {
   "McDonald's": "bg-yellow-500/10 text-yellow-400 border-yellow-500/30",
@@ -260,7 +310,7 @@ function updateCalorieStats(days) {
     : 'Bu dönemde öğün yok';
 }
 
-function escapeCalorieText(value) {
+function escapeHtml(value) {
   return String(value || '').replace(/[&<>"']/g, char => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[char]));
 }
 
@@ -543,7 +593,7 @@ function renderTimeline() {
             </div>
           </div>
 
-          ${calories?.portions ? `<p class="text-[11px] text-slate-500 mt-3">Porsiyon varsayımı: ${escapeCalorieText(calories.portions)}</p>` : ''}
+          ${calories?.portions ? `<p class="text-[11px] text-slate-500 mt-3">Porsiyon varsayımı: ${escapeHtml(calories.portions)}</p>` : ''}
           <!-- Items pills & note -->
           <div class="mt-4 pt-3 border-t border-slate-800/80 flex flex-wrap items-center justify-between gap-2">
             <div class="flex flex-wrap items-center gap-1.5">
@@ -656,6 +706,8 @@ window.addEventListener('popstate', (e) => {
 
 // Initial boot
 document.addEventListener('DOMContentLoaded', async () => {
+  loadWeeklyReview();
+  setInterval(loadWeeklyReview, 5 * 60 * 1000);
   // users.json'ı yüklemeye çalış
   try {
     const usersRes = await fetch('data/users.json?t=' + Date.now());

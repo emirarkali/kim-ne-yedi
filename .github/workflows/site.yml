@@ -1,0 +1,65 @@
+name: Site ve günlük beslenme değerlendirmesi
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'app.js'
+      - 'index.html'
+      - 'data/**'
+      - 'scripts/weekly-review.mjs'
+      - '.github/workflows/site.yml'
+  schedule:
+    # 09:00 UTC = Türkiye saatiyle 12:00
+    - cron: '0 9 * * *'
+  workflow_dispatch:
+
+concurrency:
+  group: site-publication
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Günlük değerlendirmeyi üret
+        if: github.event_name != 'push'
+        continue-on-error: true
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: node scripts/weekly-review.mjs
+      - name: Değerlendirmeyi kaydet
+        if: github.event_name != 'push'
+        run: |
+          git add data/weekly-review.json
+          if ! git diff --cached --quiet; then
+            git config user.name 'github-actions[bot]'
+            git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+            git commit -m 'data: günlük beslenme değerlendirmesi'
+            git pull --rebase origin main
+            git push origin main
+          fi
+      - name: Site dosyalarını hazırla
+        run: |
+          mkdir -p _site
+          cp index.html app.js _site/
+          cp -r data _site/data
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+      - name: Siteyi yayınla
+        id: deployment
+        uses: actions/deploy-pages@v4
