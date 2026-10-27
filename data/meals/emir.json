@@ -150,15 +150,19 @@
         "note": "Kendim yaptım, tadı çok iyiydi."
       },
       {
-        "id": "2026-10-26-9674",
+        "id": "2026-10-26-4239",
         "title": "Tavuk",
         "items": [
           "Tavuk"
         ],
+        "foods": [
+          "Tavuk"
+        ],
+        "drinks": [],
         "location": "Yurt",
-        "category": "Ev Yemeği",
-        "emoji": "🍗",
         "price": "Bedava TL",
+        "emoji": "🍗",
+        "category": "Tavuk",
         "note": "Kuruydu, zor yedim."
       }
     ]
