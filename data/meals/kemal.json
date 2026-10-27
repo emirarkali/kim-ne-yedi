@@ -113,18 +113,16 @@
     "day": "Salı",
     "meals": [
       {
-        "id": "2026-10-27-8348",
-        "title": "Patates Oturtma + Erişte Makarna + Yoğurt + Krokanlı Pasta",
+        "id": "2026-10-27-2627",
+        "title": "Patates Oturtma+ Erişte Makarna + Yoğurt + Krokanlı Pasta + İçmedim.",
         "items": [
-          "Patates Oturtma",
-          "Erişte Makarna",
-          "Yoğurt",
-          "Krokanlı Pasta"
+          "Patates Oturtma+ Erişte Makarna + Yoğurt + Krokanlı Pasta",
+          "İçmedim."
         ],
         "location": "Okul",
-        "category": "Ev Yemeği",
-        "emoji": "🍲",
         "price": "65 TL",
+        "emoji": "🍟",
+        "category": "Fast Food",
         "note": "Güzel menüydü"
       }
     ]
