@@ -162,5 +162,24 @@
         "note": "Kuruydu, zor yedim."
       }
     ]
+  },
+  {
+    "date": "2026-10-27",
+    "day": "Salı",
+    "meals": [
+      {
+        "id": "2026-10-27-5197",
+        "title": "Patates Oturtma + Krokan Pasta",
+        "items": [
+          "Patates Oturtma",
+          "Krokan Pasta"
+        ],
+        "location": "Okul",
+        "category": "Ev Yemeği",
+        "emoji": "🍲",
+        "price": "65 TL",
+        "note": "Tadı çok güzeldi, yanında krokan pasta vardı baya güzeldi."
+      }
+    ]
   }
 ]
