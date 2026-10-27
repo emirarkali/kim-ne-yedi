@@ -1,97 +1,3 @@
-// Default fallback data in case meals.json is opened via file:// or network error
-const fallbackData = [
-  {
-    "date": "2026-10-19",
-    "day": "Pazartesi",
-    "meals": [
-      {
-        "id": "2026-10-19-1",
-        "title": "Hamburger + Ayran",
-        "items": ["Hamburger", "Ayran"],
-        "location": "Neps Burger",
-        "category": "Fast Food",
-        "emoji": "🍔",
-        "price": "350 TL",
-        "note": "Haftanın açılış klasiği"
-      }
-    ]
-  },
-  {
-    "date": "2026-10-20",
-    "day": "Salı",
-    "meals": [
-      {
-        "id": "2026-10-20-1",
-        "title": "Hamburger + Fuse Tea Şeftali",
-        "items": ["Hamburger", "Fuse Tea Şeftali"],
-        "location": "McDonald's",
-        "category": "Fast Food",
-        "emoji": "🍔",
-        "price": "350 TL",
-        "note": "McDonald's menüsü"
-      }
-    ]
-  },
-  {
-    "date": "2026-10-21",
-    "day": "Çarşamba",
-    "meals": [
-      {
-        "id": "2026-10-21-1",
-        "title": "Hamburger + Fuse Tea Şeftali",
-        "items": ["Hamburger", "Fuse Tea Şeftali"],
-        "location": "McDonald's",
-        "category": "Fast Food",
-        "emoji": "🍔",
-        "price": "300 TL",
-        "note": "İstikrar bozulmuyor"
-      }
-    ]
-  },
-  {
-    "date": "2026-10-22",
-    "day": "Perşembe",
-    "meals": [
-      {
-        "id": "2026-10-22-1",
-        "title": "Hamburger + Özerhisar Ayran",
-        "items": ["Hamburger", "Özerhisar Ayran"],
-        "location": "Jungle Burger",
-        "category": "Fast Food",
-        "emoji": "🍔",
-        "price": "440 TL",
-        "note": ""
-      },
-      {
-        "id": "2026-10-22-2",
-        "title": "Tavuk Dürüm + Kola",
-        "items": ["Tavuk Dürüm", "Kola"],
-        "location": "Zater",
-        "category": "Dürüm & Çiğ Köfte",
-        "emoji": "🌯",
-        "price": "240 TL",
-        "note": ""
-      }
-    ]
-  },
-  {
-    "date": "2026-10-23",
-    "day": "Cuma",
-    "meals": [
-      {
-        "id": "2026-10-23-0725",
-        "title": "Tost + Ayran",
-        "items": ["Tost", "Ayran"],
-        "location": "Köfteci Yusuf (buca)",
-        "price": "280 TL",
-        "emoji": "🥪",
-        "category": "Tost & Sandviç",
-        "note": ""
-      }
-    ]
-  }
-];
-
 // Kullanıcı Listesi ve Aktif Kullanıcı
 let usersList = [
   {
@@ -293,28 +199,11 @@ async function loadMeals() {
 
   try {
     const response = await fetch(`${targetFile}?t=${Date.now()}`);
-    if (!response.ok) {
-      // Eğer Can profili ise ve can.json henüz yüklenememişse meals.json dene
-      if (currentUser.id === 'can') {
-        const fallbackRes = await fetch(`data/meals.json?t=${Date.now()}`);
-        if (fallbackRes.ok) {
-          allDaysData = await fallbackRes.json();
-        } else {
-          allDaysData = fallbackData;
-        }
-      } else {
-        allDaysData = [];
-      }
-    } else {
-      allDaysData = await response.json();
-    }
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+    allDaysData = await response.json();
   } catch (err) {
     console.warn(`Could not fetch ${targetFile}:`, err);
-    if (currentUser.id === 'can') {
-      allDaysData = fallbackData;
-    } else {
-      allDaysData = [];
-    }
+    allDaysData = [];
   }
 
   // İstatistikleri, filtreleri ve akışı hesapla
@@ -343,6 +232,38 @@ function updateStatsPeriodTabs() {
   });
 }
 
+function getMealCalories(meal) {
+  const c = meal.calories;
+  return c && Number.isFinite(c.min) && Number.isFinite(c.max) && c.min >= 0 && c.max >= c.min && c.max <= 50000 ? c : null;
+}
+
+function calorieTotals(days) {
+  const result = { min: 0, max: 0, estimated: 0, total: 0 };
+  days.forEach(day => (day.meals || []).forEach(meal => {
+    result.total++;
+    const c = getMealCalories(meal);
+    if (c) { result.min += c.min; result.max += c.max; result.estimated++; }
+  }));
+  return result;
+}
+
+function calorieRange(c) {
+  return `${c.min.toLocaleString('tr-TR')}–${c.max.toLocaleString('tr-TR')} kcal`;
+}
+
+function updateCalorieStats(days) {
+  const totals = calorieTotals(days);
+  document.getElementById('calorieLabel').textContent = `${currentStatsPeriod === 'current' ? 'Bu Hafta' : currentStatsPeriod === 'prev' ? 'Geçen Hafta' : 'Toplam'} Tahmini Kalori`;
+  document.getElementById('calorieVal').textContent = totals.estimated ? calorieRange(totals) : '—';
+  document.getElementById('calorieCoverage').textContent = totals.total
+    ? `${totals.estimated}/${totals.total} öğün hesaplandı · Yalnızca kayıtlı öğünler`
+    : 'Bu dönemde öğün yok';
+}
+
+function escapeCalorieText(value) {
+  return String(value || '').replace(/[&<>"']/g, char => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[char]));
+}
+
 function computeStats() {
   const allTimeDaysCount = allDaysData.length;
 
@@ -353,6 +274,7 @@ function computeStats() {
 
   // Boş durum (Henüz öğün eklenmemiş yeni kullanıcı)
   if (allTimeDaysCount === 0) {
+    updateCalorieStats([]);
     if (streakCount) streakCount.innerText = "0 Gün";
     if (streakEmoji) streakEmoji.innerText = "🌱";
     if (streakStatus) streakStatus.innerText = "İlk Öğün Bekleniyor";
@@ -385,14 +307,9 @@ function computeStats() {
     streakPill.className = "inline-flex items-center gap-2 px-3 py-1 rounded-full bg-orange-500/10 border border-orange-500/30 text-orange-400 text-xs font-semibold mb-3";
   }
 
-  // En son kaydın tarihini veya bugünü referans al
-  let refDate = new Date();
-  if (allDaysData.length > 0) {
-    const dates = allDaysData.map(d => new Date(d.date + "T12:00:00Z")).filter(d => !isNaN(d.getTime()));
-    if (dates.length > 0) {
-      refDate = new Date(Math.max(...dates.map(d => d.getTime())));
-    }
-  }
+  // Calendar weeks follow today's date in Turkey, even when the latest meal is older.
+  const turkeyDate = new Intl.DateTimeFormat('en-CA', { timeZone: 'Europe/Istanbul' }).format(new Date());
+  const refDate = new Date(turkeyDate + 'T12:00:00');
 
   const { current, prev } = getWeekBounds(refDate);
 
@@ -425,6 +342,7 @@ function computeStats() {
     });
   }
 
+  updateCalorieStats(targetDays);
   const periodDaysCount = targetDays.length;
   let totalMeals = 0;
   let burgerCount = 0;
@@ -577,6 +495,7 @@ function renderTimeline() {
     const isTodayOrLatest = dayIndex === 0;
 
     const mealsHtml = day.meals.map(meal => {
+      const calories = getMealCalories(meal);
       const locBadgeClass = getLocationBadgeClass(meal.location);
       const itemsBadges = (meal.items || []).map(item => {
         const isDrink = ['ayran', 'kola', 'su', 'fanta', 'gazoz', 'kahve', 'çay', 'fuse', 'tea', 'şeftali', 'şalgam', 'salgam', 'soda', 'redbull', 'süt'].some(d => item.toLowerCase().includes(d));
@@ -596,7 +515,7 @@ function renderTimeline() {
                 ${meal.emoji && meal.emoji !== '🍽️' ? meal.emoji : getItemEmoji(meal.title)}
               </div>
               <div>
-                <div class="flex items-center gap-2">
+                <div class="flex flex-wrap items-center gap-2">
                   <h4 class="text-base font-bold text-white group-hover:text-brand-400 transition-colors">
                     ${meal.title}
                   </h4>
@@ -611,6 +530,9 @@ function renderTimeline() {
                     <i data-lucide="map-pin" class="w-3 h-3"></i>
                     ${meal.location}
                   </span>
+                  ${calories ? `
+                    <span class="text-xs font-semibold text-orange-300">🔥 Tahmini ${calorieRange(calories)}</span>
+                  ` : '<span class="text-[11px] text-slate-500">Kalori tahmini yok</span>'}
                   ${meal.category ? `
                     <span class="text-[11px] text-slate-400 font-medium">
                       • ${meal.category}
@@ -621,6 +543,7 @@ function renderTimeline() {
             </div>
           </div>
 
+          ${calories?.portions ? `<p class="text-[11px] text-slate-500 mt-3">Porsiyon varsayımı: ${escapeCalorieText(calories.portions)}</p>` : ''}
           <!-- Items pills & note -->
           <div class="mt-4 pt-3 border-t border-slate-800/80 flex flex-wrap items-center justify-between gap-2">
             <div class="flex flex-wrap items-center gap-1.5">

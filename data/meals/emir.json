@@ -14,7 +14,12 @@
         "category": "Dürüm & Çiğ Köfte",
         "emoji": "🌯",
         "price": "130 TL",
-        "note": "Güzeldi"
+        "note": "Güzeldi",
+        "calories": {
+          "min": 430,
+          "max": 650,
+          "portions": "1 standart çiğ köfte dürüm, 200–250 ml ayran"
+        }
       }
     ]
   },
@@ -33,7 +38,12 @@
         "category": "Yemek",
         "emoji": "🐟",
         "price": "275 TL",
-        "note": "Aşırı iyidi midyede yedik"
+        "note": "Aşırı iyidi midyede yedik",
+        "calories": {
+          "min": 650,
+          "max": 1000,
+          "portions": "1 balık ekmek, 250–330 ml şalgam; notta geçen midye için 4–6 adet midye dolma varsayıldı"
+        }
       },
       {
         "id": "2026-10-24-1514",
@@ -46,7 +56,12 @@
         "category": "Yemek",
         "emoji": "🍽️",
         "price": "250 TL",
-        "note": "Tatlı biraz fazla şekerliydi çay sınırsız bidaha gidilir"
+        "note": "Tatlı biraz fazla şekerliydi çay sınırsız bidaha gidilir",
+        "calories": {
+          "min": 250,
+          "max": 400,
+          "portions": "1 porsiyon kazandibi, şekersiz çay; çayın şeker miktarı belirtilmedi"
+        }
       }
     ]
   },
@@ -64,7 +79,12 @@
         "category": "Yemek",
         "emoji": "🍺",
         "price": "95 TL",
-        "note": ""
+        "note": "",
+        "calories": {
+          "min": 180,
+          "max": 250,
+          "portions": "1 şişe/kutu bira, 500 ml varsayıldı"
+        }
       },
       {
         "id": "2026-10-25-2607",
@@ -77,7 +97,12 @@
         "category": "Yemek",
         "emoji": "🍽️",
         "price": "0 TL",
-        "note": "Doymadım ama fena değildi"
+        "note": "Doymadım ama fena değildi",
+        "calories": {
+          "min": 400,
+          "max": 650,
+          "portions": "1 tabak etli bahçıvan kebabı, 1 kase çorba; ekmek dahil değil"
+        }
       },
       {
         "id": "2026-10-25-6903",
@@ -89,7 +114,12 @@
         "category": "Atıştırmalık",
         "emoji": "🍟",
         "price": "36 TL",
-        "note": "Tadı güzeldi ama hızlı bitiyor"
+        "note": "Tadı güzeldi ama hızlı bitiyor",
+        "calories": {
+          "min": 250,
+          "max": 450,
+          "portions": "1 küçük/orta paket cips, 50–80 g varsayıldı"
+        }
       },
       {
         "id": "2026-10-25-1259",
@@ -102,7 +132,12 @@
         "price": "Bedava TL",
         "emoji": "🍳",
         "category": "Yemek",
-        "note": "Tat her zamanki gibiydi."
+        "note": "Tat her zamanki gibiydi.",
+        "calories": {
+          "min": 180,
+          "max": 320,
+          "portions": "1 haşlanmış yumurta, 50–75 g sosis, şekersiz çay; ekmek dahil değil"
+        }
       },
       {
         "id": "2026-10-25-6053",
@@ -115,7 +150,12 @@
         "price": "180 TL",
         "emoji": "🌯",
         "category": "Dürüm & Çiğ Köfte",
-        "note": "Güzeldi."
+        "note": "Güzeldi.",
+        "calories": {
+          "min": 430,
+          "max": 650,
+          "portions": "1 standart çiğ köfte dürüm, 200–250 ml ayran"
+        }
       }
     ]
   },
@@ -134,7 +174,12 @@
         "category": "Ev Yemeği",
         "emoji": "🍳",
         "price": "Bedava TL",
-        "note": "Tadı iyidi"
+        "note": "Tadı iyidi",
+        "calories": {
+          "min": 200,
+          "max": 350,
+          "portions": "2 yumurtalı mantarlı yumurta, pişirme yağı dahil; şekersiz çay, ekmek dahil değil"
+        }
       },
       {
         "id": "2026-10-26-2965",
@@ -147,7 +192,12 @@
         "category": "Fast Food",
         "emoji": "🥪",
         "price": "Bedava TL",
-        "note": "Kendim yaptım, tadı çok iyiydi."
+        "note": "Kendim yaptım, tadı çok iyiydi.",
+        "calories": {
+          "min": 350,
+          "max": 550,
+          "portions": "1 hindi fümeli sandviç, 200 ml meyve suyu; ekmek ve az miktarda sos dahil"
+        }
       },
       {
         "id": "2026-10-26-4239",
@@ -163,7 +213,12 @@
         "price": "Bedava TL",
         "emoji": "🍗",
         "category": "Tavuk",
-        "note": "Kuruydu, zor yedim."
+        "note": "Kuruydu, zor yedim.",
+        "calories": {
+          "min": 250,
+          "max": 500,
+          "portions": "1 porsiyon pişmiş tavuk, 150–200 g; pişirme yöntemi belirtilmedi, garnitür dahil değil"
+        }
       }
     ]
   },
@@ -181,7 +236,12 @@
         "price": "65 TL",
         "emoji": "🍟",
         "category": "Fast Food",
-        "note": "Tadı çok güzeldi, yanında krokan pasta vardı baya güzeldi."
+        "note": "Tadı çok güzeldi, yanında krokan pasta vardı baya güzeldi.",
+        "calories": {
+          "min": 700,
+          "max": 1100,
+          "portions": "1 tabak patates oturtma, 1 dilim krokanlı pasta, 150 g yoğurt"
+        }
       },
       {
         "id": "2026-10-27-7724",
@@ -193,7 +253,12 @@
         "category": "İçecek",
         "emoji": "🍚",
         "price": "0 TL",
-        "note": "Kuru fasulye mükemmel bir yemek"
+        "note": "Kuru fasulye mükemmel bir yemek",
+        "calories": {
+          "min": 550,
+          "max": 850,
+          "portions": "1 tabak kuru fasulye, 1 porsiyon pirinç pilavı"
+        }
       }
     ]
   }

@@ -10,11 +10,16 @@
           "Hamburger",
           "Ayran"
         ],
-        "location": "Neps Burger",
+        "location": "Nap's Burger",
         "price": "350 TL",
         "emoji": "🍔",
         "category": "Fast Food",
-        "note": ""
+        "note": "",
+        "calories": {
+          "min": 650,
+          "max": 950,
+          "portions": "1 hamburger, 200–250 ml ayran; patates belirtilmediği için dahil değil"
+        }
       }
     ]
   },
@@ -33,7 +38,12 @@
         "price": "350 TL",
         "emoji": "🍔",
         "category": "Fast Food",
-        "note": ""
+        "note": "",
+        "calories": {
+          "min": 550,
+          "max": 850,
+          "portions": "1 hamburger, 330–400 ml şekerli Fuse Tea Şeftali; patates dahil değil"
+        }
       }
     ]
   },
@@ -52,7 +62,12 @@
         "price": "300 TL",
         "emoji": "🍔",
         "category": "Fast Food",
-        "note": ""
+        "note": "",
+        "calories": {
+          "min": 550,
+          "max": 850,
+          "portions": "1 hamburger, 330–400 ml şekerli Fuse Tea Şeftali; patates dahil değil"
+        }
       }
     ]
   },
@@ -71,7 +86,12 @@
         "category": "Fast Food",
         "emoji": "🍔",
         "price": "440 TL",
-        "note": ""
+        "note": "",
+        "calories": {
+          "min": 700,
+          "max": 1050,
+          "portions": "1 restoran hamburgeri, 250 ml Özerhisar ayran; patates dahil değil"
+        }
       },
       {
         "id": "2026-10-22-8886",
@@ -84,7 +104,12 @@
         "price": "240 TL",
         "emoji": "🌯",
         "category": "Dürüm & Çiğ Köfte",
-        "note": ""
+        "note": "",
+        "calories": {
+          "min": 650,
+          "max": 950,
+          "portions": "1 tavuk dürüm, 330 ml şekerli kola"
+        }
       }
     ]
   },
@@ -103,7 +128,12 @@
         "price": "280 TL",
         "emoji": "🥪",
         "category": "Tost & Sandviç",
-        "note": ""
+        "note": "",
+        "calories": {
+          "min": 550,
+          "max": 850,
+          "portions": "1 tam tost, 200–250 ml ayran; tost içeriği belirtilmediği için kaşarlı/karışık standart porsiyon varsayıldı"
+        }
       },
       {
         "id": "2026-10-23-6043",
@@ -115,7 +145,12 @@
         "category": "Döner & Kebap",
         "emoji": "🧆",
         "price": "Beleş TL",
-        "note": "Sikim kalkti"
+        "note": "Sikim kalkti",
+        "calories": {
+          "min": 850,
+          "max": 1250,
+          "portions": "1 porsiyon İzmir köfte, 1 porsiyon makarna, 1 porsiyon tatlı; tatlı türü belirtilmedi"
+        }
       },
       {
         "id": "2026-10-23-2663",
@@ -128,7 +163,12 @@
         "category": "Döner & Kebap",
         "emoji": "🧆",
         "price": "130 TL",
-        "note": "İlk ve son"
+        "note": "İlk ve son",
+        "calories": {
+          "min": 430,
+          "max": 650,
+          "portions": "1 standart çiğ köfte dürüm, 200–250 ml ayran"
+        }
       }
     ]
   },
@@ -147,7 +187,12 @@
         "category": "Yemek",
         "emoji": "🍽️",
         "price": "350 TL",
-        "note": "Lezizo"
+        "note": "Lezizo",
+        "calories": {
+          "min": 650,
+          "max": 950,
+          "portions": "1 ekmek arası/porsiyon et döner, 200–250 ml ayran; döner sunumu belirtilmedi"
+        }
       },
       {
         "id": "2026-10-24-0008",
@@ -160,7 +205,12 @@
         "category": "Yemek",
         "emoji": "🐟",
         "price": "Kemal ödedi beleş🤠 TL",
-        "note": "Balik yedik omega uç"
+        "note": "Balik yedik omega uç",
+        "calories": {
+          "min": 550,
+          "max": 800,
+          "portions": "1 balık ekmek, 250–330 ml şalgam"
+        }
       },
       {
         "id": "2026-10-24-4002",
@@ -173,7 +223,12 @@
         "category": "Tatlı",
         "emoji": "🍰",
         "price": "250 TL",
-        "note": "Mahir hocayla yedik iyidi"
+        "note": "Mahir hocayla yedik iyidi",
+        "calories": {
+          "min": 400,
+          "max": 800,
+          "portions": "1 porsiyon içeriği belirtilmemiş spesiyal tatlı, şekersiz çay ve sade kahve; tatlı içeriği bilinmediğinden geniş aralık"
+        }
       }
     ]
   },
@@ -192,7 +247,12 @@
         "category": "Yemek",
         "emoji": "🍺",
         "price": "200 TL",
-        "note": "Bira ictim guzeldi"
+        "note": "Bira ictim guzeldi",
+        "calories": {
+          "min": 360,
+          "max": 500,
+          "portions": "Kayıttaki Bira + Bira ifadesi 2 adet 500 ml bira olarak yorumlandı"
+        }
       },
       {
         "id": "2026-10-25-1310",
@@ -204,7 +264,12 @@
         "category": "Tavuk",
         "emoji": "🍗",
         "price": "Beleş TL",
-        "note": "6/10"
+        "note": "6/10",
+        "calories": {
+          "min": 850,
+          "max": 1300,
+          "portions": "1 porsiyon tavuk sote, 1 porsiyon bulgur pilavı, 75 g haydari, 1 porsiyon tatlı; tatlı türü belirtilmedi"
+        }
       }
     ]
   },
@@ -223,7 +288,12 @@
         "category": "Döner & Kebap",
         "emoji": "🥙",
         "price": "290 TL",
-        "note": "Micotakis"
+        "note": "Micotakis",
+        "calories": {
+          "min": 950,
+          "max": 1400,
+          "portions": "1 gyros döner sandviç/dürüm, menü ifadesi nedeniyle 1 küçük porsiyon patates, 300 ml büyük ayran varsayıldı"
+        }
       },
       {
         "id": "2026-10-26-6385",
@@ -237,7 +307,12 @@
         "category": "Ev Yemeği",
         "emoji": "🍲",
         "price": "0 TL",
-        "note": "Güzeldi"
+        "note": "Güzeldi",
+        "calories": {
+          "min": 650,
+          "max": 1000,
+          "portions": "1 porsiyon dolma (4–6 küçük adet), 1 porsiyon makarna, 1 kase çorba; dolma ve çorba türü belirtilmedi"
+        }
       },
       {
         "id": "2026-10-26-6364",
@@ -250,7 +325,12 @@
         "price": "300 TL",
         "emoji": "🍟",
         "category": "Yemek",
-        "note": "Maç izlerken aktı"
+        "note": "Maç izlerken aktı",
+        "calories": {
+          "min": 550,
+          "max": 900,
+          "portions": "50 g yenilebilir çekirdek içi, 40–60 g cips, 330 ml şekerli kola; ortak atıştırmalıklardan kişisel pay varsayımı"
+        }
       }
     ]
   },
@@ -269,7 +349,12 @@
         "category": "Fast Food",
         "emoji": "🍔",
         "price": "500 TL",
-        "note": "Smash burger"
+        "note": "Smash burger",
+        "calories": {
+          "min": 750,
+          "max": 1100,
+          "portions": "1 smash hamburger, 330 ml şekerli kola; patates belirtilmediği için dahil değil"
+        }
       },
       {
         "id": "2026-10-27-7545",
@@ -282,7 +367,12 @@
         "category": "Pide & Hamur İşi",
         "emoji": "🫓",
         "price": "350 TL",
-        "note": "Mis"
+        "note": "Mis",
+        "calories": {
+          "min": 750,
+          "max": 1150,
+          "portions": "1 standart tam pide, 200–250 ml ayran; pide içeriği belirtilmedi"
+        }
       },
       {
         "id": "2026-10-27-8965",
@@ -294,7 +384,12 @@
         "category": "Yemek",
         "emoji": "🍦",
         "price": "150 TL",
-        "note": "Muthis"
+        "note": "Muthis",
+        "calories": {
+          "min": 250,
+          "max": 450,
+          "portions": "1 adet Hindistan cevizi biçimli kaplamalı dondurma, 80–120 g varsayıldı; marka ve gramaj belirtilmedi"
+        }
       }
     ]
   }

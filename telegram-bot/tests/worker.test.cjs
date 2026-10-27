@@ -67,3 +67,36 @@ test('quoted edit-list number selects a meal with or without an in-memory sessio
     assert.equal(vm.runInContext('userSessions.get(123).action', context), 'duzenle_submit');
   }
 });
+
+test('calorie ranges reject malformed or impossible values', () => {
+  for (const value of [null, {}, { min: '100', max: 200 }, { min: -1, max: 5 }, { min: 500, max: 100 }, { min: 1, max: Infinity }]) {
+    assert.equal(context.normalizeCalories(value), null);
+  }
+  assert.equal(context.normalizeCalories({ min: 100.2, max: 200.8 }).max, 201);
+});
+
+test('manual save persists calorie estimate and still saves when estimation fails', async () => {
+  context.AbortSignal = AbortSignal;
+  context.TextEncoder = TextEncoder;
+  context.btoa = btoa;
+  for (const available of [true, false]) {
+    let written;
+    context.fetch = async (url, options) => {
+      if (url.includes('generativelanguage')) {
+        if (!available) throw new Error('offline');
+        return { ok: true, json: async () => ({ candidates: [{ content: { parts: [{ text: JSON.stringify({ min: 450, max: 650, portions: '1 tabak pilav' }) }] } }] }) };
+      }
+      if (options.method === 'PUT') {
+        written = JSON.parse(Buffer.from(JSON.parse(options.body).content, 'base64').toString());
+        return { ok: true, json: async () => ({}) };
+      }
+      return { status: 404 };
+    };
+    const saved = await context.saveNewMealToGitHub('token', { title: 'Pilav', foods: ['Pilav'], drinks: [] }, '2026-10-28', 'Çarşamba', { id: 'emir', filePath: 'test.json' }, 'key');
+    assert.equal(written[0].meals[0].title, 'Pilav');
+    if (available) {
+      assert.equal(saved.calories.min, 450);
+      assert.equal(written[0].meals[0].calories.max, 650);
+    } else assert.equal(written[0].meals[0].calories, null);
+  }
+});

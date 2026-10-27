@@ -34,7 +34,7 @@ Can, Emir ve Kemal'in haftalık yemek günlüğü, kesintisiz yemek zinciri ve g
 
 ## 🚀 Yeni Gün Nasıl Eklenir?
 
-Yeni bir gün eklemek için tek yapmanız gereken [`data/meals.json`](data/meals.json) dosyasının en altına (veya uygun tarih sırasına) yeni bir gün eklemektir:
+Yeni bir gün eklemek için tek yapmanız gereken ilgili kişinin dosyasına ([Can](data/meals/can.json), [Emir](data/meals/emir.json), [Kemal](data/meals/kemal.json)) en alta (veya uygun tarih sırasına) yeni bir gün eklemektir:
 
 ```json
 {
@@ -57,7 +57,7 @@ Yeni bir gün eklemek için tek yapmanız gereken [`data/meals.json`](data/meals
 Değişikliği kaydedip pushladıktan sonra site otomatik olarak güncellenir:
 
 ```bash
-git add data/meals.json
+git add data/meals/can.json
 git commit -m "feat: 23 Ekim Cuma öğünü eklendi"
 git push origin main
 ```

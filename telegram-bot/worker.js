@@ -267,7 +267,7 @@ async function handleIncomingUpdate(update, env) {
             parsedData.meal.price = formatPrice(parsedData.meal.price);
           }
 
-          await saveNewMealToGitHub(env.GITHUB_TOKEN, parsedData.meal, parsedData.date, parsedData.day, activeProfile);
+          await saveNewMealToGitHub(env.GITHUB_TOKEN, parsedData.meal, parsedData.date, parsedData.day, activeProfile, env.GEMINI_API_KEY);
 
           const aiFood = parsedData.meal.foods.join(" + ");
           const aiDrink = parsedData.meal.drinks.join(" + ");
@@ -278,6 +278,7 @@ async function handleIncomingUpdate(update, env) {
             `✅ *Harika, ${activeProfile.name}'ın günlüğüne eklendi!* (${activeProfile.emoji})\n\n` +
             `📅 *Tarih:* ${parsedData.day} (${parsedData.date})\n` +
             `${foodLine}\n` +
+      calorieSummary(parsedData.meal) +
             `${drinkLine}\n` +
             `📍 *Konum:* ${parsedData.meal.location}\n` +
             `💰 *Fiyat:* ${parsedData.meal.price || "Belirtilmedi"}\n` +
@@ -447,6 +448,8 @@ async function handleIncomingUpdate(update, env) {
         note: note
       };
 
+      updatedMeal.calories = await estimateMealCalories(updatedMeal, env.GEMINI_API_KEY);
+
       let targetDayEntry = mealsList.find(d => d.date === dateInfo.date);
       if (targetDayEntry) {
         targetDayEntry.meals.push(updatedMeal);
@@ -468,13 +471,6 @@ async function handleIncomingUpdate(update, env) {
         activeProfile.filePath
       );
 
-      // Can profili ise data/meals.json senkronize et
-      if (activeProfile.id === "can") {
-        try {
-          const syncFile = await getGitHubFile(env.GITHUB_TOKEN, "data/meals.json");
-          await updateGitHubFile(env.GITHUB_TOKEN, syncFile.sha, JSON.stringify(mealsList, null, 2), `sync: meals.json`, "data/meals.json");
-        } catch (e) { }
-      }
 
       const foodLine = food ? `${guessEmoji(food)} *Yemek:* ${food}` : "";
       const drinkLine = drink ? `🥤 *İçecek:* ${drink}` : "🥤 *İçecek:* (İçilmedi)";
@@ -483,6 +479,7 @@ async function handleIncomingUpdate(update, env) {
         `✅ *#${mealNum} Numaralı Öğün Güncellendi!* (${activeProfile.emoji} ${activeProfile.name})\n\n` +
         `📅 *Tarih:* ${dateInfo.day} (${dateInfo.date})\n` +
         `${foodLine ? foodLine + "\n" : ""}` +
+        calorieSummary(updatedMeal) +
         `${drinkLine}\n` +
         `📍 *Konum:* ${loc}\n` +
         `💰 *Fiyat:* ${price}\n` +
@@ -622,13 +619,6 @@ async function handleIncomingUpdate(update, env) {
         activeProfile.filePath
       );
 
-      // Can profili ise data/meals.json senkronize et
-      if (activeProfile.id === "can") {
-        try {
-          const syncFile = await getGitHubFile(env.GITHUB_TOKEN, "data/meals.json");
-          await updateGitHubFile(env.GITHUB_TOKEN, syncFile.sha, JSON.stringify(mealsList, null, 2), `sync: meals.json`, "data/meals.json");
-        } catch (e) { }
-      }
 
       await editTelegramMessage(env.TELEGRAM_BOT_TOKEN, chatId, statusMsgId, `🗑️ *Öğün Silindi!*\n\n*${itemToDelete.meal.title}* ${activeProfile.name}'ın günlüğünden kaldırıldı.`);
       return;
@@ -762,7 +752,7 @@ async function handleIncomingUpdate(update, env) {
         }
         const primaryItem = food || drink;
 
-        await saveNewMealToGitHub(env.GITHUB_TOKEN, {
+        const savedMeal = await saveNewMealToGitHub(env.GITHUB_TOKEN, {
           title: fullTitle,
           items: items,
           foods: food ? [food] : [],
@@ -772,7 +762,7 @@ async function handleIncomingUpdate(update, env) {
           category: guessCategory(primaryItem),
           emoji: guessEmoji(primaryItem),
           note: note
-        }, dateInfo.date, dateInfo.day, activeProfile);
+        }, dateInfo.date, dateInfo.day, activeProfile, env.GEMINI_API_KEY);
 
         const foodLine = food ? `${guessEmoji(food)} *Yemek:* ${food}` : "";
         const drinkLine = drink ? `🥤 *İçecek:* ${drink}` : "🥤 *İçecek:* (İçilmedi)";
@@ -781,6 +771,7 @@ async function handleIncomingUpdate(update, env) {
           `✅ *Siteye Eklendi!* (${activeProfile.emoji} ${activeProfile.name})\n\n` +
           `📅 *Tarih:* ${dateInfo.day} (${dateInfo.date})\n` +
           `${foodLine ? foodLine + "\n" : ""}` +
+          calorieSummary(savedMeal) +
           `${drinkLine}\n` +
           `📍 *Konum:* ${loc}\n` +
           `💰 *Fiyat:* ${price}\n` +
@@ -1119,13 +1110,6 @@ async function handleIncomingUpdate(update, env) {
           activeProfile.filePath
         );
 
-        // Can profili ise data/meals.json senkronize et
-        if (activeProfile.id === "can") {
-          try {
-            const syncFile = await getGitHubFile(env.GITHUB_TOKEN, "data/meals.json");
-            await updateGitHubFile(env.GITHUB_TOKEN, syncFile.sha, JSON.stringify(mealsList, null, 2), `sync: meals.json`, "data/meals.json");
-          } catch (e) { }
-        }
 
         await sendTelegramMessage(env.TELEGRAM_BOT_TOKEN, chatId, `🗑️ *Öğün Silindi!*\n\n*${itemToDelete.meal.title}* ${activeProfile.name}'ın günlüğünden kaldırıldı.`);
         return;
@@ -1227,7 +1211,7 @@ async function handleIncomingUpdate(update, env) {
       `📝 [2/2] *${parsedData.meal.title}* (${parsedData.meal.price}) anlaşıldı ➔ ${activeProfile.name}'ın günlüğüne kaydediliyor...`
     );
 
-    await saveNewMealToGitHub(env.GITHUB_TOKEN, parsedData.meal, parsedData.date, parsedData.day, activeProfile);
+    await saveNewMealToGitHub(env.GITHUB_TOKEN, parsedData.meal, parsedData.date, parsedData.day, activeProfile, env.GEMINI_API_KEY);
 
     const aiFood = parsedData.meal.foods.join(" + ");
     const aiDrink = parsedData.meal.drinks.join(" + ");
@@ -1238,6 +1222,7 @@ async function handleIncomingUpdate(update, env) {
       `✅ *Harika, ${activeProfile.name}'ın günlüğüne eklendi!* (${activeProfile.emoji})\n\n` +
       `📅 *Tarih:* ${parsedData.day} (${parsedData.date})\n` +
       `${foodLine}\n` +
+      calorieSummary(parsedData.meal) +
       `${drinkLine}\n` +
       `📍 *Konum:* ${parsedData.meal.location}\n` +
       `💰 *Fiyat:* ${parsedData.meal.price}\n` +
@@ -1380,7 +1365,40 @@ function getFlattenedMeals(mealsList) {
   return result;
 }
 
-async function saveNewMealToGitHub(token, meal, customDate = null, customDay = null, profile = USER_PROFILES["can"]) {
+function normalizeCalories(value) {
+  if (!value || typeof value !== "object") return null;
+  const { min, max, portions } = value;
+  if (!Number.isFinite(min) || !Number.isFinite(max) || min < 0 || max < min || max > 50000) return null;
+  return { min: Math.round(min), max: Math.round(max), portions: typeof portions === "string" ? portions.trim().slice(0, 500) : "" };
+}
+
+function calorieSummary(meal) {
+  const calories = normalizeCalories(meal.calories);
+  return calories ? `🔥 *Tahmini kalori:* ${calories.min}–${calories.max} kcal\n` : "";
+}
+
+async function estimateMealCalories(meal, apiKey) {
+  if (!apiKey) return null;
+  try {
+    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-lite-latest:generateContent?key=${apiKey}`, {
+      method: "POST",
+      signal: AbortSignal.timeout(8000),
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        contents: [{ parts: [{ text: `Bu öğünün toplam tahmini enerjisini kcal olarak hesapla. Yiyecek ve içeceklerin tamamını dahil et. Belirtilen miktarları kullan; miktar yoksa her ürün için standart tek porsiyon varsay. Fiyatı porsiyon miktarı sayma. Makul bir alt ve üst aralık ver. portions alanında kullanılan porsiyonları Türkçe yaz. Bilgi yetersizse null döndür. Yalnız JSON: {"min": 500, "max": 700, "portions": "1 tabak pilav, 1 bardak ayran"}. Öğün: ${JSON.stringify({ title: meal.title, foods: meal.foods, drinks: meal.drinks, items: meal.items })}` }] }],
+        generationConfig: { responseMimeType: "application/json", maxOutputTokens: 500 }
+      })
+    });
+    if (!response.ok) return null;
+    const result = await response.json();
+    return normalizeCalories(JSON.parse(result.candidates?.[0]?.content?.parts?.[0]?.text || "null"));
+  } catch (error) {
+    return null; // Calorie estimation must never prevent saving a meal.
+  }
+}
+
+async function saveNewMealToGitHub(token, meal, customDate = null, customDay = null, profile = USER_PROFILES["can"], calorieApiKey = null) {
+  meal.calories = normalizeCalories(meal.calories) || await estimateMealCalories(meal, calorieApiKey);
   const filePath = profile ? profile.filePath : "data/meals/can.json";
   const githubFile = await getGitHubFile(token, filePath);
   let mealsList = [];
@@ -1403,7 +1421,8 @@ async function saveNewMealToGitHub(token, meal, customDate = null, customDay = n
     category: meal.category || "Fast Food",
     emoji: meal.emoji || "🍽️",
     price: meal.price || null,
-    note: meal.note || ""
+    note: meal.note || "",
+    calories: meal.calories
   };
 
   let dayEntry = mealsList.find(d => d.date === targetDate);
@@ -1426,13 +1445,7 @@ async function saveNewMealToGitHub(token, meal, customDate = null, customDay = n
     filePath
   );
 
-  // Can profili ise data/meals.json senkronize et
-  if (profile.id === "can") {
-    try {
-      const syncFile = await getGitHubFile(token, "data/meals.json");
-      await updateGitHubFile(token, syncFile.sha, JSON.stringify(mealsList, null, 2), `sync: meals.json`, "data/meals.json");
-    } catch (e) { }
-  }
+  return newMeal;
 }
 
 // Keep semantic groups independent of the legacy positional items format.
@@ -1442,6 +1455,7 @@ function normalizeParsedMeal(parsed, userMessage, previousContext = null) {
     throw new Error("Yiyecek/içecek alanları eksik.");
   }
   const cleanItems = values => values.filter(v => typeof v === "string" && v.trim()).map(capitalizeTr);
+  meal.calories = normalizeCalories(meal.calories);
   meal.foods = cleanItems(meal.foods);
   meal.drinks = cleanItems(meal.drinks).filter(v => !isNoDrink(v));
   const normalizedText = userMessage.toLocaleLowerCase("tr-TR").normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/ı/g, "i");
@@ -1505,6 +1519,7 @@ Kurallar:
 - Eğer kullanıcı en baştan tüm detayları verdiyse:
   "isComplete": true yap, "question": null yap.
 - "emoji": Yemeğe en uygun tek bir emoji (örn: 🍔, 🍕, 🌯, 🍟, 🍽️).
+- "calories": Öğünün tüm yiyecek ve içecekleri için toplam tahmini kcal aralığı: {"min": sayı, "max": sayı, "portions": "Türkçe porsiyon açıklaması"}. Belirtilen miktarı kullan; yoksa standart tek porsiyon varsay ve portions içinde yaz. Fiyatı miktar sayma. Tahmin edilemiyorsa null.
 - "category": Uygun kategori (örn: "Fast Food", "Dürüm & Çiğ Köfte", "Atıştırmalık", "Tatlı", "Ev Yemeği").
 
 Çıktı SADECE şu JSON formatında olmalıdır:
@@ -1523,7 +1538,8 @@ Kurallar:
     "price": "36 TL",
     "category": "Atıştırmalık",
     "emoji": "🍟",
-    "note": ""
+    "note": "",
+    "calories": {"min": 150, "max": 250, "portions": "1 küçük paket cips"}
   }
 }
 `;

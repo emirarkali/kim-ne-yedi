@@ -162,7 +162,7 @@
         </div>
 
         <!-- Quick Stats Grid -->
-        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4 mt-4">
+        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4 mt-4">
           <div class="bg-slate-950/40 rounded-xl p-3 border border-slate-800/60">
             <span class="text-xs text-slate-400 block mb-1">Toplam Gün</span>
             <span class="text-xl font-bold text-white flex items-center gap-1.5" id="totalDays">
@@ -198,6 +198,11 @@
             <span class="text-xl font-bold text-white flex items-center gap-1.5" id="totalLocations">
               <i data-lucide="map-pin" class="w-4 h-4 text-rose-400"></i> -
             </span>
+          </div>
+          <div class="bg-slate-950/40 rounded-xl p-3 border border-orange-500/20 sm:col-span-2">
+            <span class="text-xs text-slate-400 block mb-1" id="calorieLabel">Bu Hafta Tahmini Kalori</span>
+            <span class="text-xl font-bold text-orange-300 block" id="calorieVal">—</span>
+            <span class="text-[11px] text-slate-500 block mt-1" id="calorieCoverage">Henüz kalori tahmini yok</span>
           </div>
         </div>
 
@@ -256,12 +261,12 @@
         </div>
         <div>
           <h4 class="text-base font-bold text-white">Yeni Gün Nasıl Eklenir?</h4>
-          <p class="text-xs text-slate-400">`data/meals.json` dosyasını güncelle & pushla</p>
+          <p class="text-xs text-slate-400">İlgili kişinin öğün dosyasını güncelle & pushla</p>
         </div>
       </div>
 
       <p class="text-xs text-slate-300 leading-relaxed mb-4">
-        Can yeni bir şeyler yedikçe repodaki <code class="px-1.5 py-0.5 rounded bg-slate-800 text-brand-300 font-mono text-[11px]">data/meals.json</code> dosyasına yeni günü ekleyip commit & push yapmanız yeterlidir. Site otomatik olarak güncellenecektir!
+        Yeni öğünler için repodaki <code class="px-1.5 py-0.5 rounded bg-slate-800 text-brand-300 font-mono text-[11px]">data/meals/can.json</code> (Can), <code class="font-mono">emir.json</code> veya <code class="font-mono">kemal.json</code> dosyasına yeni günü ekleyip commit & push yapmanız yeterlidir. Site otomatik olarak güncellenecektir!
       </p>
 
       <div class="relative mb-4">

@@ -14,7 +14,12 @@
         "category": "Yemek",
         "emoji": "🐟",
         "price": "280 TL",
-        "note": "Güzeldi"
+        "note": "Güzeldi",
+        "calories": {
+          "min": 650,
+          "max": 950,
+          "portions": "1 balık ekmek, 250 ml şekerli Niğde Gazozu"
+        }
       },
       {
         "id": "2026-10-24-3455",
@@ -27,7 +32,12 @@
         "price": "280 TL",
         "emoji": "🍽️",
         "category": "Yemek",
-        "note": "Çay sınırsız olması çok iyiydi"
+        "note": "Çay sınırsız olması çok iyiydi",
+        "calories": {
+          "min": 250,
+          "max": 400,
+          "portions": "1 porsiyon kazandibi, şekersiz çay; çayın şeker miktarı belirtilmedi"
+        }
       }
     ]
   },
@@ -46,7 +56,12 @@
         "price": "0 TL",
         "emoji": "🍳",
         "category": "Kahvaltı",
-        "note": "3 yumurta yemek yeterliydi"
+        "note": "3 yumurta yemek yeterliydi",
+        "calories": {
+          "min": 350,
+          "max": 650,
+          "portions": "Notta belirtilen 3 yumurta; yurt kahvaltısında küçük ekmek/peynir/zeytin eşliği varsayıldı, şekersiz çay"
+        }
       },
       {
         "id": "2026-10-25-1930",
@@ -59,7 +74,12 @@
         "price": "Bedava TL",
         "emoji": "🍲",
         "category": "Çorba",
-        "note": "Fena değildi"
+        "note": "Fena değildi",
+        "calories": {
+          "min": 600,
+          "max": 900,
+          "portions": "1 kase tarhana çorbası, 1 porsiyon tavuk sote, 1 porsiyon bulgur pilavı"
+        }
       }
     ]
   },
@@ -78,7 +98,12 @@
         "price": "Beleş TL",
         "emoji": "🍟",
         "category": "Fast Food",
-        "note": "Çok kötüydü pek yiyemedim."
+        "note": "Çok kötüydü pek yiyemedim.",
+        "calories": {
+          "min": 150,
+          "max": 350,
+          "portions": "2 yumurtalı omlet ve 1 küçük porsiyon patates salatası servis edildiği; nottaki pek yiyemedim ifadesi nedeniyle yaklaşık yarısının tüketildiği varsayıldı; şekersiz çay"
+        }
       },
       {
         "id": "2026-10-26-5042",
@@ -91,7 +116,12 @@
         "price": "Beleş TL",
         "emoji": "🍲",
         "category": "Çorba",
-        "note": "Dolma baya iyiydi."
+        "note": "Dolma baya iyiydi.",
+        "calories": {
+          "min": 400,
+          "max": 700,
+          "portions": "1 kase domates çorbası, 1 porsiyon dolma (4–6 küçük adet); içecek yok, dolmanın türü belirtilmedi"
+        }
       },
       {
         "id": "2026-10-26-7852",
@@ -104,7 +134,12 @@
         "price": "Beleş TL",
         "emoji": "🍟",
         "category": "Yemek",
-        "note": "Can almıştı, candan Allah razı olsun."
+        "note": "Can almıştı, candan Allah razı olsun.",
+        "calories": {
+          "min": 550,
+          "max": 900,
+          "portions": "50 g yenilebilir çekirdek içi, 40–60 g cips, 330 ml şekerli kola; ortak atıştırmalıklardan kişisel pay varsayımı"
+        }
       }
     ]
   },
@@ -123,7 +158,12 @@
         "price": "65 TL",
         "emoji": "🍟",
         "category": "Fast Food",
-        "note": "Güzel menüydü"
+        "note": "Güzel menüydü",
+        "calories": {
+          "min": 900,
+          "max": 1350,
+          "portions": "1 tabak patates oturtma, 1 küçük porsiyon erişte, 150 g yoğurt, 1 dilim krokanlı pasta; içecek yok"
+        }
       }
     ]
   }

@@ -192,13 +192,6 @@ def update_meals_and_push(parsed, profile):
     with open(file_path, "w", encoding="utf-8") as f:
         json.dump(meals_data, f, ensure_ascii=False, indent=2)
 
-    # Can profili ise data/meals.json dosyasını da senkron tut
-    if profile["id"] == "can":
-        legacy_path = os.path.join(REPO_DIR, "data", "meals.json")
-        with open(legacy_path, "w", encoding="utf-8") as f:
-            json.dump(meals_data, f, ensure_ascii=False, indent=2)
-        subprocess.run(["git", "add", "data/meals.json"], cwd=REPO_DIR, check=False)
-
     rel_file = os.path.relpath(file_path, REPO_DIR)
     subprocess.run(["git", "add", rel_file], cwd=REPO_DIR, check=True)
     commit_msg = f"feat({profile['id']}): {target_day} öğünü eklendi ({meal_obj['title']})"
