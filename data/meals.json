@@ -240,5 +240,25 @@
         "note": "Güzeldi"
       }
     ]
+  },
+  {
+    "date": "2026-10-27",
+    "day": "Salı",
+    "meals": [
+      {
+        "id": "2026-10-27-8704",
+        "title": "Kola + Çekirdek + Cips",
+        "items": [
+          "Kola",
+          "Çekirdek",
+          "Cips"
+        ],
+        "location": "Ev",
+        "category": "Atıştırmalık",
+        "emoji": "🍿",
+        "price": "300 TL",
+        "note": "Maç izlerken aktı"
+      }
+    ]
   }
 ]
