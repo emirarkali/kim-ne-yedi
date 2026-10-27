@@ -107,5 +107,26 @@
         "note": "Can almıştı, candan Allah razı olsun."
       }
     ]
+  },
+  {
+    "date": "2026-10-27",
+    "day": "Salı",
+    "meals": [
+      {
+        "id": "2026-10-27-8348",
+        "title": "Patates Oturtma + Erişte Makarna + Yoğurt + Krokanlı Pasta",
+        "items": [
+          "Patates Oturtma",
+          "Erişte Makarna",
+          "Yoğurt",
+          "Krokanlı Pasta"
+        ],
+        "location": "Okul",
+        "category": "Ev Yemeği",
+        "emoji": "🍲",
+        "price": "65 TL",
+        "note": "Güzel menüydü"
+      }
+    ]
   }
 ]
