@@ -311,6 +311,31 @@
           "max": 1100,
           "portions": "1 porsiyon et tandır (150–200 g), 1 porsiyon bulgur pilavı, 1 küçük salata ve notta belirtilen 1 kase çorba; çorba türü belirtilmedi"
         }
+      },
+      {
+        "id": "2026-10-28-9048",
+        "title": "Et Döner + Tavuk Göğsü + Kola",
+        "items": [
+          "Et Döner + Tavuk Göğsü",
+          "Kola"
+        ],
+        "foods": [
+          "Et Döner",
+          "Tavuk Göğsü"
+        ],
+        "drinks": [
+          "Kola"
+        ],
+        "location": "Yurt",
+        "category": "Fast Food",
+        "emoji": "🥙",
+        "price": "125 TL",
+        "note": "İkisi de efsaneydi, tavuk yumuşacıktı.",
+        "calories": {
+          "min": 850,
+          "max": 1250,
+          "portions": "1 porsiyon et döner, 1 porsiyon tavuk göğsü tatlısı ve 1 bardak kola"
+        }
       }
     ]
   }
