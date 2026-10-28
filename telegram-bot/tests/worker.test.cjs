@@ -159,3 +159,28 @@ test('scheduled Worker evaluates all profiles and writes only the shared review 
     }
   }
 });
+
+test('AI failures explain quota errors and redact credentials from provider messages', async () => {
+  const key = 'secret-for-test';
+  context.fetch = async () => ({ ok: false, status: 429, json: async () => ({ error: {
+    status: 'RESOURCE_EXHAUSTED', message: `Quota exceeded; limit: 20. key=${key} https://example.com?key=${key}`
+  } }) });
+  await assert.rejects(context.parseMealWithGeminiFast('Pilav yedim', key), error => {
+    const message = context.aiUserError(error);
+    assert.match(message, /429/);
+    assert.match(message, /kotası/);
+    assert.match(message, /limit: 20/);
+    assert.equal(message.includes(key), false);
+    assert.equal(message.includes('https://'), false);
+    return true;
+  });
+});
+
+test('calorie failure is reported without preventing the meal from being saved', async () => {
+  const meal = { title: 'Pilav' };
+  context.fetch = async () => ({ ok: false, status: 503, json: async () => ({ error: { message: 'Service unavailable' } }) });
+  assert.equal(await context.estimateMealCalories(meal, 'test'), null);
+  const summary = context.calorieSummary(meal);
+  assert.match(summary, /Öğün kaydedildi/);
+  assert.match(summary, /503/);
+});

@@ -260,7 +260,7 @@ async function handleIncomingUpdate(update, env) {
         try {
           parsedData = await parseMealWithGeminiFast(userText, env.GEMINI_API_KEY, pendingData);
         } catch (aiErr) {
-          await editTelegramMessage(env.TELEGRAM_BOT_TOKEN, chatId, liveMsgId, `⚠️ Yapay zeka şu an meşgul.\nÖğünü tamamlamak için tekrar yazabilir veya **/ekle** kullanabilirsin.`);
+          await editTelegramMessage(env.TELEGRAM_BOT_TOKEN, chatId, liveMsgId, `⚠️ ${aiUserError(aiErr)}\n\nÖğünü tamamlamak için tekrar yazabilir veya /ekle kullanabilirsin.`);
           return;
         }
 
@@ -1188,7 +1188,7 @@ async function handleIncomingUpdate(update, env) {
     try {
       parsedData = await parseMealWithGeminiFast(userText, env.GEMINI_API_KEY);
     } catch (aiErr) {
-      await editTelegramMessage(env.TELEGRAM_BOT_TOKEN, chatId, liveMsgId, `⚠️ Yapay zeka şu an meşgul.\nÖğünü hemen eklemek için **/ekle** yazabilirsin!`);
+      await editTelegramMessage(env.TELEGRAM_BOT_TOKEN, chatId, liveMsgId, `⚠️ ${aiUserError(aiErr)}\n\nÖğünü yapay zekâ olmadan eklemek için /ekle yazabilirsin.`);
       return;
     }
 
@@ -1379,6 +1379,37 @@ function getFlattenedMeals(mealsList) {
   return result;
 }
 
+function safeAIErrorText(value, secrets = []) {
+  let text = String(value || "");
+  for (const secret of secrets.filter(Boolean)) text = text.split(secret).join("[gizlendi]");
+  return text.replace(/https?:\/\/\S+/gi, "[adres gizlendi]")
+    .replace(/AIza[\w-]+/g, "[anahtar gizlendi]")
+    .replace(/[\r\n]+/g, " ").replace(/[_*`\[\]\\]/g, " ").slice(0, 500);
+}
+
+async function geminiResponseError(response, model, apiKey) {
+  let body;
+  try { body = await response.json(); } catch { body = {}; }
+  const error = new Error(`${model}: HTTP ${response.status}${body.error?.status ? " " + safeAIErrorText(body.error.status) : ""} — ${safeAIErrorText(body.error?.message || "Servis hata ayrıntısı vermedi.", [apiKey])}`);
+  error.httpStatus = response.status;
+  return error;
+}
+
+function aiFailure(errors) {
+  const list = errors.length ? errors : [new Error("Servis yanıtı boş.")];
+  let reason = "Yapay zekâ yanıtı alınamadı.";
+  if (list.some(error => error.httpStatus === 429)) reason = "Gemini kullanım kotası veya istek hızı sınırı aşıldı (429). Günlük kota ile dakika sınırı farklıdır; ayrıntıyı aşağıda görebilirsin.";
+  else if (list.some(error => [401, 403].includes(error.httpStatus))) reason = "Gemini API anahtarı veya erişim izniyle ilgili sorun var.";
+  else if (list.some(error => error.name === "TimeoutError" || error.name === "AbortError")) reason = "Gemini zamanında yanıt vermedi (zaman aşımı).";
+  else if (list.some(error => error.httpStatus >= 500)) reason = "Gemini servisinde geçici bir hata var.";
+  else if (list.every(error => error.httpStatus === 404)) reason = "Yapılandırılan Gemini modellerine erişilemiyor (404).";
+  return new Error(reason + "\n" + list.map(error => safeAIErrorText(error.message)).join("\n"));
+}
+
+function aiUserError(error) {
+  return safeAIErrorText(error.message).slice(0, 1800);
+}
+
 function normalizeCalories(value) {
   if (!value || typeof value !== "object") return null;
   const { min, max, portions } = value;
@@ -1388,11 +1419,12 @@ function normalizeCalories(value) {
 
 function calorieSummary(meal) {
   const calories = normalizeCalories(meal.calories);
-  return calories ? `🔥 *Tahmini kalori:* ${calories.min}–${calories.max} kcal\n` : "";
+  return calories ? `🔥 *Tahmini kalori:* ${calories.min}–${calories.max} kcal\n` : meal.calorieError ? `⚠️ Öğün kaydedildi, kalori hesaplanamadı: ${aiUserError(meal.calorieError)}\n` : "";
 }
 
 async function estimateMealCalories(meal, apiKey) {
-  if (!apiKey) return null;
+  if (!apiKey) { meal.calorieError = new Error("GEMINI API anahtarı tanımlı değil."); return null; }
+  delete meal.calorieError;
   try {
     const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-lite-latest:generateContent?key=${apiKey}`, {
       method: "POST",
@@ -1403,10 +1435,13 @@ async function estimateMealCalories(meal, apiKey) {
         generationConfig: { responseMimeType: "application/json", maxOutputTokens: 500 }
       })
     });
-    if (!response.ok) return null;
+    if (!response.ok) throw await geminiResponseError(response, "gemini-flash-lite-latest", apiKey);
     const result = await response.json();
-    return normalizeCalories(JSON.parse(result.candidates?.[0]?.content?.parts?.[0]?.text || "null"));
+    const calories = normalizeCalories(JSON.parse(result.candidates?.[0]?.content?.parts?.[0]?.text || "null"));
+    if (!calories) throw new Error("Gemini geçerli bir kalori tahmini döndürmedi.");
+    return calories;
   } catch (error) {
+    meal.calorieError = aiFailure([error]);
     return null; // Calorie estimation must never prevent saving a meal.
   }
 }
@@ -1459,7 +1494,7 @@ async function saveNewMealToGitHub(token, meal, customDate = null, customDay = n
     filePath
   );
 
-  return newMeal;
+  return { ...newMeal, calorieError: meal.calorieError };
 }
 
 // Keep semantic groups independent of the legacy positional items format.
@@ -1572,6 +1607,8 @@ Kurallar:
     { name: "gemini-3.8-flash", budget: 0 }
   ];
 
+  const errors = [];
+  if (!apiKey) throw new Error("Gemini API anahtarı tanımlı değil.");
   for (const m of models) {
     try {
       const url = `https://generativelanguage.googleapis.com/v1beta/models/${m.name}:generateContent?key=${apiKey}`;
@@ -1592,6 +1629,7 @@ Kurallar:
           generationConfig: genConfig
         })
       });
+      if (!res.ok) throw await geminiResponseError(res, m.name, apiKey);
       if (res.ok) {
         const json = await res.json();
         const rawText = json.candidates?.[0]?.content?.parts?.[0]?.text;
@@ -1599,9 +1637,10 @@ Kurallar:
           return normalizeParsedMeal(JSON.parse(rawText), userMessage, previousContext);
         }
       }
-    } catch (e) { }
+      throw new Error(`${m.name}: Gemini boş yanıt döndürdü.`);
+    } catch (error) { errors.push(error); }
   }
-  throw new Error("Gemini servisi meşgul.");
+  throw aiFailure(errors);
 }
 
 async function getGitHubFile(token, filePath = "data/meals/can.json") {
@@ -1874,7 +1913,7 @@ ${JSON.stringify(eligible)}`;
         body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }],
           generationConfig: { responseMimeType: 'application/json', temperature: 0.2, maxOutputTokens: 3000 } })
       });
-      if (!response.ok) throw new Error(`Model HTTP ${response.status}`);
+      if (!response.ok) throw await geminiResponseError(response, model, apiKey);
       const result = await response.json();
       const raw = result.candidates?.[0]?.content?.parts?.filter(part => !part.thought).map(part => part.text || '').join('');
       return { ...base, status: 'ready', model, ranking: validateRanking(JSON.parse(raw), profiles) };
