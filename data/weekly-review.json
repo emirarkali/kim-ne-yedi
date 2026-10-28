@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-27T22:42:52.268Z",
+  "generatedAt": "2026-10-28T09:00:24.835Z",
   "window": {
     "start": "2026-10-22",
     "end": "2026-10-28"
@@ -15,11 +15,12 @@
       "rank": 1,
       "id": "can",
       "name": "Can",
-      "reason": "Can'ın beslenme günlüğünde sık sık hamburger, cips ve kola gibi işlenmiş gıdalar ile tatlı tüketimi yer almakta, sebze ve çeşitlilik ise sınırlı kalmaktadır.",
+      "reason": "Sık aralıklarla tüketilen fast-food, cips, dondurma ve yüksek miktarda şekerli içecekler ile alkol seçimi beslenme örüntüsünü daha dengesiz kılmaktadır.",
       "mealIds": [
-        "2026-10-27-3883",
-        "2026-10-27-6337",
-        "2026-10-26-6364"
+        "2026-10-23-6043",
+        "2026-10-25-0538",
+        "2026-10-26-6364",
+        "2026-10-27-6337"
       ],
       "mealCount": 17,
       "activeDays": 6,
@@ -29,11 +30,11 @@
       "rank": 2,
       "id": "emir",
       "name": "Emir",
-      "reason": "Emir, çorba, etli yemekler ve yumurtanın yanı sıra cips, sosis ve tatlı gibi işlenmiş veya şekerli seçenekleri de dengeli bir sıklıkla tüketmiştir.",
+      "reason": "Çeşitli yemekler ve ev yapımı alternatifler bulunsa da cips, tatlılar ve ara öğünlerdeki işlenmiş gıda sıklığı dengeli örüntüyü kısmen gölgelemektedir.",
       "mealIds": [
+        "2026-10-25-4663",
         "2026-10-25-6903",
-        "2026-10-27-2508",
-        "2026-10-27-7724"
+        "2026-10-27-2508"
       ],
       "mealCount": 13,
       "activeDays": 5,
@@ -43,7 +44,7 @@
       "rank": 3,
       "id": "kemal",
       "name": "Kemal",
-      "reason": "Kemal'in öğünlerinde çorba, ev yemeği tarzı tencere yemekleri, yumurta ve yoğurt gibi daha çeşitli ve dengeli gıdaların oranı nispeten yüksektir.",
+      "reason": "Çorba, ev yemekleri, baklagiller ve kahvaltı alternatifleriyle daha dengeli ve çeşitli bir öğün dağılımı sergilemektedir.",
       "mealIds": [
         "2026-10-25-8222",
         "2026-10-26-5042",
