@@ -357,24 +357,6 @@
         }
       },
       {
-        "id": "2026-10-27-7545",
-        "title": "Pide + Ayran",
-        "items": [
-          "Pide",
-          "Ayran"
-        ],
-        "location": "Ege Pide",
-        "category": "Pide & Hamur İşi",
-        "emoji": "🫓",
-        "price": "350 TL",
-        "note": "Mis",
-        "calories": {
-          "min": 750,
-          "max": 1150,
-          "portions": "1 standart tam pide, 200–250 ml ayran; pide içeriği belirtilmedi"
-        }
-      },
-      {
         "id": "2026-10-27-8965",
         "title": "Dondurma Hindistan Cevizli Kabuklu",
         "items": [
@@ -390,6 +372,26 @@
           "max": 450,
           "portions": "1 adet Hindistan cevizi biçimli kaplamalı dondurma, 80–120 g varsayıldı; marka ve gramaj belirtilmedi"
         }
+      },
+      {
+        "id": "2026-10-27-8698",
+        "title": "Pide+salata+yoğurt+ezme Salata + Ayran",
+        "items": [
+          "Pide+salata+yoğurt+ezme Salata",
+          "Ayran"
+        ],
+        "foods": [
+          "Pide+salata+yoğurt+ezme Salata"
+        ],
+        "drinks": [
+          "Ayran"
+        ],
+        "location": "Ege Pide",
+        "price": "350 TL",
+        "emoji": "🫓",
+        "category": "Pide & Hamur İşi",
+        "note": "Mis",
+        "calories": null
       }
     ]
   },
