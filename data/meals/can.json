@@ -391,7 +391,11 @@
         "emoji": "🫓",
         "category": "Pide & Hamur İşi",
         "note": "Mis",
-        "calories": null
+        "calories": {
+          "min": 900,
+          "max": 1300,
+          "portions": "1 standart tam pide, 1 küçük salata, 150 g yoğurt, 2–3 yemek kaşığı ezme salata ve 200–250 ml ayran; pide içeriği belirtilmedi"
+        }
       }
     ]
   },

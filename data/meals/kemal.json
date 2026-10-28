@@ -243,7 +243,11 @@
         "emoji": "🥐",
         "price": "Beleşti TL",
         "note": "20gr protein",
-        "calories": null
+        "calories": {
+          "min": 400,
+          "max": 550,
+          "portions": "Kayıtta belirtilen 4 yumurta, yarım standart poğaça ve şekersiz çay; yumurtaların hazırlanışı belirtilmedi"
+        }
       },
       {
         "id": "2026-10-28-4871",
@@ -260,7 +264,11 @@
         "emoji": "🍲",
         "price": "Beleş TL",
         "note": "Sporun üstüne iyi geldi",
-        "calories": null
+        "calories": {
+          "min": 850,
+          "max": 1300,
+          "portions": "1 kase mercimek çorbası, 1 porsiyon bulgur pilavı, 1 porsiyon et tandır (150–200 g) ve 1 küçük dilim browni"
+        }
       }
     ]
   }

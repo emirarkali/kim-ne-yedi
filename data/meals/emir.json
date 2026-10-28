@@ -306,7 +306,11 @@
         "emoji": "🍚",
         "price": "0 TL",
         "note": "Güzeldi çorba da içtim",
-        "calories": null
+        "calories": {
+          "min": 700,
+          "max": 1100,
+          "portions": "1 porsiyon et tandır (150–200 g), 1 porsiyon bulgur pilavı, 1 küçük salata ve notta belirtilen 1 kase çorba; çorba türü belirtilmedi"
+        }
       }
     ]
   }
