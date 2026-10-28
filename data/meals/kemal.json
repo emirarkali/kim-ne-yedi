@@ -220,5 +220,31 @@
         }
       }
     ]
+  },
+  {
+    "date": "2026-10-28",
+    "day": "Çarşamba",
+    "meals": [
+      {
+        "id": "2026-10-28-1544",
+        "title": "4 Yumurta Yarım Poğaça + Çay",
+        "items": [
+          "4 Yumurta Yarım Poğaça",
+          "Çay"
+        ],
+        "foods": [
+          "4 Yumurta Yarım Poğaça"
+        ],
+        "drinks": [
+          "Çay"
+        ],
+        "location": "Yurt",
+        "category": "Yemek",
+        "emoji": "🥐",
+        "price": "Beleşti TL",
+        "note": "20gr protein",
+        "calories": null
+      }
+    ]
   }
 ]
