@@ -244,6 +244,23 @@
         "price": "Beleşti TL",
         "note": "20gr protein",
         "calories": null
+      },
+      {
+        "id": "2026-10-28-4871",
+        "title": "Mercimek Çorbası, Bulgur Pilavı, Et Tandır, Browni",
+        "items": [
+          "Mercimek Çorbası, Bulgur Pilavı, Et Tandır, Browni"
+        ],
+        "foods": [
+          "Mercimek Çorbası, Bulgur Pilavı, Et Tandır, Browni"
+        ],
+        "drinks": [],
+        "location": "Yurt",
+        "category": "Çorba",
+        "emoji": "🍲",
+        "price": "Beleş TL",
+        "note": "Sporun üstüne iyi geldi",
+        "calories": null
       }
     ]
   }
