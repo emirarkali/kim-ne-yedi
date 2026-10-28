@@ -416,5 +416,32 @@
         }
       }
     ]
+  },
+  {
+    "date": "2026-10-28",
+    "day": "Çarşamba",
+    "meals": [
+      {
+        "id": "2026-10-28-8781",
+        "title": "İskender Döner Salata",
+        "items": [
+          "İskender Döner Salata"
+        ],
+        "foods": [
+          "İskender Döner Salata"
+        ],
+        "drinks": [],
+        "location": "Bke",
+        "category": "Döner & Kebap",
+        "emoji": "🥙",
+        "price": "600 TL",
+        "note": "Fena doyurdu",
+        "calories": {
+          "min": 550,
+          "max": 750,
+          "portions": "1 porsiyon İskender Döner Salata"
+        }
+      }
+    ]
   }
 ]
