@@ -290,6 +290,23 @@
           "max": 300,
           "portions": "1 adet haşlanmış yumurta, 1 porsiyon salçalı patates püresi, 1 bardak şekersiz çay"
         }
+      },
+      {
+        "id": "2026-10-28-0446",
+        "title": "Et Tandır + Bulgur Pilavı + Salata",
+        "items": [
+          "Et Tandır + Bulgur Pilavı + Salata"
+        ],
+        "foods": [
+          "Et Tandır + Bulgur Pilavı + Salata"
+        ],
+        "drinks": [],
+        "location": "Yurt",
+        "category": "Yemek",
+        "emoji": "🍚",
+        "price": "0 TL",
+        "note": "Güzeldi çorba da içtim",
+        "calories": null
       }
     ]
   }
