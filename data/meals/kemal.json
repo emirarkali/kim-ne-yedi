@@ -269,6 +269,30 @@
           "max": 1300,
           "portions": "1 kase mercimek çorbası, 1 porsiyon bulgur pilavı, 1 porsiyon et tandır (150–200 g) ve 1 küçük dilim browni"
         }
+      },
+      {
+        "id": "2026-10-28-1836",
+        "title": "Et Döner Tavuk Göğsü + Kola",
+        "items": [
+          "Et Döner Tavuk Göğsü",
+          "Kola"
+        ],
+        "foods": [
+          "Et Döner Tavuk Göğsü"
+        ],
+        "drinks": [
+          "Kola"
+        ],
+        "location": "Yurt",
+        "category": "Döner & Kebap",
+        "emoji": "🥙",
+        "price": "130 falan TL",
+        "note": "Tavuk efsane oldu et döner de iyiydi",
+        "calories": {
+          "min": 450,
+          "max": 750,
+          "portions": "1 porsiyon et döner tavuk göğsü, 1 kutu kola"
+        }
       }
     ]
   }
