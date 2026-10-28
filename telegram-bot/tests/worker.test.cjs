@@ -141,12 +141,7 @@ test('scheduled Worker evaluates all profiles and writes only the shared review 
       if (!fixtures[path]) return { status: 404 };
       return { ok: true, json: async () => ({ sha: 'test', content: Buffer.from(JSON.stringify(fixtures[path])).toString('base64') }) };
     };
-    let task;
-    await vm.runInContext('worker.scheduled', context)(
-      { scheduledTime: Date.parse('2026-10-28T09:00:00Z') },
-      { GEMINI_API_KEY: 'test', GITHUB_TOKEN: 'test' },
-      { waitUntil(value) { task = value; } }
-    );
+    const task = context.runDailyNutritionReview({ GEMINI_API_KEY: 'test', GITHUB_TOKEN: 'test' }, new Date('2026-10-28T09:00:00Z'));
     if (available) {
       await task;
       assert.equal(writes.length, 1);
@@ -183,4 +178,86 @@ test('calorie failure is reported without preventing the meal from being saved',
   const summary = context.calorieSummary(meal);
   assert.match(summary, /Öğün kaydedildi/);
   assert.match(summary, /503/);
+});
+
+test('maintenance retries quota failures one hour later and stops after success', async () => {
+  const originals = { get: context.getGitHubFile, put: context.updateGitHubFile, review: context.runDailyNutritionReview, backfill: context.backfillMissingCalories };
+  let saved = {}, calls = 0;
+  context.getGitHubFile = async () => ({ sha: 'state', content: JSON.stringify(saved) });
+  context.updateGitHubFile = async (token, sha, content) => { saved = JSON.parse(content); };
+  context.runDailyNutritionReview = async (env, now, completedDaysOnly) => {
+    assert.equal(completedDaysOnly, true);
+    if (++calls === 1) { const error = new Error('quota'); error.httpStatus = 429; throw error; }
+  };
+  context.backfillMissingCalories = async () => { throw new Error('Too early'); };
+  try {
+    await context.runScheduledMaintenance({}, new Date('2026-10-27T21:01:00Z'));
+    assert.equal(saved.review.status, 'pending');
+    assert.equal(saved.review.nextRetryAt, '2026-10-27T22:01:00.000Z');
+    await context.runScheduledMaintenance({}, new Date('2026-10-27T21:30:00Z'));
+    assert.equal(calls, 1);
+    await context.runScheduledMaintenance({}, new Date('2026-10-27T22:01:00Z'));
+    assert.equal(saved.review.status, 'done');
+    await context.runScheduledMaintenance({}, new Date('2026-10-27T23:01:00Z'));
+    assert.equal(calls, 2);
+  } finally {
+    Object.assign(context, { getGitHubFile: originals.get, updateGitHubFile: originals.put, runDailyNutritionReview: originals.review, backfillMissingCalories: originals.backfill });
+  }
+});
+
+test('calorie job starts at 12:01 Turkey time and continues hourly only while pending', async () => {
+  const originals = { get: context.getGitHubFile, put: context.updateGitHubFile, backfill: context.backfillMissingCalories };
+  let saved = { review: { date: '2026-10-28', status: 'done' } }, calls = 0;
+  context.getGitHubFile = async () => ({ sha: 'state', content: JSON.stringify(saved) });
+  context.updateGitHubFile = async (token, sha, content) => { saved = JSON.parse(content); };
+  context.backfillMissingCalories = async () => ({ updated: 2, remaining: ++calls === 1 ? 1 : 0 });
+  try {
+    await context.runScheduledMaintenance({}, new Date('2026-10-28T08:01:00Z'));
+    assert.equal(calls, 0);
+    await context.runScheduledMaintenance({}, new Date('2026-10-28T09:01:00Z'));
+    assert.equal(calls, 1);
+    assert.equal(saved.calories.nextRetryAt, '2026-10-28T10:01:00.000Z');
+    await context.runScheduledMaintenance({}, new Date('2026-10-28T10:01:00Z'));
+    assert.equal(saved.calories.status, 'done');
+    await context.runScheduledMaintenance({}, new Date('2026-10-28T11:01:00Z'));
+    assert.equal(calls, 2);
+  } finally {
+    Object.assign(context, { getGitHubFile: originals.get, updateGitHubFile: originals.put, backfillMissingCalories: originals.backfill });
+  }
+});
+
+test('backfill merges fresh data, preserves known calories and saves partial progress on quota failure', async () => {
+  const originals = { get: context.getGitHubFile, put: context.updateGitHubFile, estimate: context.estimateMealCalories };
+  let reads = 0, written, attempts = 0;
+  const meals = [
+    { id: 'known', title: 'Pilav', calories: { min: 100, max: 200 } },
+    { id: 'missing', title: 'Çorba' }, { id: 'quota', title: 'Pasta' }
+  ];
+  context.getGitHubFile = async (token, file) => {
+    if (file !== 'data/meals/can.json') return { sha: 'test', content: '[]' };
+    const latest = structuredClone(meals);
+    if (++reads > 1) latest.push({ id: 'new', title: 'Yeni öğün', calories: { min: 10, max: 20 } });
+    return { sha: 'latest', content: JSON.stringify([{ date: '2026-10-28', meals: latest }]) };
+  };
+  context.estimateMealCalories = async meal => {
+    attempts++;
+    if (meal.id === 'quota') { meal.calorieError = new Error('quota'); meal.calorieError.httpStatus = 429; return null; }
+    return { min: 200, max: 300 };
+  };
+  context.updateGitHubFile = async (token, sha, content, message, path) => {
+    assert.equal(path, 'data/meals/can.json');
+    assert.equal(sha, 'latest');
+    written = JSON.parse(content)[0].meals;
+  };
+  try {
+    const result = await context.backfillMissingCalories({});
+    assert.equal(attempts, 2);
+    assert.equal(result.updated, 1);
+    assert.equal(result.remaining, 1);
+    assert.equal(written.find(meal => meal.id === 'known').calories.min, 100);
+    assert.equal(written.find(meal => meal.id === 'missing').calories.min, 200);
+    assert.ok(written.find(meal => meal.id === 'new'));
+  } finally {
+    Object.assign(context, { getGitHubFile: originals.get, updateGitHubFile: originals.put, estimateMealCalories: originals.estimate });
+  }
 });

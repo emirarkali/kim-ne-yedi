@@ -75,10 +75,12 @@ Geliştirici: [@emirarkali](https://github.com/emirarkali)
 
 ## Günlük beslenme karşılaştırması
 
-Cloudflare Worker her gün 09.00 UTC / Türkiye saatiyle 12.00'de `scheduled` işleyicisini çalıştırır. Bugün dahil son 7 takvim günündeki üç profilin kayıtları Gemini ile karşılaştırılır; sonuç `data/weekly-review.json` dosyasına GitHub API üzerinden yazılır ve üç profilde aynı gösterilir. İşlenmiş gıda, şekerli içecek, kızartma sıklığı ve kayıtlı çeşitlilik birlikte değerlendirilir. Eksik kayıtlar tüketilmemiş öğün sayılmaz; kayıtsız kişiler sıralanmaz. API hatasında son başarılı sonuç korunur.
+Cloudflare Worker her gün Türkiye saatiyle 00.01'de `scheduled` işleyicisini çalıştırır. Dün dahil tamamlanmış son 7 takvim günündeki üç profilin kayıtları Gemini ile karşılaştırılır; sonuç `data/weekly-review.json` dosyasına GitHub API üzerinden yazılır ve üç profilde aynı gösterilir. İşlenmiş gıda, şekerli içecek, kızartma sıklığı ve kayıtlı çeşitlilik birlikte değerlendirilir. Eksik kayıtlar tüketilmemiş öğün sayılmaz; kayıtsız kişiler sıralanmaz. API hatasında son başarılı sonuç korunur.
 
-Zamanlama `telegram-bot/wrangler.toml` dosyasındaki `[triggers]` bölümündedir. Canlıya almak için `cd telegram-bot && npx wrangler deploy` çalıştırılır. Dashboard'dan kod yapıştırılıyorsa **Settings → Triggers → Cron Triggers** bölümüne `0 9 * * *` ayrıca eklenmelidir. Worker'ın mevcut `GITHUB_TOKEN` ve `GEMINI_API_KEY` secret'ları kullanılır; GitHub Actions görevi gerekmez. Site yayını GitHub Pages'in `main` dalına bağlıdır.
+Zamanlama `telegram-bot/wrangler.toml` dosyasındaki `[triggers]` bölümündedir. Canlıya almak için `cd telegram-bot && npx wrangler deploy` çalıştırılır. Dashboard'dan kod yapıştırılıyorsa **Settings → Triggers → Cron Triggers** bölümüne `1 * * * *` ayrıca eklenmelidir. Worker'ın mevcut `GITHUB_TOKEN` ve `GEMINI_API_KEY` secret'ları kullanılır; GitHub Actions görevi gerekmez. Site yayını GitHub Pages'in `main` dalına bağlıdır.
 
 İlk değerlendirmeyi yerelde üretmek için `GEMINI_API_KEY` tanımlıyken `node scripts/weekly-review.mjs` çalıştırılabilir.
 
 Kontrol: `node --test tests/*.test.* telegram-bot/tests/worker.test.cjs`
+
+Saatlik tetikleyici her saatin 01. dakikasında görev durumunu `data/automation-state.json` üzerinden kontrol eder. Sıralama 429 kota hatası verirse bir saat sonra tekrar denenir; başarılı gün yeniden hesaplanmaz. Eksik kalori taraması Türkiye saatiyle 12.01'de başlar, tüm profillerde kalorisi olmayan kayıtları altışarlı gruplarla tamamlar ve gerekirse saatlik devam eder. Kalorisi bulunan kayıtlar korunur.

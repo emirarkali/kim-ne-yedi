@@ -40,12 +40,12 @@ function renderWeeklyReview(review, now = new Date()) {
   if (!title || !content) return;
   if (!review || !Array.isArray(review.ranking)) {
     title.textContent = 'Günlük beslenme değerlendirmesi';
-    content.textContent = 'İlk değerlendirme bekleniyor. Her gün Türkiye saatiyle 12.00’de son 7 gün incelenir.';
+    content.textContent = 'İlk değerlendirme bekleniyor. Her gün Türkiye saatiyle 00.01’de son 7 gün incelenir.';
     return;
   }
   if (review.status !== 'ready' || review.ranking.length < 2) {
     title.textContent = 'Karşılaştırma için yeterli kayıt yok';
-    content.textContent = 'Sıralama için en az iki kişinin son 7 günde öğün kaydı bulunmalı. Günlük kontrol: 12.00 (Türkiye).';
+    content.textContent = 'Sıralama için en az iki kişinin son 7 günde öğün kaydı bulunmalı. Günlük kontrol: 00.01 (Türkiye).';
     return;
   }
   const generated = new Date(review.generatedAt);
@@ -54,7 +54,7 @@ function renderWeeklyReview(review, now = new Date()) {
   title.textContent = `${stale ? 'Son değerlendirmede' : 'Son 7 günde'} en sağlıksız görünen: ${review.ranking[0].name}`;
   const timestamp = validTime ? generated.toLocaleString('tr-TR', { timeZone: 'Europe/Istanbul', dateStyle: 'short', timeStyle: 'short' }) : 'Bilinmiyor';
   content.innerHTML = `
-    <p class="text-xs text-slate-500 mb-3">${escapeHtml(review.window?.start)} – ${escapeHtml(review.window?.end)} · Güncelleme: ${escapeHtml(timestamp)} · Her gün 12.00 (Türkiye)</p>
+    <p class="text-xs text-slate-500 mb-3">${escapeHtml(review.window?.start)} – ${escapeHtml(review.window?.end)} · Güncelleme: ${escapeHtml(timestamp)} · Her gün 00.01 (Türkiye)</p>
     ${stale ? '<p class="text-xs text-amber-300 mb-3">Yeni değerlendirme henüz alınamadı; son başarılı sonuç gösteriliyor.</p>' : ''}
     <ol class="grid gap-3 sm:grid-cols-3">
       ${review.ranking.map(entry => `

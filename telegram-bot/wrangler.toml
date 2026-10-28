@@ -1,4 +1,4 @@
-name = "kim-ne-yedi-bot"
+name = "odd-glitter-42a4"
 main = "worker.js"
 compatibility_date = "2024-01-01"
 
@@ -9,6 +9,7 @@ compatibility_date = "2024-01-01"
 # ALLOWED_CHAT_ID (opsiyonel)
 
 
-# Cloudflare cron saatleri UTC'dir: 09.00 UTC = 12.00 Europe/Istanbul.
+# Her saatin 01. dakikasında kontrol: TR 00.01 sıralama, TR 12.01 eksik kalori.
+# Kota hatalarında kalıcı durumdan bir saat sonraki deneme yapılır.
 [triggers]
-crons = ["0 9 * * *"]
+crons = ["1 * * * *"]
