@@ -261,5 +261,36 @@
         }
       }
     ]
+  },
+  {
+    "date": "2026-10-28",
+    "day": "Çarşamba",
+    "meals": [
+      {
+        "id": "2026-10-28-2147",
+        "title": "Haşlanmış Yumurta + Salçalı Patates Püresi + Çay",
+        "items": [
+          "Haşlanmış Yumurta + Salçalı Patates Püresi",
+          "Çay"
+        ],
+        "foods": [
+          "Haşlanmış Yumurta",
+          "Salçalı Patates Püresi"
+        ],
+        "drinks": [
+          "Çay"
+        ],
+        "location": "Yurt",
+        "category": "Ev Yemeği",
+        "emoji": "🍳",
+        "price": "Bedava TL",
+        "note": "Pürenin tadı kötüydü",
+        "calories": {
+          "min": 200,
+          "max": 300,
+          "portions": "1 adet haşlanmış yumurta, 1 porsiyon salçalı patates püresi, 1 bardak şekersiz çay"
+        }
+      }
+    ]
   }
 ]
