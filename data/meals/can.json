@@ -425,5 +425,35 @@
         }
       }
     ]
+  },
+  {
+    "date": "2026-10-29",
+    "day": "Perşembe",
+    "meals": [
+      {
+        "id": "2026-10-29-6698",
+        "title": "Patates Domates Salatalik Zeytin Zeytinyagi Labne Petek Bal Genis Kahvalti + Çay",
+        "items": [
+          "Patates Domates Salatalik Zeytin Zeytinyagi Labne Petek Bal Genis Kahvalti",
+          "Çay"
+        ],
+        "foods": [
+          "Patates Domates Salatalik Zeytin Zeytinyagi Labne Petek Bal Genis Kahvalti"
+        ],
+        "drinks": [
+          "Çay"
+        ],
+        "location": "Ev",
+        "category": "Fast Food",
+        "emoji": "🍟",
+        "price": "0 TL",
+        "note": "Ozlemisim",
+        "calories": {
+          "min": 600,
+          "max": 900,
+          "portions": "1 porsiyon patates domates salatalık zeytin zeytinyağı labne petek bal geniş kahvaltı, 1 bardak çay"
+        }
+      }
+    ]
   }
 ]
