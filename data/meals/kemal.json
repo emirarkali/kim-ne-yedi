@@ -370,5 +370,32 @@
         }
       }
     ]
+  },
+  {
+    "date": "2026-10-30",
+    "day": "Cuma",
+    "meals": [
+      {
+        "id": "2026-10-30-2904",
+        "title": "Kefir",
+        "items": [
+          "Kefir"
+        ],
+        "foods": [],
+        "drinks": [
+          "Kefir"
+        ],
+        "location": "Yurt",
+        "category": "Yemek",
+        "emoji": "🍽️",
+        "price": "20 TL",
+        "note": "250milyon bakteri",
+        "calories": {
+          "min": 100,
+          "max": 150,
+          "portions": "1 bardak kefir"
+        }
+      }
+    ]
   }
 ]
