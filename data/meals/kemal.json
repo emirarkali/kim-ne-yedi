@@ -323,6 +323,27 @@
           "max": 520,
           "portions": "4 adet haşlanmış yumurta, 1 porsiyon zeytin, 1 porsiyon krem peynir, 1 bardak çay"
         }
+      },
+      {
+        "id": "2026-10-29-4514",
+        "title": "Tavuk Snitzel+makarna+mısır Çorbası+rus Salatası",
+        "items": [
+          "Tavuk Snitzel+makarna+mısır Çorbası+rus Salatası"
+        ],
+        "foods": [
+          "Tavuk Snitzel+makarna+mısır Çorbası+rus Salatası"
+        ],
+        "drinks": [],
+        "location": "Yurt",
+        "category": "Çorba",
+        "emoji": "🍲",
+        "price": "Beleş TL",
+        "note": "",
+        "calories": {
+          "min": 750,
+          "max": 1100,
+          "portions": "1 porsiyon tavuk snitzel, 1 porsiyon makarna, 1 kase mısır çorbası, 1 porsiyon rus salatası"
+        }
       }
     ]
   }
