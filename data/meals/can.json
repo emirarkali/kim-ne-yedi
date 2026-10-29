@@ -453,6 +453,26 @@
           "max": 900,
           "portions": "1 porsiyon patates domates salatalık zeytin zeytinyağı labne petek bal geniş kahvaltı, 1 bardak çay"
         }
+      },
+      {
+        "id": "2026-10-29-4893",
+        "title": "Gozleme Cay Zeytin Turp Domates Salatalik + Çay",
+        "items": [
+          "Gozleme Cay Zeytin Turp Domates Salatalik",
+          "Çay"
+        ],
+        "foods": [
+          "Gozleme Cay Zeytin Turp Domates Salatalik"
+        ],
+        "drinks": [
+          "Çay"
+        ],
+        "location": "Ev",
+        "category": "Yemek",
+        "emoji": "🥗",
+        "price": "0 TL",
+        "note": "Muthiss",
+        "calories": null
       }
     ]
   }
