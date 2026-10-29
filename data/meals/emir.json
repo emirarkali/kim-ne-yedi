@@ -368,6 +368,30 @@
           "max": 420,
           "portions": "1 porsiyon kahvaltı"
         }
+      },
+      {
+        "id": "2026-10-29-5006",
+        "title": "Tavuk Göğsü + Kola",
+        "items": [
+          "Tavuk Göğsü",
+          "Kola"
+        ],
+        "foods": [
+          "Tavuk Göğsü"
+        ],
+        "drinks": [
+          "Kola"
+        ],
+        "location": "Yurt",
+        "category": "Ev Yemeği",
+        "emoji": "🍗",
+        "price": "Bedava TL",
+        "note": "Tadı efsaneydi, ev yapımıydı. Kola çok az içildi, yarım bardak civarı, kemal ısmarladı.",
+        "calories": {
+          "min": 300,
+          "max": 500,
+          "portions": "1 porsiyon ev yapımı tavuk göğsü ve yarım bardak kola"
+        }
       }
     ]
   },
