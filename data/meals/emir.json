@@ -421,6 +421,27 @@
           "max": 800,
           "portions": "1 porsiyon çorba, şinitzel ve salata"
         }
+      },
+      {
+        "id": "2026-10-30-8132",
+        "title": "Orman Meyveli Kefir",
+        "items": [
+          "Orman Meyveli Kefir"
+        ],
+        "foods": [],
+        "drinks": [
+          "Orman Meyveli Kefir"
+        ],
+        "location": "Yurt",
+        "category": "İçecek",
+        "emoji": "🧃",
+        "price": "35 TL",
+        "note": "Tadı çok iyidi, orman meyveli candan çaldım.",
+        "calories": {
+          "min": 120,
+          "max": 180,
+          "portions": "1 şişe orman meyveli kefir"
+        }
       }
     ]
   }
