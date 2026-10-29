@@ -370,5 +370,34 @@
         }
       }
     ]
+  },
+  {
+    "date": "2026-10-30",
+    "day": "Cuma",
+    "meals": [
+      {
+        "id": "2026-10-30-3064",
+        "title": "Tavuk Şinitzel + Mısır Çorbası + Rus Salatası",
+        "items": [
+          "Tavuk Şinitzel + Mısır Çorbası + Rus Salatası"
+        ],
+        "foods": [
+          "Tavuk Şinitzel",
+          "Mısır Çorbası",
+          "Rus Salatası"
+        ],
+        "drinks": [],
+        "location": "Yurt",
+        "category": "Ev Yemeği",
+        "emoji": "🍲",
+        "price": "0 TL",
+        "note": "Mısır çorbası iyiydi, şinitzel biraz kuruydu",
+        "calories": {
+          "min": 550,
+          "max": 800,
+          "portions": "1 porsiyon çorba, şinitzel ve salata"
+        }
+      }
+    ]
   }
 ]
