@@ -1,0 +1,14 @@
+{
+  "review": {
+    "date": "2026-10-29",
+    "status": "done",
+    "completedAt": "2026-10-29T09:00:24.835Z"
+  },
+  "calories": {
+    "date": "2026-10-29",
+    "status": "done",
+    "nextRetryAt": null,
+    "updated": 0,
+    "remaining": 0
+  }
+}
