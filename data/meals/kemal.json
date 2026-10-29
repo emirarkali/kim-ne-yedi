@@ -295,5 +295,35 @@
         }
       }
     ]
+  },
+  {
+    "date": "2026-10-29",
+    "day": "Perşembe",
+    "meals": [
+      {
+        "id": "2026-10-29-8711",
+        "title": "4 Tane Haşlanmış Yumurta+ Zeytin+ Krem Peynir + Çay",
+        "items": [
+          "4 Tane Haşlanmış Yumurta+ Zeytin+ Krem Peynir",
+          "Çay"
+        ],
+        "foods": [
+          "4 Tane Haşlanmış Yumurta+ Zeytin+ Krem Peynir"
+        ],
+        "drinks": [
+          "Çay"
+        ],
+        "location": "Yurt",
+        "category": "Yemek",
+        "emoji": "🍳",
+        "price": "Beleş TL",
+        "note": "20 gr protein",
+        "calories": {
+          "min": 380,
+          "max": 520,
+          "portions": "4 adet haşlanmış yumurta, 1 porsiyon zeytin, 1 porsiyon krem peynir, 1 bardak çay"
+        }
+      }
+    ]
   }
 ]
