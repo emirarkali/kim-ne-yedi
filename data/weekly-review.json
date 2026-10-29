@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-28T09:00:24.835Z",
+  "generatedAt": "2026-10-29T09:00:24.835Z",
   "window": {
     "start": "2026-10-22",
     "end": "2026-10-28"
@@ -15,43 +15,42 @@
       "rank": 1,
       "id": "can",
       "name": "Can",
-      "reason": "Sık aralıklarla tüketilen fast-food, cips, dondurma ve yüksek miktarda şekerli içecekler ile alkol seçimi beslenme örüntüsünü daha dengesiz kılmaktadır.",
+      "reason": "Can, sık tüketilen hamburger, dürüm, cips ve kola gibi işlenmiş gıdaların yanı sıra düzenli alkol ve tatlı seçimleriyle beslenme örüntüsünde en az çeşitliliğe ve en yüksek hazır gıda sıklığına sahiptir.",
       "mealIds": [
-        "2026-10-23-6043",
+        "2026-10-22-8886",
         "2026-10-25-0538",
-        "2026-10-26-6364",
-        "2026-10-27-6337"
+        "2026-10-26-6364"
       ],
       "mealCount": 17,
-      "activeDays": 6,
+      "activeDays": 7,
       "limitedData": false
     },
     {
       "rank": 2,
       "id": "emir",
       "name": "Emir",
-      "reason": "Çeşitli yemekler ve ev yapımı alternatifler bulunsa da cips, tatlılar ve ara öğünlerdeki işlenmiş gıda sıklığı dengeli örüntüyü kısmen gölgelemektedir.",
+      "reason": "Emir, ev yapımı sandviç ve bakliyat gibi dengeli alternatiflere yer verse de sık tercih ettiği cips, hazır sosis, meşrubat ve hamurlu tatlılarla dengesiz bir profil sergilemektedir.",
       "mealIds": [
-        "2026-10-25-4663",
         "2026-10-25-6903",
-        "2026-10-27-2508"
+        "2026-10-25-1259",
+        "2026-10-28-9048"
       ],
-      "mealCount": 13,
-      "activeDays": 5,
+      "mealCount": 16,
+      "activeDays": 6,
       "limitedData": false
     },
     {
       "rank": 3,
       "id": "kemal",
       "name": "Kemal",
-      "reason": "Çorba, ev yemekleri, baklagiller ve kahvaltı alternatifleriyle daha dengeli ve çeşitli bir öğün dağılımı sergilemektedir.",
+      "reason": "Kemal, ev yemekleri, çorba ve kurubaklagil gibi geleneksel seçenekleri daha dengeli bir sıklıkta tüketmekte, sebze ve çorba çeşitliliğiyle diğerlerine kıyasla daha çeşitli bir örüntü sunmaktadır.",
       "mealIds": [
-        "2026-10-25-8222",
-        "2026-10-26-5042",
-        "2026-10-27-2720"
+        "2026-10-27-2720",
+        "2026-10-28-4871",
+        "2026-10-26-5042"
       ],
-      "mealCount": 10,
-      "activeDays": 4,
+      "mealCount": 13,
+      "activeDays": 5,
       "limitedData": false
     }
   ]
