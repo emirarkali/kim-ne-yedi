@@ -338,5 +338,37 @@
         }
       }
     ]
+  },
+  {
+    "date": "2026-10-29",
+    "day": "Perşembe",
+    "meals": [
+      {
+        "id": "2026-10-29-9197",
+        "title": "Zeytinyağlı Haşlanmış Yumurta + Zeytin + Labne Peynir + Çay",
+        "items": [
+          "Zeytinyağlı Haşlanmış Yumurta + Zeytin + Labne Peynir",
+          "Çay"
+        ],
+        "foods": [
+          "Zeytinyağlı Haşlanmış Yumurta",
+          "Zeytin",
+          "Labne Peynir"
+        ],
+        "drinks": [
+          "Çay"
+        ],
+        "location": "Yurt",
+        "category": "Ev Yemeği",
+        "emoji": "🍳",
+        "price": "Bedava TL",
+        "note": "Çok lezzetliydi ama peçete ve karabiber yoktu, sinirden kudurdum şikayet edeceğim.",
+        "calories": {
+          "min": 280,
+          "max": 420,
+          "portions": "1 porsiyon kahvaltı"
+        }
+      }
+    ]
   }
 ]
