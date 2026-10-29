@@ -344,6 +344,30 @@
           "max": 1100,
           "portions": "1 porsiyon tavuk snitzel, 1 porsiyon makarna, 1 kase mısır çorbası, 1 porsiyon rus salatası"
         }
+      },
+      {
+        "id": "2026-10-29-0837",
+        "title": "Tavuk Göğsü + Az Kola",
+        "items": [
+          "Tavuk Göğsü",
+          "Az Kola"
+        ],
+        "foods": [
+          "Tavuk Göğsü"
+        ],
+        "drinks": [
+          "Az Kola"
+        ],
+        "location": "Yurt",
+        "category": "Tavuk",
+        "emoji": "🍗",
+        "price": "150tl falan TL",
+        "note": "Ben bu işi bitirdim EFSANE oldu",
+        "calories": {
+          "min": 200,
+          "max": 350,
+          "portions": "1 porsiyon tavuk göğsü, 1 bardak az kola"
+        }
       }
     ]
   }
