@@ -477,6 +477,30 @@
           "max": 550,
           "portions": "1 adet gözleme, 5 adet zeytin, 1 kase söğüş domates salatalık turp, 1 bardak çay"
         }
+      },
+      {
+        "id": "2026-10-29-2893",
+        "title": "Yesil Mercimek Yemegi Pilav Salata + Ayran",
+        "items": [
+          "Yesil Mercimek Yemegi Pilav Salata",
+          "Ayran"
+        ],
+        "foods": [
+          "Yesil Mercimek Yemegi Pilav Salata"
+        ],
+        "drinks": [
+          "Ayran"
+        ],
+        "location": "Ev",
+        "category": "Yemek",
+        "emoji": "🍲",
+        "price": "0 TL",
+        "note": "🇹🇷",
+        "calories": {
+          "min": 550,
+          "max": 750,
+          "portions": "1 tabak yeşil mercimek yemeği, 1 tabak pilav, 1 kase salata, 1 bardak ayran"
+        }
       }
     ]
   },
