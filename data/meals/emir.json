@@ -466,6 +466,30 @@
           "max": 400,
           "portions": "1 porsiyon sade omlet, bir miktar peynir ve zeytin, 1 fincan çay"
         }
+      },
+      {
+        "id": "2026-10-30-2779",
+        "title": "Tavuk But + Bulgur Pilavı + Armut + Lahana Salatası",
+        "items": [
+          "Tavuk But + Bulgur Pilavı + Armut + Lahana Salatası"
+        ],
+        "foods": [
+          "Tavuk But",
+          "Bulgur Pilavı",
+          "Armut",
+          "Lahana Salatası"
+        ],
+        "drinks": [],
+        "location": "Okul",
+        "category": "Ev Yemeği",
+        "emoji": "🍗",
+        "price": "65 TL",
+        "note": "",
+        "calories": {
+          "min": 550,
+          "max": 750,
+          "portions": "1 porsiyon tavuk but, bulgur pilavı, armut ve lahana salatası"
+        }
       }
     ]
   }
