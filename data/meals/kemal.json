@@ -439,24 +439,28 @@
         }
       },
       {
-        "id": "2026-10-30-9096",
-        "title": "İptal + Düzenle",
+        "id": "2026-10-30-2448",
+        "title": "Mercimek Çorbası+ Köfte+ Pilav + Ayran",
         "items": [
-          "İptal",
-          "Düzenle"
+          "Mercimek Çorbası+ Köfte+ Pilav",
+          "Ayran"
         ],
         "foods": [
-          "İptal"
+          "Mercimek Çorbası+ Köfte+ Pilav"
         ],
         "drinks": [
-          "Düzenle"
+          "Ayran"
         ],
         "location": "Yurt",
-        "category": "Yemek",
-        "emoji": "🍽️",
         "price": "Beleş TL",
-        "note": "20gr protein",
-        "calories": null
+        "emoji": "🧆",
+        "category": "Çorba",
+        "note": "25gr protein",
+        "calories": {
+          "min": 750,
+          "max": 1050,
+          "portions": "1 kase mercimek çorbası, 1 porsiyon köfte, 1 tabak pilav, 1 bardak ayran"
+        }
       }
     ]
   }
