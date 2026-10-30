@@ -472,7 +472,11 @@
         "emoji": "🥗",
         "price": "0 TL",
         "note": "Muthiss",
-        "calories": null
+        "calories": {
+          "min": 350,
+          "max": 550,
+          "portions": "1 adet gözleme, 5 adet zeytin, 1 kase söğüş domates salatalık turp, 1 bardak çay"
+        }
       }
     ]
   }
