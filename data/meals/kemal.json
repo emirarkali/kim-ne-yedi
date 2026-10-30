@@ -437,6 +437,26 @@
           "max": 450,
           "portions": "1 porsiyon tavuklu salata"
         }
+      },
+      {
+        "id": "2026-10-30-9096",
+        "title": "İptal + Düzenle",
+        "items": [
+          "İptal",
+          "Düzenle"
+        ],
+        "foods": [
+          "İptal"
+        ],
+        "drinks": [
+          "Düzenle"
+        ],
+        "location": "Yurt",
+        "category": "Yemek",
+        "emoji": "🍽️",
+        "price": "Beleş TL",
+        "note": "20gr protein",
+        "calories": null
       }
     ]
   }
