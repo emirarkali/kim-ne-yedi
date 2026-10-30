@@ -479,5 +479,35 @@
         }
       }
     ]
+  },
+  {
+    "date": "2026-10-30",
+    "day": "Cuma",
+    "meals": [
+      {
+        "id": "2026-10-30-8195",
+        "title": "Omlet Labne Zeytin Salata + Çay",
+        "items": [
+          "Omlet Labne Zeytin Salata",
+          "Çay"
+        ],
+        "foods": [
+          "Omlet Labne Zeytin Salata"
+        ],
+        "drinks": [
+          "Çay"
+        ],
+        "location": "Ev",
+        "category": "Kahvaltı",
+        "emoji": "🍳",
+        "price": "0 TL",
+        "note": "Lezz",
+        "calories": {
+          "min": 250,
+          "max": 400,
+          "portions": "1 porsiyon omlet, 1 yemek kaşığı labne, 5 adet zeytin, 1 kase salata, 1 bardak çay"
+        }
+      }
+    ]
   }
 ]
