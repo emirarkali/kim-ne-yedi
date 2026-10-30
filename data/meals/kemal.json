@@ -416,6 +416,27 @@
           "max": 380,
           "portions": "3 adet yumurta, 2 dilim ekmek"
         }
+      },
+      {
+        "id": "2026-10-30-5701",
+        "title": "Tavuklu Salata",
+        "items": [
+          "Tavuklu Salata"
+        ],
+        "foods": [
+          "Tavuklu Salata"
+        ],
+        "drinks": [],
+        "location": "Araba",
+        "category": "Tavuk",
+        "emoji": "🍗",
+        "price": "120 TL",
+        "note": "50-60gr protein",
+        "calories": {
+          "min": 300,
+          "max": 450,
+          "portions": "1 porsiyon tavuklu salata"
+        }
       }
     ]
   }
