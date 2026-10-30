@@ -395,6 +395,27 @@
           "max": 150,
           "portions": "1 bardak kefir"
         }
+      },
+      {
+        "id": "2026-10-30-6475",
+        "title": "3 Yumurta+ekmek",
+        "items": [
+          "3 Yumurta+ekmek"
+        ],
+        "foods": [
+          "3 Yumurta+ekmek"
+        ],
+        "drinks": [],
+        "location": "Yurt",
+        "category": "Yemek",
+        "emoji": "🍳",
+        "price": "Beleş TL",
+        "note": "15gr protein",
+        "calories": {
+          "min": 280,
+          "max": 380,
+          "portions": "3 adet yumurta, 2 dilim ekmek"
+        }
       }
     ]
   }
