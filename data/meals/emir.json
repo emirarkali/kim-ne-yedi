@@ -440,6 +440,32 @@
           "max": 180,
           "portions": "1 şişe orman meyveli kefir"
         }
+      },
+      {
+        "id": "2026-10-30-6070",
+        "title": "Sade Omlet + Peynir + Zeytin + Çay",
+        "items": [
+          "Sade Omlet + Peynir + Zeytin",
+          "Çay"
+        ],
+        "foods": [
+          "Sade Omlet",
+          "Peynir",
+          "Zeytin"
+        ],
+        "drinks": [
+          "Çay"
+        ],
+        "location": "Yurt",
+        "category": "Kahvaltı & Ev Yemeği",
+        "emoji": "🍳",
+        "price": "0 TL",
+        "note": "Fena değildi",
+        "calories": {
+          "min": 250,
+          "max": 400,
+          "portions": "1 porsiyon sade omlet, bir miktar peynir ve zeytin, 1 fincan çay"
+        }
       }
     ]
   }
