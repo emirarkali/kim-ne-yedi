@@ -492,25 +492,24 @@
         }
       },
       {
-        "id": "2026-10-30-1028",
-        "title": "Hindi Eti + Makarna",
+        "id": "2026-10-30-2332",
+        "title": "Hindi Etli Makarna",
         "items": [
-          "Hindi Eti + Makarna"
+          "Hindi Etli Makarna"
         ],
         "foods": [
-          "Hindi Eti",
-          "Makarna"
+          "Hindi Etli Makarna"
         ],
         "drinks": [],
         "location": "Berk'in Evi",
-        "category": "Ev Yemeği",
-        "emoji": "🍽️",
         "price": "Bedava TL",
+        "emoji": "🍝",
+        "category": "Makarna & Mantı",
         "note": "Tadı güzeldi, bedava yedim",
         "calories": {
-          "min": 500,
-          "max": 750,
-          "portions": "1 porsiyon hindi eti ve makarna"
+          "min": 450,
+          "max": 650,
+          "portions": "1 porsiyon hindi etli makarna"
         }
       }
     ]
