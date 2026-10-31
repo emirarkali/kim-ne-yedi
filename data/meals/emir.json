@@ -541,6 +541,32 @@
           "max": 650,
           "portions": "Yarım porsiyon çiğ köfte dürüm ve 1 su bardağı ayran"
         }
+      },
+      {
+        "id": "2026-10-31-3243",
+        "title": "Menemen + Hindi Füme + İnek Peyniri + Çay",
+        "items": [
+          "Menemen + Hindi Füme + İnek Peyniri",
+          "Çay"
+        ],
+        "foods": [
+          "Menemen",
+          "Hindi Füme",
+          "İnek Peyniri"
+        ],
+        "drinks": [
+          "Çay"
+        ],
+        "location": "Berk'in Evi",
+        "category": "Ev Yemeği",
+        "emoji": "🍳",
+        "price": "250 TL",
+        "note": "Menemeni ben yaptım müthiş oldu",
+        "calories": {
+          "min": 450,
+          "max": 650,
+          "portions": "1 porsiyon menemen, peynir, füme et ve 1 bardak çay"
+        }
       }
     ]
   }
