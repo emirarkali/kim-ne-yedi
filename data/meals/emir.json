@@ -567,6 +567,30 @@
           "max": 650,
           "portions": "1 porsiyon menemen, peynir, füme et ve 1 bardak çay"
         }
+      },
+      {
+        "id": "2026-10-31-8620",
+        "title": "Makarna + Şarap",
+        "items": [
+          "Makarna",
+          "Şarap"
+        ],
+        "foods": [
+          "Makarna"
+        ],
+        "drinks": [
+          "Şarap"
+        ],
+        "location": "Berk'in Evi",
+        "category": "Ev Yemeği",
+        "emoji": "🍝",
+        "price": "0 TL",
+        "note": "Güzeldi",
+        "calories": {
+          "min": 450,
+          "max": 700,
+          "portions": "1 tabak makarna ve 1 kadeh şarap"
+        }
       }
     ]
   }
