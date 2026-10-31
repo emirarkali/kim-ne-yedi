@@ -513,5 +513,35 @@
         }
       }
     ]
+  },
+  {
+    "date": "2026-10-31",
+    "day": "Cumartesi",
+    "meals": [
+      {
+        "id": "2026-10-31-6185",
+        "title": "Yarım Efendy Çiğ Köfte + Ayran",
+        "items": [
+          "Yarım Efendy Çiğ Köfte",
+          "Ayran"
+        ],
+        "foods": [
+          "Yarım Efendy Çiğ Köfte"
+        ],
+        "drinks": [
+          "Ayran"
+        ],
+        "location": "Berkin Evi",
+        "category": "Dürüm & Çiğ Köfte",
+        "emoji": "🌯",
+        "price": "150 TL",
+        "note": "Berkinle bölüştük. Güzeldi bol marulluydu.",
+        "calories": {
+          "min": 450,
+          "max": 650,
+          "portions": "Yarım porsiyon çiğ köfte dürüm ve 1 su bardağı ayran"
+        }
+      }
+    ]
   }
 ]
