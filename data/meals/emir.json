@@ -490,6 +490,28 @@
           "max": 750,
           "portions": "1 porsiyon tavuk but, bulgur pilavı, armut ve lahana salatası"
         }
+      },
+      {
+        "id": "2026-10-30-1028",
+        "title": "Hindi Eti + Makarna",
+        "items": [
+          "Hindi Eti + Makarna"
+        ],
+        "foods": [
+          "Hindi Eti",
+          "Makarna"
+        ],
+        "drinks": [],
+        "location": "Berk'in Evi",
+        "category": "Ev Yemeği",
+        "emoji": "🍽️",
+        "price": "Bedava TL",
+        "note": "Tadı güzeldi, bedava yedim",
+        "calories": {
+          "min": 500,
+          "max": 750,
+          "portions": "1 porsiyon hindi eti ve makarna"
+        }
       }
     ]
   }
