@@ -547,7 +547,11 @@
         "emoji": "🍽️",
         "price": "0 TL",
         "note": ".",
-        "calories": null
+        "calories": {
+          "min": 350,
+          "max": 500,
+          "portions": "1 adet gözleme, 5 adet zeytin"
+        }
       }
     ]
   }
