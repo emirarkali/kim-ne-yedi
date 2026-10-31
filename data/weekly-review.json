@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-10-29T09:00:24.835Z",
+  "generatedAt": "2026-10-31T09:00:24.835Z",
   "window": {
-    "start": "2026-10-22",
-    "end": "2026-10-28"
+    "start": "2026-10-24",
+    "end": "2026-10-30"
   },
   "timezone": "Europe/Istanbul",
   "unranked": [],
@@ -15,11 +15,11 @@
       "rank": 1,
       "id": "can",
       "name": "Can",
-      "reason": "Can, sık tüketilen hamburger, dürüm, cips ve kola gibi işlenmiş gıdaların yanı sıra düzenli alkol ve tatlı seçimleriyle beslenme örüntüsünde en az çeşitliliğe ve en yüksek hazır gıda sıklığına sahiptir.",
+      "reason": "Can'ın son 7 günlük kayıtlarında işlenmiş gıda, cips, kola ve alkol tüketimi diğer kişilere göre daha sık tekrarlamakta, sebze ve çeşitlilik ise daha sınırlı kalmaktadır.",
       "mealIds": [
-        "2026-10-22-8886",
         "2026-10-25-0538",
-        "2026-10-26-6364"
+        "2026-10-26-6364",
+        "2026-10-27-3883"
       ],
       "mealCount": 17,
       "activeDays": 7,
@@ -29,28 +29,28 @@
       "rank": 2,
       "id": "emir",
       "name": "Emir",
-      "reason": "Emir, ev yapımı sandviç ve bakliyat gibi dengeli alternatiflere yer verse de sık tercih ettiği cips, hazır sosis, meşrubat ve hamurlu tatlılarla dengesiz bir profil sergilemektedir.",
+      "reason": "Emir'in örüntüsünde cips, şinitzel ve tatlı gibi seçimler görülse de, ev yapımı sandviçler, kefir ve salata gibi dengeli alternatifler de menüde yer almaktadır.",
       "mealIds": [
         "2026-10-25-6903",
-        "2026-10-25-1259",
-        "2026-10-28-9048"
+        "2026-10-26-2965",
+        "2026-10-30-8132"
       ],
-      "mealCount": 16,
-      "activeDays": 6,
+      "mealCount": 21,
+      "activeDays": 7,
       "limitedData": false
     },
     {
       "rank": 3,
       "id": "kemal",
       "name": "Kemal",
-      "reason": "Kemal, ev yemekleri, çorba ve kurubaklagil gibi geleneksel seçenekleri daha dengeli bir sıklıkta tüketmekte, sebze ve çorba çeşitliliğiyle diğerlerine kıyasla daha çeşitli bir örüntü sunmaktadır.",
+      "reason": "Kemal'in beslenme günlüğünde çorba, baklagiller, kefir, yumurta ve salata gibi öğünler düzenli olarak yer almakta olup, çeşitlilik ve dengeli tabak seçimleri daha baskındır.",
       "mealIds": [
         "2026-10-27-2720",
-        "2026-10-28-4871",
-        "2026-10-26-5042"
+        "2026-10-30-2904",
+        "2026-10-30-5701"
       ],
-      "mealCount": 13,
-      "activeDays": 5,
+      "mealCount": 20,
+      "activeDays": 7,
       "limitedData": false
     }
   ]
