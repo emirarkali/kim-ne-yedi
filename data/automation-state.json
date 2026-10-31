@@ -1,12 +1,11 @@
 {
   "review": {
-    "date": "2026-10-30",
-    "status": "failed",
-    "nextRetryAt": null,
-    "error": "Gemini zamanında yanıt vermedi (zaman aşımı). gemini-flash-lite-latest: HTTP 503 UNAVAILABLE — This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later. The operation was aborted due to timeout"
+    "date": "2026-10-31",
+    "status": "done",
+    "completedAt": "2026-10-31T09:00:24.835Z"
   },
   "calories": {
-    "date": "2026-10-30",
+    "date": "2026-10-31",
     "status": "done",
     "nextRetryAt": null,
     "updated": 1,
